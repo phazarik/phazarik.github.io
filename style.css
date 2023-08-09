@@ -1,0 +1,97 @@
+body {
+  min-height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: "Calibri", Arial, sans-serif; */
+}
+
+content {
+  display: block;
+  margin: 0 20%;
+}
+
+minipage {
+  display: flex;
+  margin: 0;
+}
+
+img {
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+para {
+  display: flex;
+  /* margin: auto; */
+  text-align: justify;
+  line-height: 1.5;
+}
+
+banner {
+  display: block;
+  background-color: red;
+  color: white;
+  font-size: x-large;
+  width: 100%;
+  margin-top: 2.5%;
+  padding: 1%;
+}
+
+.side-panel {
+  background-color: #333;
+  color: #fff;
+  width: 250px;
+  padding: 20px;
+}
+
+.side-panel a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+/* ------------------------------------------
+Modifications to already existing styles:
+------------------------------------------ */
+h2 {
+  font-family: "Calibri Light", Arial, sans-serif;
+}
+
+/*----------------------------
+Header and footer decoration
+-----------------------------*/
+iframe {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
+header {
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+nav {
+  background-color: black;
+  padding: 10px 0;
+  text-align: left;
+}
+
+nav a {
+  color: white;
+  font-family: sans-serif;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  right: 1%;
+  padding: 0;
+  width: 100%;
+}
