@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/syntax-highlighter/styles/shThemeDefault.css">
     <!--Override styles here-->
     <link rel="stylesheet" href="/mystyles/override.css">
+    <link rel="stylesheet" href="/mystyles/phone-compatibility.css">
     <title>Documentation</title>
   </head>
 
@@ -26,14 +27,29 @@
 
                 <div class="col-md-3">
                     <nav class="docs-sidebar" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
-                        <ul class="nav", style="width: 100%;">
-                            <li><a href="#header">Go to top</a></li>
-                            <li><a href="#lxplus">Working with lxplus</a></li>
+                        <ul class="nav">
+                            
                             <li class="collapsable-link">
-                                <a href="#tifr-t2" data-toggle="collapse" data-target="#tifr-submenu" aria-expanded="false" aria-controls="tifr-submenu">Working with TIFR T2</a>
+                                <a href="#lxplus" data-toggle="collapse" data-target="#lxplus-submenu">CMS Unix (lxplus)</a>
+                                <ul class="nav collapse" id="lxplus-submenu">
+
+                                </ul>
+                            </li>
+                            
+                            <li class="collapsable-link">
+                                <a href="#tifr-t2" data-toggle="collapse" data-target="#tifr-submenu">TIFR T2/T3</a>
                                 <ul class="nav collapse" id="tifr-submenu">
-                                    <li><a href="#tifr-t2-copy">Copying files from T2 to T3</a></li>
-                                    <li><a href="#tifr-t2-delete">Deleting files from T2</a></li>
+                                    <li><a href="#tifr-t2-copy">   Copying files from T2 to T3 </a></li>
+                                    <li><a href="#tifr-t2-delete"> Deleting files from T2 </a></li>
+                                </ul>
+                            </li>
+                            
+                            <li class="collapsable-link">
+                                <a href="#iiser" data-toggle="collapse" data-target="#iiser-submenu">IISER T3 Cluster</a>
+                                <ul class="nav collapse" id="iiser-submenu">
+                                    <li><a href="#nanoaod-branches"> Checking NanoAOD branches </a></li>
+                                    <li><a href="#nanoaod-events">   Checking nEvents </a></li>
+                                    <li><a href="#nanoaod-template"> Generating analyzer template </a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -44,14 +60,16 @@
                     
                     
                     <section id="lxplus" class="section">
-                        <h2>Working with lxplus</h2>
+                        <h2>CMS Unix (lxplus) tools</h2>
                         <hr>
-                        
+                        <div class="alert">[WORK IN PROGRESS]</div>
+
+                        <p style="text-align: right;"><a href="#header" class="button"> &uarr; back to top</a></p>
                     </section>
 
                     
                     <section id="tifr-t2" class="section">
-                        <h2>Working with TIFR-T2</h2>
+                        <h2>TIFR-T2 tools</h2>
                         <hr>
 
                         <h3>Generating proxy for CMS [hack using lxplus]</h3>
@@ -68,9 +86,10 @@
                         </pre>
 
                         <h3 id="tifr-t2-copy">Accessing and copying files to T3 using xrdcp</h3>
-                        <p>TIFR-T2 uses an xrood file system (similar to <a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookXrootdService" target="_blank">lxplus</a>). Some important links are given below.</p>
+                        <p>TIFR-T2 uses an xrood file system (similar to lxplus). Some important links are given below.</p>
                         <ul>
-                            <li><a href="https://indiacms.res.in/userguide.html">T2/T3 user guide</a></li>
+                            <li><a href="https://indiacms.res.in/userguide.html">T2/T3 User Guide</a> (managed by TIFR)</li>
+                            <li><a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookXrootdService" target="_blank">CMS TWiki: Using Xrootd Service</a></li>
                         </ul>
                         I use a python script to list all the root files in a given directory and run xrdcp for all of them via For loop.
                         </p>
@@ -159,7 +178,40 @@ for base_dir in all_dirs:
 
 print('Done.')
                         </pre>
+
+                        <p style="text-align: right;"><a href="#header" class="button"> &uarr; back to top</a></p>
                     </section>
+
+
+                    <section id="iiser" class="section">
+                        <h2>IISER T3 cluster tools</h2>
+                        <hr>
+                        <h3 id="nanoaod-branches">Finding out NanoAOD branches and their types</h3>
+                        <p>
+                            I made this tool to checkout and compare the branch types of different NanoAOD formats. For a given input file of a particular NanoAOD structure, it finds out the "Events" branch which is releavant to us. Then loppong over each branch, it accesses the name and leaves associated with the branch and prints out the type. The code can be found <a href="/mypages/files/codes/find_nanoAOD_structure.C">here</a>.
+                        </p>
+                        
+                        <h3 id="nanoaod-events">Checking number of events (generated) in NanoAOD files</h3>
+                        <p>
+                            I made this <a href="/mypages/files/codes/find_nevents.C">tool</a> to cross-check the number of events in the NanoAOD files in our cluster, because sometimes we may miss some files while transferring from DAS to T3. Losing a few MC files is okay, since we can update their luminosity. We have to be careful to not lose data.  I typically run this for a given directory containing nanoAOD files, by running the C script over the list using a python driver file. The python file can be found <a href="/mypages/files/codes/find_nevents_wholesample.py.txt">here</a>.
+                        </p>
+
+                        <h3 id="nanoaod-template">Generating a MakeSelector based template to analyze NanoAOD files</h3>
+                        <p>
+                            For a given NanoAOD file, a <code>MakeSelector()</code> based template can be generated in th following way. Make sure to note down the NanoAOD version, because this template may have some branch-mismatch issue with other versions. Read the ROOT file and do the following in the ROOT prompt.
+                        </p>
+                        <pre class="brush: shell; line-numbers">
+[root] TFile *f = new TFile("filename.root")
+[root] gROOT-&gt;FindObject("Events")
+[root] Events-&gt;MakeSelector("anaName") #Pick an analysis name
+                        </pre>
+                        This should produce a template analyzer class named <code>anaName</code>. The class is kept in a header file, and its funcions including the event loop is run in a C file. An example of such a template code with some additional features is available in this git repository: <a href="https://github.com/phazarik/nanoAOD_analyzer">phazarik:nanoAOD_analyzer</a>. I modified the template to be compatible with multiple NanoAOD versions.
+
+                        <p style="text-align: right;"><a href="#header" class="button"> &uarr; back to top</a></p>
+                    </section>
+
+
+
                 </div><!--end main panel-->
             </div><!--end row-->
         </div><!--end container-->

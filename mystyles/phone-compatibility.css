@@ -1,0 +1,56 @@
+/* This css file overrides 
+the previous override.css*/
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 36px; /* Proportionally smaller */
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    h4 {
+        font-size: 18px;
+    }
+
+    h5 {
+        font-size: 13px;
+    }
+
+    h6 {
+        font-size: 10px;
+    }
+}
+
+/* Further adjustments for extra small screens (like phones) */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 28px; /* Further reduced */
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    h4 {
+        font-size: 16px;
+    }
+
+    h5 {
+        font-size: 12px;
+    }
+
+    h6 {
+        font-size: 9px;
+    }
+}

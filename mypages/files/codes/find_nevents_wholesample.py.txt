@@ -1,0 +1,13 @@
+import os, sys
+
+samplepath = sys.argv[1]
+
+subsamples = os.listdir(samplepath)
+
+for s in subsamples:
+    samplename = samplepath.split('/')[-1]
+    samplename = samplename+"_"+s
+    path = os.path.join(samplepath, s)
+    processline = f"root -q -b -l 'find_nevents.C(\"{path}\", \"{samplename}\")'"
+    os.system(processline)
+    #break

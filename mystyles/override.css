@@ -5,10 +5,10 @@ August 27, 2024
 body {
     margin: 0px;
     padding: 0px; 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-decoration: none;
     color: #444;
-    font-size:0.9em;
+    font-size:1em;
 }
 
 html, body {
@@ -66,6 +66,7 @@ h6 {
 footer {
     text-align: right;
     background-color: #eee;
+    padding-right: 5px;
 }
 
 nav {
@@ -98,6 +99,8 @@ nav a:hover{
     border: 0px solid #ddd; /* Optional: add a border for better visibility */
     padding: 15px; /* Optional: add some padding */
     text-align: left;
+    margin-top: 7%;
+    padding-top: 7%;
 }
 
 .nav {
@@ -105,6 +108,7 @@ nav a:hover{
     list-style: disc; /* Removes default list styling */
     padding-left: 0; /* Removes default padding */
     margin: 0; /* Removes default margin */
+    width: 100%;
 }
 
 .nav > li {
@@ -130,7 +134,7 @@ nav a:hover{
 }
 
 .nav .nav > li {
-    font-size: small;
+    font-size: 0.9em;
     margin-bottom: 0px; /* Spacing between nested list items */
 }
 
@@ -247,3 +251,35 @@ pre {
     margin-left: 5px; /* Optional: add space between text and logo */
 }
 
+.media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2%;
+}
+
+.button {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: small;
+    font-family: Arial, sans-serif;
+    color: #555; /* Dark gray text for a professional look */
+    background-color: #e9ecef;
+    border: 0px solid #ccc; /* Subtle border for definition */
+    border-radius: 10%; /* Slightly rounded corners */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #8353c2;
+    color: #fff; /* Darker text on hover */
+}
+
+.alert {
+    padding: 0;
+    margin: 0;
+    color: red;
+    font-weight: bold;
+}
