@@ -1,0 +1,249 @@
+/*
+Written by Prachurjya Pran Hazarika to override default bootstrap style
+August 27, 2024
+*/
+body {
+    margin: 0px;
+    padding: 0px; 
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    color: #444;
+    font-size:0.9em;
+}
+
+html, body {
+    height: 100%; /* Ensure full height for body and html */
+    margin: 0;
+}
+
+/* Wrapper takes full height minus footer height */
+#wrapper {
+    min-height: 100vh; /* Minimum height to fill viewport height */
+    padding-bottom: 60px; /* Adjust based on footer height */
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 48px;
+    font-family: 'Calibri Light', sans-serif; /* Set Calibri Light font */
+    font-weight: 300; /* Light font weight for a minimalistic look */
+    color: #555; /* Dark gray color for professionalism */
+    margin: 0; /* Remove default margin */
+    padding: 2% 0%; /* Remove default padding */
+    text-align: center; /* Center align the text */
+}
+
+h2, h3, h4, h5, h6 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #555; /* Slightly lighter gray for less prominence */
+    margin: 20px 0; /* Set top and bottom margin */
+    padding: 0;
+    font-weight: 300; /* Light font weight for a minimalistic look */
+}
+
+h2 {
+    font-size: 30px;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 30px;
+}
+
+h4 {
+    font-size: 20px;
+}
+
+h5 {
+    font-size: 15px;
+}
+
+h6 {
+    font-size: 12px;
+}
+
+footer {
+    text-align: right;
+    background-color: #eee;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+  
+nav a {
+    font-family: sans-serif;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+nav a:hover{
+    color: white;
+    font-weight: 700;
+}
+
+.docs-sidebar {
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 0; /* Adjust as needed to set the distance from the top of the viewport */
+    /* Optionally add some z-index and background-color to ensure it's above other content */
+    z-index: 100; /* Ensure it's above other elements */
+    background-color: #fff; /* Optional: set a background color to avoid transparency issues */
+    border: 0px solid #ddd; /* Optional: add a border for better visibility */
+    padding: 15px; /* Optional: add some padding */
+    text-align: left;
+}
+
+.nav {
+    display: block;
+    list-style: disc; /* Removes default list styling */
+    padding-left: 0; /* Removes default padding */
+    margin: 0; /* Removes default margin */
+}
+
+.nav > li {
+    margin-bottom: 7px; /* Spacing between main navigation items */
+}
+
+.nav > li > a {
+    display: block; /* Make links block-level */
+    padding: 0px; /* Add padding to links */
+    text-decoration: none; /* Remove underline from links */
+    color: #000; /* Default link color */
+    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+}
+
+.nav > li > a:hover {
+    color: #8353c2;
+    background-color: #e9ecef; /* Background color on hover */
+}
+
+.nav .nav {
+    padding-left: 20px; /* Indent nested lists */
+    list-style: circle; /* Change line style for sub-navigation items */
+}
+
+.nav .nav > li {
+    font-size: small;
+    margin-bottom: 0px; /* Spacing between nested list items */
+}
+
+.nav .nav > li > a {
+    padding: 5px; /* Adjust padding for nested links */
+    text-decoration: none; /* Remove underline from nested links */
+}
+
+.nav .collapse {
+    display: none; /* Hide collapsed submenu by default */
+    cursor: pointer;
+}
+
+.nav .collapse.show {
+    display: block; /* Show submenu when expanded */
+}
+
+a {
+    outline: 0 !important;
+    text-decoration: none !important; /* Ensure no underline */
+    border-bottom: 2px solid transparent; /* Create space for hover effect */
+    color: red;
+}
+
+img.alignleft {
+    float: left;
+    margin: 6px 20px 6px 0;
+    display: inline;
+    border: 0px;
+    background: none;
+    padding: 0;
+    display: block;
+}
+
+img.alignright {
+    padding: 0;
+    float: right;
+    margin: 6px 0 6px 20px;
+    border: 0px;
+    display: block;
+    background: none;
+}
+
+img.profile {
+    width: 120px; /* Fixed width */
+    height: 120px; /* Fixed height (same as width to maintain a circle) */
+    object-fit: cover; /* Crops the image to fill the box */
+    object-position: center; /* Centers the image */
+    border-radius: 50%; /* Makes the image circular */
+    display: block; /* Removes default margins/padding */
+    margin: 0 auto; /* Centers the image horizontally if inside a container */
+    transform: scale(1.2);
+    margin-bottom: 2%;
+}
+
+code {
+    font-family: monospace;
+    font-size: medium;
+}
+
+/* Ensure pre tags fit well within their container */
+pre {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    overflow: auto;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0; /* Remove default margin to avoid scroll near the code */
+}
+
+/* Style for line numbers to ensure they are displayed properly */
+.line-numbers .line {
+    display: block;
+    padding-left: 0px;
+    background: #f5f5f5;
+    border-left: 2px solid #ccc; /* Optional: adds a border to line numbers */;
+}
+
+.syntaxhighlighter {
+    font-size: 0.8em !important; /* Adjust to your desired size */
+    padding: 15px;
+}
+
+.container .header-box {
+    background-color: #8353c2;
+    text-align: center;
+    color: white;
+    padding-top: 1%;
+}
+
+.section {
+    padding: 10px 0;
+    position: relative;
+    display: block;
+}
+/* Apply new styles */
+.map-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    width: 80%; /* Set width to 80% */
+    margin: 5% auto 0; /* Center the container and add top margin */
+}
+
+.map-container iframe {
+    width: 100%; /* Make iframe fill the container width */
+    height: 225px; /* Set fixed height */
+    max-width: 100%; /* Ensure iframe doesn't exceed container width */
+}
+
+.logo {
+    width: 20px; /* Adjust the size as needed */
+    vertical-align: middle; /* Align vertically with text */
+    margin-left: 5px; /* Optional: add space between text and logo */
+}
+
