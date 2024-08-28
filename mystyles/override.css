@@ -105,7 +105,7 @@ nav a:hover{
 
 .nav {
     display: block;
-    list-style: disc; /* Removes default list styling */
+    list-style: disc; /* Default list styling */
     padding-left: 0; /* Removes default padding */
     margin: 0; /* Removes default margin */
     width: 100%;
@@ -117,35 +117,38 @@ nav a:hover{
 
 .nav > li > a {
     display: block; /* Make links block-level */
-    padding: 0px; /* Add padding to links */
+    padding: 0; /* Padding around links */
     text-decoration: none; /* Remove underline from links */
     color: #000; /* Default link color */
-    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+    /*transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition on color changes */
 }
 
 .nav > li > a:hover {
-    color: #8353c2;
+    color: #8353c2; /* Link color on hover */
     background-color: #e9ecef; /* Background color on hover */
+    transition: color 0.3s ease, background-color 0.3s ease;
+    /* No changes to font size, padding, or other styles */
 }
 
 .nav .nav {
     padding-left: 20px; /* Indent nested lists */
-    list-style: circle; /* Change line style for sub-navigation items */
+    list-style: circle; /* Different list style for sub-navigation items */
 }
 
 .nav .nav > li {
-    font-size: 0.9em;
-    margin-bottom: 0px; /* Spacing between nested list items */
+    font-size: 0.9em; /* Consistent font size for nested items */
+    margin-bottom: 0; /* No extra margin between nested list items */
 }
 
 .nav .nav > li > a {
     padding: 5px; /* Adjust padding for nested links */
     text-decoration: none; /* Remove underline from nested links */
+    transition: color 0.3s ease, background-color 0.3s ease; /* Keep transitions for nested links */
 }
 
 .nav .collapse {
-    display: none; /* Hide collapsed submenu by default */
-    cursor: pointer;
+    display: none; /* Submenu hidden by default */
+    cursor: pointer; /* Pointer cursor for interactive elements */
 }
 
 .nav .collapse.show {
@@ -253,9 +256,19 @@ pre {
 
 .media {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 2%;
+    justify-content: left;
+    padding-bottom: 4%;
+    /* Ensures responsiveness */
+    max-width: 80%;
+}
+
+.media iframe {
+    /* Maintain a 16:9 aspect ratio */
+    width: 60%;
+    height: 100%;
+    max-width: 800px; /* You can adjust this maximum width */
+    aspect-ratio: 16/9;
+    border: none; /* Remove iframe border */
 }
 
 .button {
@@ -282,4 +295,44 @@ pre {
     margin: 0;
     color: red;
     font-weight: bold;
+}
+
+.box {
+    position: relative; /* Allows positioning of child elements */
+    padding: 20px; /* Space inside the box */
+    margin: 20px auto; /* Center box horizontally */
+    max-width: 400px; /* Maximum width of the box */
+    color: #fff; /* Text color */
+    text-align: center; /* Center text */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Ensures content stays within rounded borders */
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth hover transition */
+}
+
+.box:hover {
+    transform: translateY(-10px); /* Lift effect on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+.image-container {
+    display: flex; /* Enable flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.image-container img {
+    max-width: 100%; /* Ensure the image scales within the container */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.alert-box {
+    background-color: #fff069; /* Yellow background */
+    color: #333; /* Dark text color for readability */
+    padding: 5px 15px; /* Padding inside the alert box */
+    margin: 10px 0; /* Spacing above and below the alert box */
+    border: 1px solid #f1c40f; /* Border with a slightly darker yellow */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1rem; /* Font size */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }

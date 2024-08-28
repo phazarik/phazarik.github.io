@@ -52,17 +52,47 @@
                                     <li><a href="#nanoaod-template"> Generating analyzer template </a></li>
                                 </ul>
                             </li>
+
+                            <li class="collapsable-link">
+                                <a href="#misc-tools" data-toggle="collapse" data-target="#misc-submenu">Miscellaneous</a>
+                                <ul class="nav collapse" id="misc-submenu">
+                                    <li><a href="#tools-feynman"> Feynman diagrams </a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </nav >
                 </div><!--end side panel-->
                 
                 <div class="col-md-9">
                     
-                    
+                    <div class="alert-box">
+                        <strong>Note for noobs:</strong> If you are new to experimental particle physics, follow the basic tutorials for setting up the tools <a href="/mypages/fornoobs.html">here</a>.
+                    </div>
+
                     <section id="lxplus" class="section">
                         <h2>CMS Unix (lxplus) tools</h2>
                         <hr>
-                        <div class="alert">[WORK IN PROGRESS]</div>
+
+                        <h3>Finding files using DAS CLI</h3>
+                        The follwing python script takes a list of MC samples (dataset names) and lists all the files avaiable on DAS using the command line interface. If <code>dasgoclient</code> is not available, run it from a CMSSW environment.
+                        <pre class="brush: python; line-numbers">
+import os, sys
+
+os.system('voms-proxy-init --voms cms')
+print('Proxy generated. Investigating samples ..')
+
+das_names = [
+    "/VLLSinglet_M-100_13TeV_TuneCUETP8M1-pythia8-madgraph/RunIISummer16NanoAODv7-PUMoriond17_Nano02Apr2020_102X_mcRun2_asymptotic_v8-v1/NANOAODSIM"
+]
+
+for name in das_names:
+    query = '"file dataset='+name+'"'
+    processline = "dasgoclient -query="+query
+    print('\nFiles for '+name.split('/')[1]+':')
+    #print(processline)
+    #break
+    os.system(processline)
+                        </pre>
 
                         <p style="text-align: right;"><a href="#header" class="button"> &uarr; back to top</a></p>
                     </section>
@@ -88,7 +118,7 @@
                         <h3 id="tifr-t2-copy">Accessing and copying files to T3 using xrdcp</h3>
                         <p>TIFR-T2 uses an xrood file system (similar to lxplus). Some important links are given below.</p>
                         <ul>
-                            <li><a href="https://indiacms.res.in/userguide.html">T2/T3 User Guide</a> (managed by TIFR)</li>
+                            <li><a href="https://indiacms.res.in/userguide.html" target="_blank">T2/T3 User Guide</a> (managed by TIFR)</li>
                             <li><a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookXrootdService" target="_blank">CMS TWiki: Using Xrootd Service</a></li>
                         </ul>
                         I use a python script to list all the root files in a given directory and run xrdcp for all of them via For loop.
@@ -188,12 +218,12 @@ print('Done.')
                         <hr>
                         <h3 id="nanoaod-branches">Finding out NanoAOD branches and their types</h3>
                         <p>
-                            I made this tool to checkout and compare the branch types of different NanoAOD formats. For a given input file of a particular NanoAOD structure, it finds out the "Events" branch which is releavant to us. Then loppong over each branch, it accesses the name and leaves associated with the branch and prints out the type. The code can be found <a href="/mypages/files/codes/find_nanoAOD_structure.C">here</a>.
+                            I made this tool to checkout and compare the branch types of different NanoAOD formats. For a given input file of a particular NanoAOD structure, it finds out the "Events" branch which is releavant to us. Then loppong over each branch, it accesses the name and leaves associated with the branch and prints out the type. The code can be found <a href="/mypages/files/codes/find_nanoAOD_structure.C" target="_blank">here</a>.
                         </p>
                         
                         <h3 id="nanoaod-events">Checking number of events (generated) in NanoAOD files</h3>
                         <p>
-                            I made this <a href="/mypages/files/codes/find_nevents.C">tool</a> to cross-check the number of events in the NanoAOD files in our cluster, because sometimes we may miss some files while transferring from DAS to T3. Losing a few MC files is okay, since we can update their luminosity. We have to be careful to not lose data.  I typically run this for a given directory containing nanoAOD files, by running the C script over the list using a python driver file. The python file can be found <a href="/mypages/files/codes/find_nevents_wholesample.py.txt">here</a>.
+                            I made this <a href="/mypages/files/codes/find_nevents.C" target="_blank">tool</a> to cross-check the number of events in the NanoAOD files in our cluster, because sometimes we may miss some files while transferring from DAS to T3. Losing a few MC files is okay, since we can update their luminosity. We have to be careful to not lose data.  I typically run this for a given directory containing nanoAOD files, by running the C script over the list using a python driver file. The python file can be found <a href="/mypages/files/codes/find_nevents_wholesample.py.txt" target="_blank">here</a>.
                         </p>
 
                         <h3 id="nanoaod-template">Generating a MakeSelector based template to analyze NanoAOD files</h3>
@@ -205,9 +235,24 @@ print('Done.')
 [root] gROOT-&gt;FindObject("Events")
 [root] Events-&gt;MakeSelector("anaName") #Pick an analysis name
                         </pre>
-                        This should produce a template analyzer class named <code>anaName</code>. The class is kept in a header file, and its funcions including the event loop is run in a C file. An example of such a template code with some additional features is available in this git repository: <a href="https://github.com/phazarik/nanoAOD_analyzer">phazarik:nanoAOD_analyzer</a>. I modified the template to be compatible with multiple NanoAOD versions.
+                        This should produce a template analyzer class named <code>anaName</code>. The class is kept in a header file, and its funcions including the event loop is run in a C file. An example of such a template code with some additional features is available in this git repository: <a href="https://github.com/phazarik/nanoAOD_analyzer" target="_blank">phazarik:nanoAOD_analyzer</a>. I modified the template to be compatible with multiple NanoAOD versions.
 
                         <p style="text-align: right;"><a href="#header" class="button"> &uarr; back to top</a></p>
+                    </section>
+
+                    <section id="misc-tools" class="section">
+                        <h2>Miscellaneous tools</h2>
+                        <hr>
+
+                        <h3 id="tool-feynman">Drawing Feynman diagrams in LaTeX</h3>
+                        <p>
+                            When it comes to drawing Feynman diagrams in LaTeX using feynmf and TikZ-Feynman, the later is generally easier and more flexible to use. The first one is older and requires a more complicated setup, while TikZ-Feynman works smoothly with modern LaTeX, producing high-quality diagrams with more customization options. If you're just starting out, TikZ-Feynman is often the better choice because it’s simpler and integrates well with other LaTeX features. A template for drawing Feynman diagrams using tikz-feynman package can be found <a href="/mypages/files/codes/feynman-template.txt">here</a>. It alreaady has some examples. You can compile is using <code>pdflatex</code> as follows.
+                            <pre class="brush: shell; line-numbers">
+                                pdflatex feynman-template.tex
+                            </pre>
+                            Just make sure that you have the necessary LaTeX packages installed beforehand.
+                        </p>
+
                     </section>
 
 

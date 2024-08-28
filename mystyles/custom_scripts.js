@@ -12,15 +12,22 @@ $(document).ready(function() {
 });
 
 // Function to load HTML content dynamically
-function loadHTML(elementId, file) {
+function loadHTML(elementId, file, callback) {
     fetch(file)
         .then(response => response.text())
-        .then(data => document.getElementById(elementId).innerHTML = data);
+        .then(data => {
+            document.getElementById(elementId).innerHTML = data;
+            if (callback) callback(); // Call the callback function if provided
+        });
 }
 
 // Load HTML content into header and footer
-loadHTML('header', '/mystyles/header.html');
-loadHTML('footer', '/mystyles/footer.html');
+loadHTML('header', '/common/header.html');
+loadHTML('footer', '/common/footer.html', function() {
+    // Set the current date after the footer has loaded
+    const d = new Date();
+    document.getElementById("date").innerHTML = d.toLocaleDateString();
+});
 
 $(document).ready(function() {
     // Target your .container, .wrapper, .post, etc.
