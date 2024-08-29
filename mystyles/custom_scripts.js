@@ -1,4 +1,5 @@
 // Custom script for handling submenu collapse on hover
+/*
 $(document).ready(function() {
     $('.nav > li').hover(
         function() {
@@ -9,7 +10,18 @@ $(document).ready(function() {
             $(this).find('.collapse').collapse('hide');
         }
     );
-});
+});*/
+
+/*
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.toggle').forEach(toggle => {
+        toggle.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default anchor behavior
+            const submenu = this.nextElementSibling;
+            submenu.classList.toggle('show');
+        });
+    });
+});*/
 
 // Function to load HTML content dynamically
 function loadHTML(elementId, file, callback) {

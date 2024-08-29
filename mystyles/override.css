@@ -113,16 +113,18 @@ nav a:hover{
 
 .nav > li {
     margin-bottom: 7px; /* Spacing between main navigation items */
+    position: relative; /* Required for absolute positioning of nested menu */
 }
 
 .nav > li > a {
     display: block; /* Make links block-level */
     padding: 0; /* Padding around links */
     text-decoration: none; /* Remove underline from links */
-    color: #000; /* Default link color */
+    color: #333; /* Default link color */
+    font-weight: normal;;
     /*transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition on color changes */
 }
-
+/*Setting color to the sub nav menu*/
 .nav > li > a:hover {
     color: #8353c2; /* Link color on hover */
     background-color: #e9ecef; /* Background color on hover */
@@ -133,26 +135,17 @@ nav a:hover{
 .nav .nav {
     padding-left: 20px; /* Indent nested lists */
     list-style: circle; /* Different list style for sub-navigation items */
+    font-size: small;
+    display: block; /* Initially hidden */
+    overflow: hidden; /* Hide anything that overflows the container */
+    max-height: 0; /* Collapse the submenu by default */
+    opacity: 0; /* Make submenu invisible by default */
+    transition: max-height 0.3s ease, opacity 0.3s ease;
 }
-
-.nav .nav > li {
-    font-size: 0.9em; /* Consistent font size for nested items */
-    margin-bottom: 0; /* No extra margin between nested list items */
-}
-
-.nav .nav > li > a {
-    padding: 5px; /* Adjust padding for nested links */
-    text-decoration: none; /* Remove underline from nested links */
-    transition: color 0.3s ease, background-color 0.3s ease; /* Keep transitions for nested links */
-}
-
-.nav .collapse {
-    display: none; /* Submenu hidden by default */
-    cursor: pointer; /* Pointer cursor for interactive elements */
-}
-
-.nav .collapse.show {
-    display: block; /* Show submenu when expanded */
+/* Show the submenu on hover with a smooth transition */
+.nav > li:hover .nav {
+    max-height: 500px; /* Set a sufficiently large value for max-height */
+    opacity: 1; /* Make submenu visible */
 }
 
 a {
@@ -259,14 +252,14 @@ pre {
     justify-content: left;
     padding-bottom: 4%;
     /* Ensures responsiveness */
-    max-width: 80%;
+    max-width: 100%;
 }
 
 .media iframe {
     /* Maintain a 16:9 aspect ratio */
-    width: 60%;
+    width: 100%;
     height: 100%;
-    max-width: 800px; /* You can adjust this maximum width */
+    max-width: 640px; /* You can adjust this maximum width */
     aspect-ratio: 16/9;
     border: none; /* Remove iframe border */
 }
