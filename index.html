@@ -1,39 +1,171 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/bootstrap-4.1.3-dist/css/bootstrap.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="/bootstrap-4.1.3-dist/css/bootstrap.css" />
     <!-- SyntaxHighlighter CSS -->
-    <link rel="stylesheet" href="/syntax-highlighter/styles/shCoreEmacs.css">
-    <link rel="stylesheet" href="/syntax-highlighter/styles/shThemeDefault.css">
+    <link rel="stylesheet" href="/syntax-highlighter/styles/shCoreEmacs.css" />
+    <link rel="stylesheet" href="/syntax-highlighter/styles/shThemeDefault.css" />
     <!--Override styles here-->
-    <link rel="stylesheet" href="/mystyles/override.css">
-    <link rel="stylesheet" href="/mystyles/phone-compatibility.css">
+    <link rel="stylesheet" href="/mystyles/override.css" />
+    <link rel="stylesheet" href="/mystyles/phone-compatibility.css" />
     <title>Home</title>
   </head>
 
   <body>
-
     <div id="wrapper">
-        <div id="header"></div>
-        
-        <div class="container">
-          <h1 style="text-align: center;">Home</h1>
-          
-          <div class="image-container">
-            <img src="/mypics/wip.png" alt="wip", style="width: 50%; margin: 20%;">
-          </div> 
-            
-        </div><!--end container-->
+      <div id="header"></div>
 
-    </div><!--end wrapper-->
-    
+      <div class="container">
+        <h1 style="text-align: center">About me</h1>
+
+        <div class="row">
+          <div class="col-md-3" style="padding-bottom: 3%">
+            <img src="/mypics/profile-pic-december-2023.jpg" alt="profile-pic" class="profile" />
+          </div>
+          <div class="col-md-9">
+            <p>
+              I am a PhD student from IISER Pune. I completed MSc in Physics from Tezpur Univesity in 2019. Currently I am working in the field of Experimental
+              High Energy Physics under the supervision of Dr Sourabh Dube. I am a member of the CMS collaboration at CERN, where we collide protons at
+              extrememly high energies to see what matter is made up of. We are looking for more particles beyond the standard model which may explain some
+              unanswered/unexplained phenomena.
+            </p>
+            <p style="text-align: right">
+              <a href="http://sites.iiserpune.ac.in/~sdube/" class="button" target="_blank"> Visit our research group </a>
+              <a href="https://www.instagram.com/hepxpune" class="button" target="_blank">
+                and Instagram! <img src="/mypics/logo/instagram.png" alt="instagram" class="logo" />
+              </a>
+            </p>
+            <!--
+                    <p style="text-align: right;"><a href="/mypages/files/cv.pdf" target="_blank" style="float: right;">Click here to view the CV</a></p>
+                    -->
+          </div>
+        </div>
+
+        <!--row, then col-md3 (side panel), then col-md9 (main panel)-->
+        <div class="row">
+          <div class="col-md-3">
+            <!--Name section-->
+            <h4 style="margin: 0px; padding: 0px; color: black">Prachurjya Pran Hazarika</h4>
+            <p style="font-weight: lighter; font-size: large">he/him | IISER-Pune</p>
+            <nav class="docs-sidebar" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
+              <ul class="nav">
+                <li class="collapsible-link">
+                  <a href="#work">PhD work at IISER-Pune</a>
+                  <ul class="nav collapse">
+                    <li><a href="#work-thesis">Search for BSM</a></li>
+                    <li><a href="#work-service">Service work for CMS</a></li>
+                  </ul>
+                </li>
+                <li class="collapsable-link">
+                  <a href="#others">Other activities</a>
+                  <ul class="nav collapse">
+                    <li><a href="#youtube">YouTube</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <!--end side panel-->
+
+          <div class="col-md-9">
+            <section id="work" class="section">
+              <h2>Things I've been working on ...</h2>
+              <hr />
+
+              <h3 id="work-thesis">Search for Physics Beyond the Standard Model in CMS Experiment</h3>
+              <p>
+                The Standard Model is currently the best-model for understanding the building blocks of nature. However, we still have to figure out a lot of
+                unexplained phenomena. In my PhD, my main task is to design and implement analysis strategies to search for the evidence of the new theories
+                beyond the Standard Model in the CMS experiment, CERN. A typical counting experiment is done by properly estimating the collision events
+                predicted by the Standard Model, and looking for excess events which may come from these new physics processes. Currently I am developing the
+                analysis tools to search for the vector-like lepton in the Run-2 and Run-3 dataset.
+              </p>
+
+              <h3 id="work-service">Service work for the CMS collaboration</h3>
+              <p>
+                I have been working with the EGamma group of CMS which is responsible for the reconstruction and identification of electrons and photons in the
+                Electromagnetic Calorimeter (ECAL) of CMS. In 2021, I helped them out with a Neural Network based photon identification algorithm, which is
+                currently being implemented in the Run-3 data taking period (2022 onwards). That is something I can brag about :D. I am also the contact person
+                between EGamma and pdmv (Physics Data and Monte-Carlo Validation group).
+              </p>
+
+              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
+            </section>
+
+            <section id="others" class="section">
+              <h2>Other activities</h2>
+              <hr />
+
+              <h3 id="youtube">YouTube videos</h3>
+              <p>
+                I like to make/edit videos occasionally. We made a YouTube video on the International Day of Women in Science (2024). The video features my
+                colleagues - PhD student Riya Sharma, postgraduate student Chitrakshee Yede, and undergraduate students Shailee Khandekar, Uttsavi Rastogi, and
+                Vaidehi Tikhe. The video was conceptualized by my supervisor, Prof Sourabh Dube.
+              </p>
+              <!--Putting a youtube link in row/col setup-->
+              <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                  <div class="media">
+                    <iframe
+                      width="560"
+                      height="315"
+                      src="https://www.youtube.com/embed/Lb7-8iAoEVg?si=1uaGBYERecqnIC5P"
+                      title="YouTube video player"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allowfullscreen
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
+
+              <p>I also made this campus-tour video at IISER Pune in February, 2024. Hopefully I have covered most of the important information.</p>
+              <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                  <div class="media">
+                    <iframe
+                      width="560"
+                      height="315"
+                      src="https://www.youtube.com/embed/qvNeTA7Y7I4?si=1ypXmLxsRJlJU17-"
+                      title="YouTube video player"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allowfullscreen
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
+
+              <p>Feel free to like and subscribe! &#128513;</p>
+
+              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
+            </section>
+          </div>
+          <!--end main panel-->
+        </div>
+        <!--end row-->
+      </div>
+      <!--end container-->
+    </div>
+    <!--end wrapper-->
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
     <script src="/bootstrap-4.1.3-dist/js/bootstrap.js"></script>
     <script src="/mystyles/custom.js"></script>
     <!-- SyntaxHighlighter JavaScript -->
@@ -43,12 +175,12 @@
     <script src="/syntax-highlighter/scripts/shBrushCpp.js"></script>
     <script src="/syntax-highlighter/scripts/shBrushPython.js"></script>
     <script>
-    SyntaxHighlighter.all();
+      SyntaxHighlighter.all();
     </script>
     <!-- Custom javascript -->
     <script src="/mystyles/custom_scripts.js"></script>
-</body>
+  </body>
 
-<!-- Footer content -->
-<footer id="footer"></footer>
+  <!-- Footer content -->
+  <footer id="footer"></footer>
 </html>
