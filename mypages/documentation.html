@@ -1,81 +1,85 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/bootstrap-4.1.3-dist/css/bootstrap.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="/bootstrap-4.1.3-dist/css/bootstrap.css" />
     <!-- SyntaxHighlighter CSS -->
-    <link rel="stylesheet" href="/syntax-highlighter/styles/shCoreEmacs.css">
-    <link rel="stylesheet" href="/syntax-highlighter/styles/shThemeDefault.css">
+    <link rel="stylesheet" href="/syntax-highlighter/styles/shCoreEmacs.css" />
+    <link rel="stylesheet" href="/syntax-highlighter/styles/shThemeDefault.css" />
     <!--Override styles here-->
-    <link rel="stylesheet" href="/mystyles/override.css">
-    <link rel="stylesheet" href="/mystyles/phone-compatibility.css">
+    <link rel="stylesheet" href="/mystyles/override.css" />
+    <link rel="stylesheet" href="/mystyles/phone-compatibility.css" />
     <title>Documentation</title>
   </head>
 
   <body>
-
     <div id="wrapper">
-        <div id="header"></div>
-        
-        <div class="container">
-            <h1 style="text-align: center;">Tools/Suggestions</h1>
+      <div id="header"></div>
 
-            <!--row, then col-md3 (side panel), then col-md9 (main panel)-->
-            <div class="row">
+      <div class="container">
+        <h1 style="text-align: center">Tools/Suggestions</h1>
 
-                <div class="col-md-3">
-                    <nav class="docs-sidebar" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
-                        <ul class="nav">
-                            
-                            <li class="collapsable-link">
-                                <a href="#lxplus">CMS Unix (lxplus)</a>
-                                <ul class="nav collapse">
-                                    <li><a href="#das-cli"> Find files using DAS CLI </a></li>
-                                </ul>
-                            </li>
-                            
-                            <li class="collapsable-link">
-                                <a href="#tifr-t2">TIFR T2/T3</a>
-                                <ul class="nav collapse">
-                                    <li><a href="#tifr-t2-copy">   Copying files from T2 to T3 </a></li>
-                                    <li><a href="#tifr-t2-delete"> Deleting files from T2 </a></li>
-                                </ul>
-                            </li>
-                            
-                            <li class="collapsable-link">
-                                <a href="#iiser">IISER T3 Cluster</a>
-                                <ul class="nav collapse">
-                                    <li><a href="#nanoaod-branches"> Checking NanoAOD branches </a></li>
-                                    <li><a href="#nanoaod-events">   Checking nEvents </a></li>
-                                    <li><a href="#nanoaod-template"> Generating analyzer template </a></li>
-                                </ul>
-                            </li>
+        <!--row, then col-md3 (side panel), then col-md9 (main panel)-->
+        <div class="row">
+          <div class="col-md-3">
+            <nav class="docs-sidebar" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
+              <ul class="nav">
+                <li class="collapsable-link">
+                  <a href="#lxplus">CMS Unix (lxplus)</a>
+                  <ul class="nav collapse">
+                    <li><a href="#das-cli"> Find files using DAS CLI </a></li>
+                  </ul>
+                </li>
 
-                            <li class="collapsable-link">
-                                <a href="#misc-tools">Miscellaneous</a>
-                                <ul class="nav collapse">
-                                    <li><a href="#tools-feynman"> Feynman diagrams </a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav >
-                </div><!--end side panel-->
-                
-                <div class="col-md-9">
-                    
-                    <div class="alert-box">
-                        <strong>Note for noobs:</strong> If you are new to experimental particle physics, follow the basic tutorials for setting up the tools <a href="/mypages/fornoobs.html">here</a>.
-                    </div>
+                <li class="collapsable-link">
+                  <a href="#tifr-t2">TIFR T2/T3</a>
+                  <ul class="nav collapse">
+                    <li><a href="#tifr-t2-copy"> Copying files from T2 to T3 </a></li>
+                    <li><a href="#tifr-t2-delete"> Deleting files from T2 </a></li>
+                  </ul>
+                </li>
 
-                    <section id="lxplus" class="section">
-                        <h2>CMS Unix (lxplus) tools</h2>
-                        <hr>
+                <li class="collapsable-link">
+                  <a href="#iiser">IISER T3 Cluster</a>
+                  <ul class="nav collapse">
+                    <li><a href="#nanoaod-branches"> Checking NanoAOD branches </a></li>
+                    <li><a href="#nanoaod-events"> Checking nEvents </a></li>
+                    <li><a href="#nanoaod-template"> Generating analyzer template </a></li>
+                  </ul>
+                </li>
 
-                        <h3 id="das-cli">Finding files using DAS CLI</h3>
-                        The follwing python script takes a list of MC samples (dataset names) and lists all the files avaiable on DAS using the command line interface. If <code>dasgoclient</code> is not available, run it from a CMSSW environment.
-                        <pre class="brush: python; line-numbers">
+                <li class="collapsable-link">
+                  <a href="#misc-tools">Miscellaneous</a>
+                  <ul class="nav collapse">
+                    <li><a href="#tools-feynman"> Feynman diagrams </a></li>
+                  </ul>
+                </li>
+              </ul>
+
+              <h4>Other links</h4>
+              <ul class="nav" style="font-size: small">
+                <li><a href="/mypages/mc-contact.html">Tips for MC contacts</a></li>
+              </ul>
+            </nav>
+          </div>
+          <!--end side panel-->
+
+          <div class="col-md-9">
+            <div class="alert-box">
+              <strong>Note for noobs:</strong> If you are new to experimental particle physics, follow the basic tutorials for setting up the tools
+              <a href="/mypages/fornoobs.html">here</a>.
+            </div>
+
+            <section id="lxplus" class="section">
+              <h2>CMS Unix (lxplus) tools</h2>
+              <hr />
+
+              <h3 id="das-cli">Finding files using DAS CLI</h3>
+              The follwing python script takes a list of MC samples (dataset names) and lists all the files avaiable on DAS using the command line interface. If
+              <code>dasgoclient</code> is not available, run it from a CMSSW environment.
+              <pre class="brush: python">
 import os, sys
 
 os.system('voms-proxy-init --voms cms')
@@ -92,76 +96,82 @@ for name in das_names:
     #print(processline)
     #break
     os.system(processline)
-                        </pre>
+              </pre>
 
-                        <p style="text-align: right;"><a href="#header" class="button"> &uarr; back to top</a></p>
-                    </section>
+              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
+            </section>
 
-                    
-                    <section id="tifr-t2" class="section">
-                        <h2>TIFR-T2 tools</h2>
-                        <hr>
+            <section id="tifr-t2" class="section">
+              <h2>TIFR-T2 tools</h2>
+              <hr />
 
-                        <h3>Generating proxy for CMS [hack using lxplus]</h3>
-                        <p>As of August 2024, the cms-proxy fails to generate at the T3 area. That's why I am manually creating the proxy file in lxplus, and brining it to ui.indiacms.res.in. Before brining the file to T3, the file has to be transferred to an accessible ares in lxplus.</p>
-                        <pre class="brush: shell; line-numbers">
+              <h3>Generating proxy for CMS [hack using lxplus]</h3>
+              <p>
+                As of August 2024, the cms-proxy fails to generate at the T3 area. That's why I am manually creating the proxy file in lxplus, and brining it to
+                ui.indiacms.res.in. Before brining the file to T3, the file has to be transferred to an accessible ares in lxplus.
+              </p>
+              <pre class="brush: shell">
                             [lxplus] voms-proxy-init --voms cms --valid 168:00
                             [lxplus] cp /tmp/proxy_filename .
-                        </pre>
-                        This file is brought into T3 area using <code>scp</code> as follows.
-                        <pre class="brush: shell; line-numbers">
+                </pre
+              >
+              This file is brought into T3 area using <code>scp</code> as follows.
+              <pre class="brush: shell; line-numbers">
                             [ui3] scp username@lxplus.cern.ch:~/proxy_filename .
                             [ui3] realpath proxy_filename # copy this
                             [ui3] export X509_USER_PROXY=full_path_to_proxy_file
-                        </pre>
+                        </pre
+              >
 
-                        <h3 id="tifr-t2-copy">Accessing and copying files to T3 using xrdcp</h3>
-                        <p>TIFR-T2 uses an xrood file system (similar to lxplus). Some important links are given below.</p>
-                        <ul>
-                            <li><a href="https://indiacms.res.in/userguide.html" target="_blank">T2/T3 User Guide</a> (managed by TIFR)</li>
-                            <li><a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookXrootdService" target="_blank">CMS TWiki: Using Xrootd Service</a></li>
-                        </ul>
-                        I use a python script to list all the root files in a given directory and run xrdcp for all of them via For loop.
-                        </p>
-                        <pre class="brush: python; line-numbers">
-import os
+              <h3 id="tifr-t2-copy">Accessing and copying files to T3 using xrdcp</h3>
+              <p>TIFR-T2 uses an xrood file system (similar to lxplus). Some important links are given below.</p>
+              <ul>
+                <li><a href="https://indiacms.res.in/userguide.html" target="_blank">T2/T3 User Guide</a> (managed by TIFR)</li>
+                <li><a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookXrootdService" target="_blank">CMS TWiki: Using Xrootd Service</a></li>
+              </ul>
+              <p>I use a python script to list all the root files in a given directory and run xrdcp for all of them via For loop.</p>
+              <pre class="brush: python; line-numbers">
+                import os
 
-# Mention the T2 directory containing the root files, starting with /store/... .
-basedir = "/store/user/phazarik/VLLS_ele_M100_TuneCP5/RunIISummer20UL18_NanoAODv2/230419_064719/0000"
+                # Mention the T2 directory containing the root files, starting with /store/... .
+                basedir = "/store/user/phazarik/VLLS_ele_M100_TuneCP5/RunIISummer20UL18_NanoAODv2/230419_064719/0000"
 
-# Listing the contents (keeping only the root files):
-cmd_list = f"xrdfs se01.indiacms.res.in ls /cms/{basedir}"
-full_list = os.popen(cmd_list).read()
-files = [line.strip() for line in full_list.splitlines() if line.endswith(".root")]
-print("\n\033[33mThe following files will be downloaded in this location.\033[0m")
-for f in files: print(f)
+                # Listing the contents (keeping only the root files):
+                cmd_list = f"xrdfs se01.indiacms.res.in ls /cms/{basedir}"
+                full_list = os.popen(cmd_list).read()
+                files = [line.strip() for line in full_list.splitlines() if line.endswith(".root")]
+                print("\n\033[33mThe following files will be downloaded in this location.\033[0m")
+                for f in files: print(f)
 
-# Ask for user confirmation
-confirmation = input("\n\033[33mPress 'y' to continue with the download: \033[0m").strip().lower()
+                # Ask for user confirmation
+                confirmation = input("\n\033[33mPress 'y' to continue with the download: \033[0m").strip().lower()
 
-# Proceed if the user confirms
-if confirmation in ['y', 'yes']:
-    for line in files:   
-        fn = os.path.basename(line.strip())
-        if not os.path.isfile(fn):	
-            cmd_copy = f"xrdcp root://se01.indiacms.res.in/{line.strip()} ./"
-            os.system(cmd_copy)
-            #break
-        
-else: print("\n\033[31mDownload canceled.\033[0m")
+                # Proceed if the user confirms
+                if confirmation in ['y', 'yes']:
+                    for line in files:   
+                        fn = os.path.basename(line.strip())
+                        if not os.path.isfile(fn):	
+                            cmd_copy = f"xrdcp root://se01.indiacms.res.in/{line.strip()} ./"
+                            os.system(cmd_copy)
+                            #break
+                        
+                else: print("\n\033[31mDownload canceled.\033[0m")
 
-                        </pre>
-                    
-                        <h3 id="tifr-t2-delete">Deleting files from T2</h3>
-                        <p>Deleting stuff from T2 is tricky. <code>rm</code> only works for individual files. <code>rmdir</code> only works for empty directories. I came up with the following method. The python file takes a list of directories in this format: <code>/store/user/username/directory</code>.
-                            <ol>
-                                <li>Listing all the folders, subfolders and files.</li>
-                                <li>Dividing the list into two: one for files, one for directories.</li>
-                                <li>Deleting the individual files first, by looping over the list of files.</li>
-                                <li>Deleting the directories, starting from the deepest ones.</li>
-                            </ol>
-                        </p>
-                        <pre class="brush: python; line-numbers">
+              </pre>
+
+              <h3 id="tifr-t2-delete">Deleting files from T2</h3>
+              <p>
+                Deleting stuff from T2 is tricky. <code>rm</code> only works for individual files. <code>rmdir</code> only works for empty directories. I came
+                up with the following method. The python file takes a list of directories in this format: <code>/store/user/username/directory</code>.
+              </p>
+              <ol>
+                <li>Listing all the folders, subfolders and files.</li>
+                <li>Dividing the list into two: one for files, one for directories.</li>
+                <li>Deleting the individual files first, by looping over the list of files.</li>
+                <li>Deleting the directories, starting from the deepest ones.</li>
+              </ol>
+
+              <pre class="brush: python">
 import os
 
 # List of directories
@@ -207,66 +217,94 @@ for base_dir in all_dirs:
     os.system(rmdir_base)
 
 print('Done.')
-                        </pre>
+              </pre>
 
-                        <p style="text-align: right;"><a href="#header" class="button"> &uarr; back to top</a></p>
-                    </section>
+              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
+            </section>
 
+            <section id="iiser" class="section">
+              <h2>IISER T3 cluster tools</h2>
+              <hr />
+              <h3 id="nanoaod-branches">Finding out NanoAOD branches and their types</h3>
+              <p>
+                I made this tool to checkout and compare the branch types of different NanoAOD formats. For a given input file of a particular NanoAOD
+                structure, it finds out the "Events" branch which is releavant to us. Then loppong over each branch, it accesses the name and leaves associated
+                with the branch and prints out the type. The code can be found
+                <a href="/mypages/files/codes/find_nanoAOD_structure.C" target="_blank">here</a>.
+              </p>
 
-                    <section id="iiser" class="section">
-                        <h2>IISER T3 cluster tools</h2>
-                        <hr>
-                        <h3 id="nanoaod-branches">Finding out NanoAOD branches and their types</h3>
-                        <p>
-                            I made this tool to checkout and compare the branch types of different NanoAOD formats. For a given input file of a particular NanoAOD structure, it finds out the "Events" branch which is releavant to us. Then loppong over each branch, it accesses the name and leaves associated with the branch and prints out the type. The code can be found <a href="/mypages/files/codes/find_nanoAOD_structure.C" target="_blank">here</a>.
-                        </p>
-                        
-                        <h3 id="nanoaod-events">Checking number of events (generated) in NanoAOD files</h3>
-                        <p>
-                            I made this <a href="/mypages/files/codes/find_nevents.C" target="_blank">tool</a> to cross-check the number of events in the NanoAOD files in our cluster, because sometimes we may miss some files while transferring from DAS to T3. Losing a few MC files is okay, since we can update their luminosity. We have to be careful to not lose data.  I typically run this for a given directory containing nanoAOD files, by running the C script over the list using a python driver file. The python file can be found <a href="/mypages/files/codes/find_nevents_wholesample.py.txt" target="_blank">here</a>.
-                        </p>
+              <h3 id="nanoaod-events">Checking number of events (generated) in NanoAOD files</h3>
+              <p>
+                I made this <a href="/mypages/files/codes/find_nevents.C" target="_blank">tool</a> to cross-check the number of events in the NanoAOD files in
+                our cluster, because sometimes we may miss some files while transferring from DAS to T3. Losing a few MC files is okay, since we can update
+                their luminosity. We have to be careful to not lose data. I typically run this for a given directory containing nanoAOD files, by running the C
+                script over the list using a python driver file. The python file can be found
+                <a href="/mypages/files/codes/find_nevents_wholesample.py.txt" target="_blank">here</a>.
+              </p>
 
-                        <h3 id="nanoaod-template">Generating a MakeSelector based template to analyze NanoAOD files</h3>
-                        <p>
-                            For a given NanoAOD file, a <code>MakeSelector()</code> based template can be generated in th following way. Make sure to note down the NanoAOD version, because this template may have some branch-mismatch issue with other versions. Read the ROOT file and do the following in the ROOT prompt.
-                        </p>
-                        <pre class="brush: shell; line-numbers">
+              <h3 id="nanoaod-template">Generating a MakeSelector based template to analyze NanoAOD files</h3>
+              <p>
+                For a given NanoAOD file, a <code>MakeSelector()</code> based template can be generated in th following way. Make sure to note down the NanoAOD
+                version, because this template may have some branch-mismatch issue with other versions. Read the ROOT file and do the following in the ROOT
+                prompt.
+              </p>
+              <pre class="brush: shell; line-numbers">
 [root] TFile *f = new TFile("filename.root")
 [root] gROOT-&gt;FindObject("Events")
 [root] Events-&gt;MakeSelector("anaName") #Pick an analysis name
-                        </pre>
-                        This should produce a template analyzer class named <code>anaName</code>. The class is kept in a header file, and its funcions including the event loop is run in a C file. An example of such a template code with some additional features is available in this git repository: <a href="https://github.com/phazarik/nanoAOD_analyzer" target="_blank">phazarik:nanoAOD_analyzer</a>. I modified the template to be compatible with multiple NanoAOD versions.
+              </pre>
+              <p>
+                This should produce a template analyzer class named
+                <code>anaName</code>. The class is kept in a header file, and its funcions including the event loop is run in a C file. An example of such a
+                template code with some additional features is available in this git repository:
+                <a href="https://github.com/phazarik/nanoAOD_analyzer" target="_blank">phazarik:nanoAOD_analyzer</a>. I modified the template to be compatible
+                with multiple NanoAOD versions.
+              </p>
 
-                        <p style="text-align: right;"><a href="#header" class="button"> &uarr; back to top</a></p>
-                    </section>
+              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
+            </section>
 
-                    <section id="misc-tools" class="section">
-                        <h2>Miscellaneous tools</h2>
-                        <hr>
+            <section id="misc-tools" class="section">
+              <h2>Miscellaneous tools</h2>
+              <hr />
 
-                        <h3 id="tools-feynman">Drawing Feynman diagrams in LaTeX</h3>
-                        <p>
-                            When it comes to drawing Feynman diagrams in LaTeX using feynmf and TikZ-Feynman, the later is generally easier and more flexible to use. The first one is older and requires a more complicated setup, while TikZ-Feynman works smoothly with modern LaTeX, producing high-quality diagrams with more customization options. If you're just starting out, TikZ-Feynman is often the better choice because it’s simpler and integrates well with other LaTeX features. A template for drawing Feynman diagrams using tikz-feynman package can be found <a href="/mypages/files/codes/feynman-template.txt" target="_blank">here</a>. It alreaady has some examples. It can be compiled using <code>pdflatex</code> as follows.
-                            <pre class="brush: shell; line-numbers">
-                                pdflatex feynman-template.tex
-                            </pre>
-                            Just make sure that you have the necessary LaTeX packages installed beforehand.
-                        </p>
+              <h3 id="tools-feynman">Drawing Feynman diagrams in LaTeX</h3>
+              <p>
+                When it comes to drawing Feynman diagrams in LaTeX using feynmf and TikZ-Feynman, the later is generally easier and more flexible to use. The
+                first one is older and requires a more complicated setup, while TikZ-Feynman works smoothly with modern LaTeX, producing high-quality diagrams
+                with more customization options. If you're just starting out, TikZ-Feynman is often the better choice because it’s simpler and integrates well
+                with other LaTeX features. A template for drawing Feynman diagrams using tikz-feynman package can be found
+                <a href="/mypages/files/codes/feynman-template.txt" target="_blank">here</a>. It alreaady has some examples. It can be compiled using
+                <code>pdflatex</code> as follows.
+              </p>
+              <pre class="brush: shell">
+                pdflatex feynman-template.tex
+              </pre>
+              <p>Just make sure that you have the necessary LaTeX packages installed beforehand.</p>
 
-                        <p style="text-align: right;"><a href="#header" class="button"> &uarr; back to top</a></p>
-                    </section>
+              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
+            </section>
+          </div>
+          <!--end main panel-->
+        </div>
+        <!--end row-->
+      </div>
+      <!--end container-->
+    </div>
+    <!--end wrapper-->
 
-
-
-                </div><!--end main panel-->
-            </div><!--end row-->
-        </div><!--end container-->
-    </div><!--end wrapper-->
-    
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
     <script src="/bootstrap-4.1.3-dist/js/bootstrap.js"></script>
     <script src="/mystyles/custom.js"></script>
     <!-- SyntaxHighlighter JavaScript -->
@@ -276,13 +314,12 @@ print('Done.')
     <script src="/syntax-highlighter/scripts/shBrushCpp.js"></script>
     <script src="/syntax-highlighter/scripts/shBrushPython.js"></script>
     <script>
-    SyntaxHighlighter.all();
+      SyntaxHighlighter.all();
     </script>
     <!-- Custom javascript -->
     <script src="/mystyles/custom_scripts.js"></script>
 
-</body>
-
-<!-- Footer content -->
-<footer id="footer"></footer>
+    <!-- Footer content -->
+    <footer id="footer"></footer>
+  </body>
 </html>

@@ -26,7 +26,6 @@
           <div class="col-md-3">
             <nav class="docs-sidebar" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
               <ul class="nav">
-                
                 <li class="collapsable-link">
                   <a href="#setting-up">Getting Started</a>
                   <ul class="nav collapse">
@@ -36,7 +35,7 @@
                     <li><a href="#setting-up-bashrc"> Customizing bashrc [optional] </a></li>
                   </ul>
                 </li>
-                
+
                 <li class="collapsable-link">
                   <a href="#wsl">For Windows users</a>
                   <ul class="nav collapse">
@@ -53,7 +52,6 @@
                     <li><a href="#cern-links"> Important links </a></li>
                   </ul>
                 </li>
-
               </ul>
             </nav>
           </div>
@@ -292,7 +290,8 @@ PROMPT_COMMAND=${PROMPT_COMMAND:+"$PROMPT_COMMAND; "}'printf "\e]9;9;%s\e\\" "$(
             <section class="section" id="cern">
               <h2>CERN Account Management</h2>
               <p>
-                Once you are registered in the CERN Human Resource database, your Primary CERN Account, CERN e-mail address & mailbox are created automatically. Instructions about the next steps will be emailed there. The following list contains some useful links for account and services management.
+                Once you are registered in the CERN Human Resource database, your Primary CERN Account, CERN e-mail address & mailbox are created automatically.
+                Instructions about the next steps will be emailed there. The following list contains some useful links for account and services management.
               </p>
               <ul>
                 <li><a href="https://account.cern.ch/account/" target="_blank">CERN account management</a></li>
@@ -306,44 +305,48 @@ PROMPT_COMMAND=${PROMPT_COMMAND:+"$PROMPT_COMMAND; "}'printf "\e]9;9;%s\e\\" "$(
                 Once, your CERN account is active, you will have to generate a certificate. CERN Grid certificates are digital credentials used to authenticate
                 and securely access CERN's computing resources. You can generate the certificate
                 <a href="https://ca.cern.ch/ca/user/Request.aspx?template=EE2User">here</a>. Follow the on-screen instructions and give the certificate file a
-                passowrd. The certificate file is a <code>.p12</code> file, which expires in a year. It's important to keep this file safe and backed up, as
-                it serves as your digital identity for accessing CERN's grid services. 
+                passowrd. The certificate file is a <code>.p12</code> file, which expires in a year. It's important to keep this file safe and backed up, as it
+                serves as your digital identity for accessing CERN's grid services.
               </p>
 
               <p>I am listing the important links related to certificates below.</p>
               <ul>
                 <li><a href=" https://ca.cern.ch/ca/" target="_blank"> CERN certification authority </a></li>
                 <li><a href="https://ca.cern.ch/ca/user/MyCertificates.aspx" target="_blank"> Currently available certificates</a></li>
-                <li><a href="https://lms.cern.ch/ekp/servlet/ekp?PX=N&TEACHREVIEW=N&PTX=&CID=EKP000040521&TX=FORMAT1&LANGUAGE_TAG=en&DECORATEPAGE=N" target="_blank">CERN computer security course</a></li>
+                <li>
+                  <a
+                    href="https://lms.cern.ch/ekp/servlet/ekp?PX=N&TEACHREVIEW=N&PTX=&CID=EKP000040521&TX=FORMAT1&LANGUAGE_TAG=en&DECORATEPAGE=N"
+                    target="_blank"
+                    >CERN computer security course</a
+                  >
+                </li>
               </ul>
 
               <div class="alert-box"><strong>Note:</strong> Grid certificates have an expiary date of 1 year. This process has to be repeated every year.</div>
 
               <h3>Adding the certificate to a browser</h3>
-              <p>
-                To integrate the certificate into a web browser, follow these steps:
-              </p>
+              <p>To integrate the certificate into a web browser, follow these steps:</p>
               <ol>
                 <li>Download the <code>.p12</code> certificate file to your computer.</li>
-                    <li>
-                      Go to <strong>Settings</strong> in your preferred web-browser and search for something like <strong>Manage Certificates</strong>.
-                    </li>
-                    <li>Click on the <strong>Import</strong> button.</li>
-                    <li>Select your <code>.p12</code> file and follow the prompts, including entering the password set during certificate generation.</li>
-                  </ol>
-                </li>
+                <li>Go to <strong>Settings</strong> in your preferred web-browser and search for something like <strong>Manage Certificates</strong>.</li>
+                <li>Click on the <strong>Import</strong> button.</li>
+                <li>Select your <code>.p12</code> file and follow the prompts, including entering the password set during certificate generation.</li>
+              </ol>
               <p>
-                After importing, the browser will use the certificate for authenticating with CERN services, allowing you to securely access required resources such as <a href="https://cmsweb.cern.ch/das/" target="_blank">CMS-DAS</a> and other internal pages. If the browser says <i>Your connection isn't private ..</i> for cmsweb pages, you can do <strong>Advanced </strong> &gt; <strong> Continue to cmsweb.cern.ch (unsafe)</strong> for access. A browser-window will pop-up where you have to select the CERN certificate for processing further. 
+                After importing, the browser will use the certificate for authenticating with CERN services, allowing you to securely access required resources
+                such as <a href="https://cmsweb.cern.ch/das/" target="_blank">CMS-DAS</a> and other internal pages. If the browser says
+                <i>Your connection isn't private ..</i> for cmsweb pages, you can do <strong>Advanced </strong> &gt;
+                <strong> Continue to cmsweb.cern.ch (unsafe)</strong> for access. A browser-window will pop-up where you have to select the CERN certificate for
+                processing further.
               </p>
 
               <h3>Adding the certificate to work area</h3>
-              <p>
-                To setup the certificate on the user interface from where you have to work you should follow these steps.
-              </p>
+              <p>To setup the certificate on the user interface from where you have to work you should follow these steps.</p>
 
               <ol>
                 <li>
-                  Place the p12 certificate file in the <code>.globus</code> directory of your home area. If the directory doesn't exist, create it first. If any old certificate files already exist, remove them.
+                  Place the p12 certificate file in the <code>.globus</code> directory of your home area. If the directory doesn't exist, create it first. If
+                  any old certificate files already exist, remove them.
                   <pre class="brush: shell">
                     cd ~
                     mkdir .globus
@@ -356,7 +359,9 @@ PROMPT_COMMAND=${PROMPT_COMMAND:+"$PROMPT_COMMAND; "}'printf "\e]9;9;%s\e\\" "$(
                   </pre>
                 </li>
                 <li>
-                  Use <code>openssl</code> to create the keys, and make them read-only using <code>chmod</code>. This step asks for the password to decrypt the <code>.p12</code> file. Then, it asks the user to create a new PEMl password [important], which is required to use the certificate while working with the grid.
+                  Use <code>openssl</code> to create the keys, and make them read-only using <code>chmod</code>. This step asks for the password to decrypt the
+                  <code>.p12</code> file. Then, it asks the user to create a new PEMl password [important], which is required to use the certificate while
+                  working with the grid.
                   <pre class="brush: shell">
                     openssl pkcs12 -in mycert.p12 -clcerts -nokeys -out usercert.pem
                     openssl pkcs12 -in mycert.p12 -nocerts -out userkey.pem
@@ -379,7 +384,6 @@ PROMPT_COMMAND=${PROMPT_COMMAND:+"$PROMPT_COMMAND; "}'printf "\e]9;9;%s\e\\" "$(
                 <li><a href="https://indico.cern.ch/category/1303/">All CMS meetings</a></li>
                 <li><a href="https://twiki.cern.ch/twiki/bin/viewauth/CMS/WebHome">All the POG/PAG TWiki pages</a></li>
               </ul>
-
             </section>
           </div>
           <!--end main panel-->

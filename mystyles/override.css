@@ -26,7 +26,8 @@ body {
 
 h1 {
   font-size: 48px;
-  font-family: "Calibri Light", sans-serif; /* Set Calibri Light font */
+  /*font-family: "Calibri Light", sans-serif; /* Set Calibri Light font */
+  font-family: inherit;
   font-weight: 300; /* Light font weight for a minimalistic look */
   color: #555; /* Dark gray color for professionalism */
   margin: 0; /* Remove default margin */
@@ -39,7 +40,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: Arial, Helvetica, sans-serif;
+  /*font-family: Arial, Helvetica, sans-serif;*/
+  font-family: inherit;
   color: #555; /* Slightly lighter gray for less prominence */
   margin: 20px 0; /* Set top and bottom margin */
   padding: 0;
@@ -106,6 +108,15 @@ nav a:hover {
   text-align: left;
   margin-top: 7%;
   padding-top: 7%;
+  display: flex;
+  flex-direction: column; /* Make sure children stack vertically */
+  justify-content: space-between; /* This can be adjusted as needed */
+}
+
+.docs-sidebar p {
+  margin-top: auto; /* Pushes the paragraph to the bottom */
+  padding: 10px 0 0 0; /* Optional: add padding to separate from the nav list */
+  color: #333;
 }
 
 .nav {
@@ -333,4 +344,12 @@ pre {
   border-radius: 4px; /* Rounded corners */
   font-size: 1rem; /* Font size */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.assamese {
+  font-family: "Noto Serif Bengali", serif;
+}
+
+.inline-math {
+  font-size: 0.8em; /* Adjust font size if needed */
 }
