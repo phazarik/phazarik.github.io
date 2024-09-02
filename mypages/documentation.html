@@ -32,7 +32,7 @@
                             <li class="collapsable-link">
                                 <a href="#lxplus">CMS Unix (lxplus)</a>
                                 <ul class="nav collapse">
-
+                                    <li><a href="#das-cli"> Find files using DAS CLI </a></li>
                                 </ul>
                             </li>
                             
@@ -73,7 +73,7 @@
                         <h2>CMS Unix (lxplus) tools</h2>
                         <hr>
 
-                        <h3>Finding files using DAS CLI</h3>
+                        <h3 id="das-cli">Finding files using DAS CLI</h3>
                         The follwing python script takes a list of MC samples (dataset names) and lists all the files avaiable on DAS using the command line interface. If <code>dasgoclient</code> is not available, run it from a CMSSW environment.
                         <pre class="brush: python; line-numbers">
 import os, sys
@@ -244,9 +244,9 @@ print('Done.')
                         <h2>Miscellaneous tools</h2>
                         <hr>
 
-                        <h3 id="tool-feynman">Drawing Feynman diagrams in LaTeX</h3>
+                        <h3 id="tools-feynman">Drawing Feynman diagrams in LaTeX</h3>
                         <p>
-                            When it comes to drawing Feynman diagrams in LaTeX using feynmf and TikZ-Feynman, the later is generally easier and more flexible to use. The first one is older and requires a more complicated setup, while TikZ-Feynman works smoothly with modern LaTeX, producing high-quality diagrams with more customization options. If you're just starting out, TikZ-Feynman is often the better choice because it’s simpler and integrates well with other LaTeX features. A template for drawing Feynman diagrams using tikz-feynman package can be found <a href="/mypages/files/codes/feynman-template.txt" target="_blank">here</a>. It alreaady has some examples. You can compile is using <code>pdflatex</code> as follows.
+                            When it comes to drawing Feynman diagrams in LaTeX using feynmf and TikZ-Feynman, the later is generally easier and more flexible to use. The first one is older and requires a more complicated setup, while TikZ-Feynman works smoothly with modern LaTeX, producing high-quality diagrams with more customization options. If you're just starting out, TikZ-Feynman is often the better choice because it’s simpler and integrates well with other LaTeX features. A template for drawing Feynman diagrams using tikz-feynman package can be found <a href="/mypages/files/codes/feynman-template.txt" target="_blank">here</a>. It alreaady has some examples. It can be compiled using <code>pdflatex</code> as follows.
                             <pre class="brush: shell; line-numbers">
                                 pdflatex feynman-template.tex
                             </pre>
