@@ -202,6 +202,13 @@ img.profile {
   margin-bottom: 2%;
 }
 
+.img-float {
+  float: right; /* Change to 'right' if you prefer the image on the right */
+  margin: 0 15px 15px 0; /* Adds spacing around the image */
+  max-width: 50%; /* Limits the width to fit with the text */
+  height: auto; /* Maintains aspect ratio */
+}
+
 code {
   font-family: monospace;
   font-size: medium;
@@ -299,13 +306,6 @@ pre {
   color: #fff; /* Darker text on hover */
 }
 
-.alert {
-  padding: 0;
-  margin: 0;
-  color: red;
-  font-weight: bold;
-}
-
 .box {
   position: relative; /* Allows positioning of child elements */
   padding: 20px; /* Space inside the box */
@@ -335,6 +335,13 @@ pre {
   height: auto; /* Maintain aspect ratio */
 }
 
+.alert {
+  padding: 0;
+  margin: 0;
+  color: red;
+  font-weight: bold;
+}
+
 .alert-box {
   background-color: #fff069; /* Yellow background */
   color: #333; /* Dark text color for readability */
@@ -343,6 +350,17 @@ pre {
   border: 1px solid #f1c40f; /* Border with a slightly darker yellow */
   border-radius: 4px; /* Rounded corners */
   font-size: 1rem; /* Font size */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.info-box {
+  background-color: #e9ecef; /* Yellow background */
+  color: #333; /* Dark text color for readability */
+  font-weight: bold;
+  padding: 2px 5px; /* Padding inside the alert box */
+  margin: 15px 5px 15px 0px; /* Spacing above and below the alert box */
+  border: 0px solid #8353c2; /* Border with a slightly darker yellow */
+  border-radius: 4px; /* Rounded corners */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
