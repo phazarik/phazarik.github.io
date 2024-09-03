@@ -209,6 +209,31 @@ img.profile {
   height: auto; /* Maintains aspect ratio */
 }
 
+.fig-float {
+  float: inline-end; /* Floats the figure to the right */
+  max-width: 50%;
+  margin: 1% 2%; /* Adds margin around the figure */
+}
+
+.fig-float img {
+  width: 100%; /* Makes the image responsive within its container */
+  height: auto;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.fig-float figcaption {
+  font-size: 0.875em; /* Slightly smaller than normal text */
+  color: #555; /* Subtle gray color */
+  text-align: center; /* Center-align the caption */
+  margin-top: 0.5em; /* Space above the caption */
+  font-style: italic; /* Italic style for differentiation */
+}
+
 code {
   font-family: monospace;
   font-size: medium;
@@ -265,9 +290,9 @@ pre {
 }
 
 .logo {
-  width: 20px; /* Adjust the size as needed */
-  vertical-align: middle; /* Align vertically with text */
-  margin-left: 5px; /* Optional: add space between text and logo */
+  width: 20px;
+  vertical-align: auto;
+  margin-left: 5px;
 }
 
 .media {
@@ -356,7 +381,7 @@ pre {
 .info-box {
   background-color: #e9ecef; /* Yellow background */
   color: #333; /* Dark text color for readability */
-  font-weight: bold;
+  font-weight: normal;
   padding: 2px 5px; /* Padding inside the alert box */
   margin: 15px 5px 15px 0px; /* Spacing above and below the alert box */
   border: 0px solid #8353c2; /* Border with a slightly darker yellow */
@@ -366,6 +391,10 @@ pre {
 
 .assamese {
   font-family: "Noto Serif Bengali", serif;
+}
+
+.assamese p {
+  font-size: 1.1em;
 }
 
 .inline-math {

@@ -8,11 +8,11 @@ the previous override.css*/
   }
 
   h2 {
-    font-size: 24px;
+    font-size: 25px;
   }
 
   h3 {
-    font-size: 18px;
+    font-size: 20px;
   }
 
   h4 {
@@ -26,7 +26,12 @@ the previous override.css*/
   h6 {
     font-size: 10px;
   }
-  .float-image {
+
+  .img-float {
+    max-width: 100%;
+  }
+
+  .fig-float {
     max-width: 100%;
   }
 }
@@ -34,15 +39,15 @@ the previous override.css*/
 /* Further adjustments for extra small screens (like phones) */
 @media (max-width: 480px) {
   h1 {
-    font-size: 28px; /* Further reduced */
+    font-size: 30px; /* Further reduced */
   }
 
   h2 {
-    font-size: 20px;
+    font-size: 25px;
   }
 
   h3 {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   h4 {
@@ -56,7 +61,16 @@ the previous override.css*/
   h6 {
     font-size: 9px;
   }
-  .float-image {
+
+  .img-float {
     max-width: 100%;
+  }
+
+  .fig-float {
+    max-width: 100%;
+  }
+
+  .assamese p {
+    font-size: 1em;
   }
 }

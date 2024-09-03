@@ -61,6 +61,7 @@
               <div class="info-box" style="margin-left: -5%">Other links</div>
               <ul class="nav" style="font-size: small">
                 <li><a href="/mypages/mc-contact.html">Tips for MC contacts</a></li>
+                <li><a href="/mypages/fornoobs.html">For beginners</a></li>
               </ul>
             </nav>
           </div>
@@ -129,34 +130,102 @@ for name in das_names:
                 <li><a href="https://indiacms.res.in/userguide.html" target="_blank">T2/T3 User Guide</a> (managed by TIFR)</li>
                 <li><a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookXrootdService" target="_blank">CMS TWiki: Using Xrootd Service</a></li>
               </ul>
-              <p>I use a python script to list all the root files in a given directory and run xrdcp for all of them via For loop.</p>
+              <p>
+                The T2 filesystem does not allow me to do <code>ls</code> easily and wildcards are not allowed. I also can't use python features like
+                <code>os.listdir()</code>. I use python scripts to run shell scripts such as <code>xrdfs se01.indiacms.res.in ls</code> from the T3 area and
+                list all the root files in a given directory. The same way I run xrdcp for all of them via For loop. First, I need to list the exact paths
+                containing the root files as follows.
+              </p>
+              <pre class="brush: python">
+import os,sys
+
+def list_folders_with_root_files(base_path):
+    root_folders = []
+    directories_to_check = [base_path]
+
+    while directories_to_check:
+        current_dir = directories_to_check.pop(0)
+        # Get the listing using xrdfs command
+        try:
+            entries = os.popen(f"xrdfs se01.indiacms.res.in ls {current_dir}").read().splitlines()
+        except Exception as e:
+            print(f"Error accessing {current_dir}: {e}")
+            continue
+
+        # Separate files and directories
+        files = [entry for entry in entries if entry.endswith('.root')]
+        dirs = [entry for entry in entries if not entry.endswith('.root')]
+
+        # If there are .root files, save the directory path
+        if files: root_folders.append(current_dir)
+        else:     directories_to_check.extend(dirs)
+
+    return root_folders
+
+if __name__ == "__main__":
+    # Check if the user provided the path as an argument
+    if len(sys.argv) != 2:
+        print("Usage: python script.py &lt;base path. e.g.: /store/user/alaha/nanoRDFjobs&gt;")
+        sys.exit(1)
+
+    # Read the base path from command-line arguments
+    base_path = sys.argv[1]
+
+    # Get the list of directories containing .root files
+    folders_with_root_files = list_folders_with_root_files(base_path)
+
+    # Print the paths
+    print("\n\033[33mThe following folders contain root files.\n\033[0m")
+    for folder in folders_with_root_files: print(folder)
+    print("\n\033[33mRun 'python3 getFilesT2.py foldername' for each of them.\n\033[0m")
+              </pre>
+              <p>Example usage:</p>
+              <pre class="brush: shell">[ui] python3 findPathsT2.py /store/user/alaha/nanoRDFjobs</pre>
+
+              <p>This gives me the full-path to all the subfolders that contain root files. Then, for each path, I run the following individually.</p>
               <pre class="brush: python; line-numbers">
-                import os
+import os, sys
 
-                # Mention the T2 directory containing the root files, starting with /store/... .
-                basedir = "/store/user/phazarik/VLLS_ele_M100_TuneCP5/RunIISummer20UL18_NanoAODv2/230419_064719/0000"
+def get_files(basedir, outdir):
 
-                # Listing the contents (keeping only the root files):
-                cmd_list = f"xrdfs se01.indiacms.res.in ls /cms/{basedir}"
-                full_list = os.popen(cmd_list).read()
-                files = [line.strip() for line in full_list.splitlines() if line.endswith(".root")]
-                print("\n\033[33mThe following files will be downloaded in this location.\033[0m")
-                for f in files: print(f)
+    # Listing the contents (keeping only the root files):
+    cmd_list = f"xrdfs se01.indiacms.res.in ls /cms/{basedir}"
+    full_list = os.popen(cmd_list).read()
+    files = [line.strip() for line in full_list.splitlines() if line.endswith(".root")]
+    print("\n\033[33mThe following files will be downloaded.\033[0m")
+    for f in files: print(f)
 
-                # Ask for user confirmation
-                confirmation = input("\n\033[33mPress 'y' to continue with the download: \033[0m").strip().lower()
+    # Ask for user confirmation
+    print('\n\033[33mOutput folder: '+outdir+' \033[0m')
+    confirmation = input("\033[33mPress 'y' to continue with the download: \033[0m").strip().lower()
 
-                # Proceed if the user confirms
-                if confirmation in ['y', 'yes']:
-                    for line in files:   
-                        fn = os.path.basename(line.strip())
-                        if not os.path.isfile(fn):	
-                            cmd_copy = f"xrdcp root://se01.indiacms.res.in/{line.strip()} ./"
-                            os.system(cmd_copy)
-                            #break
-                        
-                else: print("\n\033[31mDownload canceled.\033[0m")
+    # Proceed if the user confirms
+    if confirmation in ['y', 'yes']:
+        os.makedirs(dataset_name, exist_ok=True)
+        print(f'Folder created: {outdir}')
+        for line in files:
+            fn = os.path.basename(line.strip())
+            if not os.path.isfile(fn):
+                cmd_copy = f"xrdcp root://se01.indiacms.res.in/{line.strip()} {outdir}/."
+                os.system(cmd_copy)
+                #break
 
+    else: print("\n\033[31mDownload canceled.\n\033[0m")
+
+if __name__== "__main__":
+
+    if len(sys.argv) != 3:
+        print("Usage: python script.py &lt;base path. e.g.: /store/user/alaha/nanoRDFjobs&gt; &lt;outdir&gt;")
+        sys.exit(1)
+
+    basedir = sys.argv[1]
+    outdir  = sys.argv[2]
+    get_files(basedir, outdir)
+              </pre>
+
+              <p>Example usage:</p>
+              <pre class="brush: shell">
+                [ui] python3 getFilesT2.py base_directory output_folder
               </pre>
 
               <h3 id="tifr-t2-delete">Deleting files from T2</h3>
