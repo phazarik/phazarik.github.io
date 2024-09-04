@@ -232,7 +232,7 @@ img.profile {
   display: table;
 }
 
-.fig-float figcaption {
+figcaption {
   font-size: 0.875em; /* Slightly smaller than normal text */
   color: #555; /* Subtle gray color */
   text-align: center; /* Center-align the caption */
