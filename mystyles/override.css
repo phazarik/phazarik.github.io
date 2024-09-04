@@ -220,6 +220,12 @@ img.profile {
   height: auto;
 }
 
+.fig-mid {
+  display: block;
+  text-align: center;
+  margin: 2% 2%;
+}
+
 .clearfix::after {
   content: "";
   clear: both;
