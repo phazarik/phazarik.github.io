@@ -1,0 +1,45 @@
+import os
+
+# List of directories
+all_dirs = [
+    #"/store/user/phazarik/TTZ_2016",
+    #"/store/user/phazarik/TTW_2016",
+    #"/store/user/phazarik/TTW_2017",
+    #"/store/user/phazarik/TTZ_RunIISummer20UL18"
+    "/store/user/phazarik/TTZToLL_2016_preVFP"
+]
+
+for base_dir in all_dirs:
+    ls_command = f"xrdfs se01.indiacms.res.in ls -R {base_dir}"
+    ls_output = os.popen(ls_command).read().splitlines()
+
+    # ls_output contains a recusrive list of all the folders/subfolders and files
+    # From this, we need to separate out the files and folders.
+    # Files are deleted first using rm
+    # Then folders are deleted using rmdir
+
+    files = []
+    subdirs = []
+
+    for path in ls_output:
+        if '.' in os.path.basename(path): files.append(path)
+        else:                           subdirs.append(path)
+
+    # First, removing all files:
+    for file_path in files:
+        rm_command = f"xrdfs se01.indiacms.res.in rm {file_path}"
+        #print(f"Removing file: {file_path}")
+        os.system(rm_command)
+
+    # Then, removing all directories (starting from the deepest):
+    for dir_path in reversed(subdirs):
+        rmdir_command = f"xrdfs se01.indiacms.res.in rmdir {dir_path}"
+        #print(f"Removing directory: {dir_path}")
+        os.system(rmdir_command)
+
+    #Finally, removing the base directory:
+    rmdir_base = f"xrdfs se01.indiacms.res.in rmdir {base_dir}"
+    print("Removing base directory.")
+    os.system(rmdir_base)
+
+print('Done.')

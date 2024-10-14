@@ -33,7 +33,9 @@
                 <li class="collapsable-link">
                   <a href="#lxplus">CMS Unix (lxplus)</a>
                   <ul class="nav collapse">
-                    <li><a href="#das-cli"> Find files using DAS CLI </a></li>
+                    <li><a href="#lxplus-das-cli"> Find files using DAS CLI </a></li>
+                    <li><a href="#lxplus-xrdcp"> Downlading from DAS using xrdcp </a></li>
+                    <li><a href="#lxplus-brilcalc"> brilcalc (luminosity calculation)</a></li>
                   </ul>
                 </li>
 
@@ -41,6 +43,7 @@
                   <a href="#tifr-t2">TIFR T2/T3</a>
                   <ul class="nav collapse">
                     <li><a href="#tifr-t2-copy"> Copying files from T2 to T3 </a></li>
+                    <li><a href="#tifr-t2-copy-forced"> In case T2 to T3 transfer fails</a></li>
                     <li><a href="#tifr-t2-delete"> Deleting files from T2 </a></li>
                   </ul>
                 </li>
@@ -81,7 +84,7 @@
               <h2>CMS Unix (lxplus) tools</h2>
               <hr />
 
-              <h3 id="das-cli">Finding files using DAS CLI</h3>
+              <h3 id="lxplus-das-cli">Finding files using DAS CLI</h3>
               The follwing python script takes a list of MC samples (dataset names) and lists all the files avaiable on DAS using the command line interface. If
               <code>dasgoclient</code> is not available, run it from a CMSSW environment.
               <pre class="brush: python">
@@ -103,6 +106,75 @@ for name in das_names:
     os.system(processline)
               </pre>
 
+              <h3 id="lxplus-xrdcp">Directly downloading files using xrdcp</h3>
+              <p>
+                Once I have a list of files I want to download, which can be made by using the previosly tool, or manually picking up files from DAS-GUI, I ran
+                a python For loop to bring all those files in a local area. First, I move to my T3 storage location (T3_CH_CERNBOX) and generate proxy to access
+                the files.
+              </p>
+              <pre class="brush:shell">
+                [lxplus] cd /eos/user/p/phazarik
+                [lxplus] voms-proxy-init --rfc --voms cms #asks for PEM password
+              </pre>
+              <p>The text file containing the list of files looks like the following.</p>
+              <pre class="brush:shell">
+/store/mc/Run3Summer22NanoAODv12/TTto2L2Nu_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/2540000/03a1a21f-6bd8-4009-81c8-b09958600e8d.root
+/store/mc/Run3Summer22NanoAODv12/DYto2L-4Jets_MLL-50_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/2520000/4069d292-5674-4b8f-9af1-1b45e34ffca8.root
+/store/mc/Run3Summer22NanoAODv12/WZto3LNu_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/50000/19bc60ef-36f7-4fe7-bedd-55a966dcc250.root
+/store/mc/Run3Summer22NanoAODv12/ZZto4L_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/2520000/8551c790-72b1-4de9-87d1-c3d24a2fcc17.root
+/store/mc/Run3Summer22NanoAODv12/WWto2L2Nu_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/2530000/45e0cc8a-b2f7-4515-9d17-f48e6f888cde.root
+/store/mc/Run3Summer22NanoAODv12/TTtoLNu2Q_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/2520000/660979e9-a672-4654-aee2-aa4686dd3ca0.root
+              </pre>
+              <p>Once the proxy is generated succesfully, I run the following python script to download the files to their respective directories.</p>
+              <pre class="brush:python">
+import os
+
+# Reading the list of files from list.txt
+with open('list.txt', 'r') as file_list:
+    file_paths = file_list.readlines()
+
+for line in file_paths:
+    # Getting rid of leading/trailing spaces
+    line = line.strip()
+
+    # Extracting the folder name
+    split_path = line.split('/')
+    folder_name = os.path.join(split_path[3], split_path[4])  # Example: Run3Summer22NanoAODv12/DYto2L-4Jets_MLL-50_TuneCP5_13p6TeV_madgraphMLM-pythia8
+
+    # Creating the folder if it doesn't exist
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+
+    # Constructing the xrdcp command
+    input_file = f"root://cmsxrootd.fnal.gov//{line}"
+    command = f"xrdcp {input_file} {folder_name}/"
+
+    # Executing the xrdcp command
+    print(command)
+    os.system(command)
+    #print(f"Copied {input_file} to {folder_name}/")
+    #break
+
+print("All files copied.")
+              </pre>
+
+              <h3 id="lxplus-brilcalc">Luminosity calculation from json</h3>
+              <p>
+                <code>brilcalc</code> is available in lxplus at <code>~/.local/bin/brilcalc</code>. It takes a json file as input, which contains run-number and
+                lumisections in teh following format.
+              </p>
+              <pre class="brush:python">
+                {
+                  "321975": [[591, 593], [597, 599], [717, 734] , [736]],
+                  ....
+                }
+              </pre>
+              <p>While running brilcalc, it is recommended (by LUM POG) to use a physics approved normtag as follows.</p>
+              <pre class="brush:shell">
+                brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /fb -i [json file name]
+              </pre>
+              <p>More information can be found in the <a href="https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM" target="_blank">LUM POG TWiki page</a>.</p>
+
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>
 
@@ -117,18 +189,18 @@ for name in das_names:
               </p>
               <pre class="brush: shell">
                             [lxplus] voms-proxy-init --voms cms --valid 168:00
-                            [lxplus] cp /tmp/proxy_filename .
+                            [lxplus] cp /tmp/x509up_u139657 . #Give the correct proxy filename
                 </pre
               >
               This file is brought into T3 area using <code>scp</code> as follows.
               <pre class="brush: shell; line-numbers">
-                            [ui3] scp username@lxplus.cern.ch:~/proxy_filename .
-                            [ui3] realpath proxy_filename # copy this
-                            [ui3] export X509_USER_PROXY=full_path_to_proxy_file
+                            [ui3] scp phazarik@lxplus.cern.ch:~/x509up_u139657 . #Give correct username
+                            [ui3] realpath x509up_u139657 # copy this
+                            [ui3] export X509_USER_PROXY=/grid_mnt/t3home/phazarik/x509up_u139657 #Give the copied path here
                         </pre
               >
 
-              <h3 id="tifr-t2-copy">Accessing and copying files to T3 using xrdcp</h3>
+              <h3 id="tifr-t2-copy">Accessing and copying files to T3 [in bulk] using xrdcp</h3>
               <p>TIFR-T2 uses an xrood file system (similar to lxplus). Some important links are given below.</p>
               <ul>
                 <li><a href="https://indiacms.res.in/userguide.html" target="_blank">T2/T3 User Guide</a> (managed by TIFR)</li>
@@ -138,98 +210,33 @@ for name in das_names:
                 The T2 filesystem does not allow me to do <code>ls</code> easily and wildcards are not allowed. I also can't use python features like
                 <code>os.listdir()</code>. I use python scripts to run shell scripts such as <code>xrdfs se01.indiacms.res.in ls</code> from the T3 area and
                 list all the root files in a given directory. The same way I run xrdcp for all of them via For loop. First, I need to list the exact paths
-                containing the root files as follows.
+                containing the root files by running <a href="/mypages/files/codes/findPathsT2.py.txt" target="_blank">findPathsT2.py</a> as follows.
               </p>
-              <pre class="brush: python">
-import os,sys
-
-def list_folders_with_root_files(base_path):
-    root_folders = []
-    directories_to_check = [base_path]
-
-    while directories_to_check:
-        current_dir = directories_to_check.pop(0)
-        # Get the listing using xrdfs command
-        try:
-            entries = os.popen(f"xrdfs se01.indiacms.res.in ls {current_dir}").read().splitlines()
-        except Exception as e:
-            print(f"Error accessing {current_dir}: {e}")
-            continue
-
-        # Separate files and directories
-        files = [entry for entry in entries if entry.endswith('.root')]
-        dirs = [entry for entry in entries if not entry.endswith('.root')]
-
-        # If there are .root files, save the directory path
-        if files: root_folders.append(current_dir)
-        else:     directories_to_check.extend(dirs)
-
-    return root_folders
-
-if __name__ == "__main__":
-    # Check if the user provided the path as an argument
-    if len(sys.argv) != 2:
-        print("Usage: python script.py &lt;base path. e.g.: /store/user/alaha/nanoRDFjobs&gt;")
-        sys.exit(1)
-
-    # Read the base path from command-line arguments
-    base_path = sys.argv[1]
-
-    # Get the list of directories containing .root files
-    folders_with_root_files = list_folders_with_root_files(base_path)
-
-    # Print the paths
-    print("\n\033[33mThe following folders contain root files.\n\033[0m")
-    for folder in folders_with_root_files: print(folder)
-    print("\n\033[33mRun 'python3 getFilesT2.py foldername' for each of them.\n\033[0m")
-              </pre>
-              <p>Example usage:</p>
               <pre class="brush: shell">[ui] python3 findPathsT2.py /store/user/alaha/nanoRDFjobs</pre>
 
-              <p>This gives me the full-path to all the subfolders that contain root files. Then, for each path, I run the following individually.</p>
-              <pre class="brush: python; line-numbers">
-import os, sys
-
-def get_files(basedir, outdir):
-
-    # Listing the contents (keeping only the root files):
-    cmd_list = f"xrdfs se01.indiacms.res.in ls /cms/{basedir}"
-    full_list = os.popen(cmd_list).read()
-    files = [line.strip() for line in full_list.splitlines() if line.endswith(".root")]
-    print("\n\033[33mThe following files will be downloaded.\033[0m")
-    for f in files: print(f)
-
-    # Ask for user confirmation
-    print('\n\033[33mOutput folder: '+outdir+' \033[0m')
-    confirmation = input("\033[33mPress 'y' to continue with the download: \033[0m").strip().lower()
-
-    # Proceed if the user confirms
-    if confirmation in ['y', 'yes']:
-        os.makedirs(dataset_name, exist_ok=True)
-        print(f'Folder created: {outdir}')
-        for line in files:
-            fn = os.path.basename(line.strip())
-            if not os.path.isfile(fn):
-                cmd_copy = f"xrdcp root://se01.indiacms.res.in/{line.strip()} {outdir}/."
-                os.system(cmd_copy)
-                #break
-
-    else: print("\n\033[31mDownload canceled.\n\033[0m")
-
-if __name__== "__main__":
-
-    if len(sys.argv) != 3:
-        print("Usage: python script.py &lt;base path. e.g.: /store/user/alaha/nanoRDFjobs&gt; &lt;outdir&gt;")
-        sys.exit(1)
-
-    basedir = sys.argv[1]
-    outdir  = sys.argv[2]
-    get_files(basedir, outdir)
+              <p>
+                This gives me the full-path to all the subfolders that contain root files. Then, for each path, I run
+                <a href="/mypages/files/codes/getFilesT2.py.txt" target="_blank">getFilesT2.py</a> individually as shown below.
+              </p>
+              <pre class="brush: shell">
+                [ui] python3 getFilesT2.py base_directory_in_T2 output_folder_in_T3
               </pre>
 
-              <p>Example usage:</p>
-              <pre class="brush: shell">
-                [ui] python3 getFilesT2.py base_directory output_folder
+              <h3 id="tifr-t2-copy-forced">In case T2&gt;T3 transfer fails</h3>
+              <p>
+                In case some files fail during the transfer as mentioned in the previous section, make a list of the paths to the individual files. The text
+                file should look like the following.
+              </p>
+              <pre class="brush:shell">
+                /store/user/alaha/nanoRDFjobs/SingleMuon/NanoRDF__20240916_095804/240916_075807/0000/ntuple_skim_3.root
+                /store/user/alaha/nanoRDFjobs/Muon/NanoRDF__20240916_095809/240916_075812/0000/ntuple_skim_102.root
+                /store/user/alaha/nanoRDFjobs/Muon/NanoRDF__20240916_095809/240916_075812/0000/ntuple_skim_109.root
+                /store/user/alaha/nanoRDFjobs/Muon/NanoRDF__20240916_095809/240916_075812/0000/ntuple_skim_119.root
+                /store/user/alaha/nanoRDFjobs/Muon/NanoRDF__20240916_095815/240916_075817/0000/ntuple_skim_13.root
+              </pre>
+              <p>Then, run <a href="/mypages/files/codes/bring_individual_files.py.txt" target="_blank">bring_individual_files.py</a> as shown.</p>
+              <pre class="brush:shell">
+                [ui3] python3 bring_individual_files.py outdir
               </pre>
 
               <h3 id="tifr-t2-delete">Deleting files from T2</h3>
@@ -243,54 +250,10 @@ if __name__== "__main__":
                 <li>Deleting the individual files first, by looping over the list of files.</li>
                 <li>Deleting the directories, starting from the deepest ones.</li>
               </ol>
-
-              <pre class="brush: python">
-import os
-
-# List of directories
-all_dirs = [
-    #"/store/user/phazarik/TTZ_2016",
-    #"/store/user/phazarik/TTW_2016",
-    #"/store/user/phazarik/TTW_2017",
-    #"/store/user/phazarik/TTZ_RunIISummer20UL18"
-    "/store/user/phazarik/TTZToLL_2016_preVFP"
-]
-
-for base_dir in all_dirs:
-    ls_command = f"xrdfs se01.indiacms.res.in ls -R {base_dir}"
-    ls_output = os.popen(ls_command).read().splitlines()
-
-    # ls_output contains a recusrive list of all the folders/subfolders and files
-    # From this, we need to separate out the files and folders.
-    # Files are deleted first using rm
-    # Then folders are deleted using rmdir
-
-    files = []
-    subdirs = []
-
-    for path in ls_output:
-        if '.' in os.path.basename(path): files.append(path)
-        else:                           subdirs.append(path)
-
-    # First, removing all files:
-    for file_path in files:
-        rm_command = f"xrdfs se01.indiacms.res.in rm {file_path}"
-        #print(f"Removing file: {file_path}")
-        os.system(rm_command)
-
-    # Then, removing all directories (starting from the deepest):
-    for dir_path in reversed(subdirs):
-        rmdir_command = f"xrdfs se01.indiacms.res.in rmdir {dir_path}"
-        #print(f"Removing directory: {dir_path}")
-        os.system(rmdir_command)
-
-    #Finally, removing the base directory:
-    rmdir_base = f"xrdfs se01.indiacms.res.in rmdir {base_dir}"
-    print("Removing base directory.")
-    os.system(rmdir_base)
-
-print('Done.')
-              </pre>
+              <p>
+                For this, use <a href="/mypages/files/codes/cleanT2.py.txt" target="_blank">cleanT2.py</a> and mention the directiories you want to remove in
+                the list inside.
+              </p>
 
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>

@@ -1,0 +1,37 @@
+import os, sys
+ 
+def get_files(basedir, outdir):
+ 
+    # Listing the contents (keeping only the root files):
+    cmd_list = f"xrdfs se01.indiacms.res.in ls /cms/{basedir}"
+    full_list = os.popen(cmd_list).read()
+    files = [line.strip() for line in full_list.splitlines() if line.endswith(".root")]
+    print("\n\033[33mThe following files will be downloaded.\033[0m")
+    for f in files: print(f)
+ 
+    # Ask for user confirmation
+    print('\n\033[33mOutput folder: '+outdir+' \033[0m')
+    confirmation = input("\033[33mPress 'y' to continue with the download: \033[0m").strip().lower()
+ 
+    # Proceed if the user confirms
+    if confirmation in ['y', 'yes']:
+        os.makedirs(dataset_name, exist_ok=True)
+        print(f'Folder created: {outdir}')
+        for line in files:
+            fn = os.path.basename(line.strip())
+            if not os.path.isfile(fn):
+                cmd_copy = f"xrdcp root://se01.indiacms.res.in/{line.strip()} {outdir}/."
+                os.system(cmd_copy)
+                #break
+ 
+    else: print("\n\033[31mDownload canceled.\n\033[0m")
+ 
+if __name__== "__main__":
+ 
+    if len(sys.argv) != 3:
+        print("Usage: python script.py <base path. e.g.: /store/user/alaha/nanoRDFjobs> <outdir>")
+        sys.exit(1)
+ 
+    basedir = sys.argv[1]
+    outdir  = sys.argv[2]
+    get_files(basedir, outdir)

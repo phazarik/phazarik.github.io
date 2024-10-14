@@ -1,0 +1,42 @@
+import os, sys
+
+def get_files(filelist, outdir):
+
+    with open(filelist, 'r') as file_list:
+        files = file_list.readlines()
+
+        for filename in files:
+            filename   = filename.strip() #Get rid of \n
+
+            samplename = filename.split('/')[5]
+            jobID      = filename.split('/')[7]
+            rootfile   = filename.split('/')[-1]
+            modified_name = filename.replace("user", "user/")
+            dump_folder = os.path.join(outdir, samplename, jobID)
+
+            os.makedirs(dump_folder, exist_ok=True)
+            #make_sure that the folder is empty
+            #os.system('rm -rf '+dump_folder+'/*')
+            xrdcp_command = 'xrdcp -f root://se01.indiacms.res.in:/dpm/indiacms.res.in/home/cms'+modified_name+' '+dump_folder+'/.'
+            #Example: xrdcp -f root://se01.indiacms.res.in:/dpm/indiacms.res.in/home/cms/store/user//alaha/nanoRDFjobs/Muon/NanoRDF__20240916_095830/240916_075833/0000/ntuple_skim_78.root failed_jobs/Muon/24\
+0916_075833/.
+            outname = dump_folder+'/'+rootfile
+            if os.path.exists(outname):
+                print('File already exists: '+outname)
+                continue
+            else:
+                print('Running '+xrdcp_command)
+                os.system(xrdcp_command)
+            #break
+
+if __name__ == "__main__":
+    # Check if the user provided the path as an argument
+    if len(sys.argv) != 2:
+        print("Usage: bring_individual_files.py outdir")
+        sys.exit(1)
+
+    # Read the base path from command-line arguments
+    outdir = sys.argv[1]
+
+    # Get the list of directories containing .root files
+    get_files('failed_list.txt', outdir)
