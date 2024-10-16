@@ -86,8 +86,8 @@
               </p>
               <table class="styled-table" style="width: 20%;">
                 <tr>
-                  <th>Package</th>
-                  <th>Version</th>
+                  <th>Packages</th>
+                  <th>Versions</th>
                 </tr>
                 <tr>
                   <td>python</td>
@@ -211,44 +211,78 @@
                 make             #This takes a couple of minutes
               </pre>
 
+              <h3>Wrapping up ...</h3>
+              <p>Once everything is done, open a MadGraph prompt and add the paths to pythia and delples as follows. This has to be done once. I also added my fastjet setup, in case I need it later.</p>
+              <pre class="brush:shell">
+                set pythia8_path /home/phazarik/mcgeneration/pythia8312
+                set delphes_path /home/phazarik/mcgeneration/delphes
+                set fastjet /home/phazarik/fastjet-3.4.2/bin/fastjet-config
+              </pre>
+              <p>
+                You can also manually add these paths my editing the <code>input/mg5_configuration.txt</code> file in the MadGraph directory. Also, MadGraph may ask for something called <code>lhapdf</code>, which is a standard tool for evaluating parton distribution functions (PDFs). This can be installed using conda as follows.
+              </p>
+              
+              <pre class="brush:shell">
+                conda install -c conda-forge lhapdf
+              </pre>
+
               <p>After these installations, following are the list of MC-generation tools I have in my setup.</p>
-              <table class="styled-table", style="width: 60%;">
+              <table class="styled-table", style="width: 30%;">
                 <thead>
                   <tr>
-                    <th>Package</th>
-                    <th>Version</th>
-                    <th>Source</th>
+                    <th>Packages</th>
+                    <th>Versions</th>
+                    <th>Sources</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>mg5amnlo</td>
                     <td>3.5.4</td>
-                    <td><a href="https://github.com/mg5amcnlo/mg5amcnlo.git" target="_blank">https://github.com/mg5amcnlo/mg5amcnlo.git</a></td>
+                    <td><a href="https://github.com/mg5amcnlo/mg5amcnlo.git" target="_blank">GitHub</a></td>
                   </tr>
                   <tr>
                     <td>hepmc</td>
                     <td>3.3.0</td>
-                    <td><a href="https://gitlab.cern.ch/hepmc/HepMC3.git" target="_blank">https://gitlab.cern.ch/hepmc/HepMC3.git</a></td>
+                    <td><a href="https://gitlab.cern.ch/hepmc/HepMC3.git" target="_blank">GitLab</a></td>
                   </tr>
                   <tr>
                     <td>pythia</td>
                     <td>8.312</td>
-                    <td><a href="https://www.pythia.org/" target="_blank">https://www.pythia.org/</a></td>
+                    <td><a href="https://www.pythia.org/" target="_blank">pythia.org</a></td>
                   </tr>
                   <tr>
                     <td>delphes</td>
                     <td>3.5.0</td>
-                    <td><a href="https://github.com/delphes/delphes.git" target="_blank">https://github.com/delphes/delphes.git</a></td>
+                    <td><a href="https://github.com/delphes/delphes.git" target="_blank">GitHub</a></td>
+                  </tr>
+                  <tr>
+                    <td>lhapdf</td>
+                    <td>6.5.4</td>
+                    <td>conda-forge</td>
                   </tr>
                 </tbody>
               </table>
+
+              <div class="alert-box">
+                <strong>Note:</strong> Pythia, HepMC and Delphes can also be installed by simply going to the MadGraph prompt and running <code>install pythia8</code> (for pythia and HepMC together) and <code>install Delphes</code> (for Delphes alone). These are kept in <code>mg5amcnlo/HEPTools</code>. But I don't trust it yet, and there is no control on the versions. I prefer to do it manually.
+              </div>
 
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
 
               <h2 id="toy">Toy example</h2>
               <hr />
 
+              <pre class="brush:shell">
+                generate p p > z > l+ l-
+                output ppToZToLL
+                cd ppToZToLL
+                ./bin/generate_events testrun -f > /dev/null 2>&1
+                cd Events/testrun
+                gunzip unweighted_events.lhe.gz
+              </pre>
+
+              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>
           </div>
           <!--end main panel-->
