@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="A collection of tools to work in experimental high energy physics" />
+    <meta name="keywords" content="CERN, CMS, experimental, high energy, particle physics" />
+    <meta name="author" content="Prachurjya Pran Hazarika" />
+
+    <link rel="stylesheet" href="/bootstrap-4.1.3-dist/css/bootstrap.css" />
+    <!-- SyntaxHighlighter CSS -->
+    <link rel="stylesheet" href="/syntax-highlighter/styles/shCoreEmacs.css" />
+    <link rel="stylesheet" href="/syntax-highlighter/styles/shThemeDefault.css" />
+    <!--Override styles here-->
+    <link rel="stylesheet" href="/mystyles/override.css" />
+    <link rel="stylesheet" href="/mystyles/phone-compatibility.css" />
+    <title>MC generation</title>
+  </head>
+
+  <body>
+    <div id="wrapper">
+      <div id="header"></div>
+
+      <div class="container">
+        <h1 style="text-align: center">Private MC generation</h1>
+
+        <!--row, then col-md3 (side panel), then col-md9 (main panel)-->
+        <div class="row">
+          <div class="col-md-3">
+            <nav class="docs-sidebar" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
+              <ul class="nav">
+
+                <li class="collapsable-link">
+                  <a href="#local">Local MC generation setup</a>
+                  <ul class="nav collapse">
+                    <li><a href="#local-madgraph"> Setting up MadGraph </a></li>
+                    <li><a href="#local-hepmc3"> Setting up HepMC3 </a></li>
+                    <li><a href="#local-pythia"> Setting up Pythia </a></li>
+                    <li><a href="#local-delphes"> Setting up Delphes </a></li>
+                  </ul>
+                </li>
+
+                <li class="collapsable-link">
+                  <a href="#toy">Toy example</a>
+                  <ul class="nav collapse">
+                    <li><a href="#toy-madgraph"> MadGraph </a></li>
+                    <li><a href="#toy-hepmc3"> HepMC3 </a></li>
+                    <li><a href="#toy-pythia"> Pythia </a></li>
+                    <li><a href="#toy-delphes"> Delphes </a></li>
+                  </ul>
+                </li>
+
+              </ul>
+            </nav>
+          </div>
+          <!--end side panel-->
+
+          <div class="col-md-9">
+            <section id="lxplus" class="section">
+              <h2 id="local">Local MC generation setup</h2>
+              <hr />
+
+              <p>
+                In CMS, the SM processes are generated and simulated centrally, and we don't have to worry about them. But for a specific BSM search, a
+                physicist has to take care of the BSM samples themselves, if they are not being handled already. For this section, I am using vector-like
+                leptons as a reference BSM signal <a href="https://arxiv.org/abs/1510.03456" target="_blank">arXiv:1510.03556</a>. First, we need to integrate
+                this new physics model to the existing standard model in an event generator like MadGraph. Typically, theorists share their BSM model in the
+                Universal FeynRules Output (UFO) format, which contain automatized matrix-element generators. These files contain python modules which can be
+                easily included as an extension to MadGraph. This allows us to play with the new particles and the Feynman rules associated with them. I have
+                taken the latest VLL UFO file from the repository:
+                <a href="https://github.com/prudhvibhattiprolu/VLL-UFOs" target="_blank">github.com/prudhvibhattiprolu</a>.
+              </p>
+              <p>
+                This is the order of installation for this setup.
+              </p>
+              <ol>
+                <li>Setting up MadGraph along with the BSM models.</li>
+                <li>Building HepMC3.</li>
+                <li>Installing and configuring pythia for hadronization.</li>
+                <li>Building Delphes for detector simulation.</li>
+              </ol>
+
+              <p>
+                Here are some important packages required before installation. I am mentioning the versions I have, but any recent versions should also work fine. I recommend using conda to install everything.
+              </p>
+              <table class="styled-table" style="width: 20%;">
+                <tr>
+                  <th>Package</th>
+                  <th>Version</th>
+                </tr>
+                <tr>
+                  <td>python</td>
+                  <td>3.10.9</td>
+                </tr>
+                <tr>
+                  <td>cmake</td>
+                  <td>3.22.1</td>
+                </tr>
+                <tr>
+                  <td>git</td>
+                  <td>2.34.1</td>
+                </tr>
+                <tr>
+                  <td>g++, gcc</td>
+                  <td>11.4.0</td>
+                </tr>
+              </table>
+
+              <p>
+                I would also recommend to keep all of these MC-generation tools inside the same directory. For me, the working directory is <code>/home/phazarik/mcgeneration</code>.
+              </p>
+
+              <h3 id="local-madgraph">Setting up MadGraph, including the BSM models</h3>
+              <p>
+                MadGraph can be downloaded from the <a href="https://launchpad.net/mg5amcnlo" target="_blank">official website</a>. Building is not needed.
+                The binary file is available at <code>mg5amcnlo/bin/mg5_aMC</code>. I have given the full path to MadGraph in my <code>.bashrc</code> file as
+                follows.
+              </p>
+              <pre class="brush:shell">alias mg5="/home/phazarik/mcgeneration/mg5amcnlo/bin/mg5_aMC"</pre>
+              <p>
+                If you are not importing any BSM model, MadGraph setup is done. In case of any BSM model (like VLL in my case), the BSM models are unpacked into
+                the MadGraph directory as follows.
+              </p>
+              <pre class="brush:shell">
+                /home/phazarik/mcgeneration/mg5amcnlo/models/VLLS_NLO
+                /home/phazarik/mcgeneration/mg5amcnlo/models/VLLD_NLO
+              </pre>
+              <p>
+                These model files in my example are compatible with MadGraph version v2 that was built on python2, but should also work with the latest MadGraph
+                v3 that uses python3. In order to use MadGraph v3, these model files are made compatible with python3, and then imported into MadGraph as
+                follows.
+              </p>
+              <pre class="brush:shell">
+                shell>> mg5 #Takes me into MadGraph interface.
+                MG5_aMC> set auto_convert_model T #For compatibility with python3. 
+                MG5_aMC> import model VLLD_NLO
+              </pre>
+              <p>If the following outputs pop-up successfully, then the setup is ready.</p>
+              <pre class="brush:plain">
+                INFO: Change particles name to pass to MG5 convention <br />
+                the definition of 'j' and 'p' to 5 flavour scheme. <br />
+                definitions of multiparticles l+ / l- / vl / vl~ unchanged <br />
+                multiparticle all = g ghg ghg~ u c d s b u~ c~ d~ s~ b~ a gha gha~ ve vm vt e- mu- ta- ve~ vm~ vt~ e+ mu+ ta+ t t~ z w+ ghz ghwp ghwm h w- ghz~
+                ghwp~ ghwm~ taup nup taup~ nup~ <br />
+                INFO: Change particles name to pass to MG5 convention <br />
+                definitions of multiparticles p / j / l+ / l- / vl / vl~ unchanged <br />
+                multiparticle all = g ghg ghg~ u c d s b u~ c~ d~ s~ b~ a gha gha~ ve vm vt e- mu- ta- ve~ vm~ vt~ e+ mu+ ta+ t t~ z w+ ghz ghwp ghwm h w- ghz~
+                ghwp~ ghwm~ taup nup taup~ nup~
+              </pre>
+
+              <h3 id="local-hepmc3">Setting up HepMC3</h3>
+              <p>
+                HepMC is widely used for exchanging event information between event generators and detector simulation tools. For this exercise, HepMC3 can be
+                downloaded from <a href="https://gitlab.cern.ch/hepmc/HepMC3" target="_blank">GitLab</a>. Some usage instructions are available
+                <a href="https://pythia.org/latest-manual/HepMCInterface.html" target="_blank">here</a>.
+                <div class="alert-box">
+                  <strong>Note:</strong> Building HepMC is required before installing pythia, because pythia configuration is done with HepMC.
+                </div>
+                HepMC3 can be brought from GitHub and built as follows.
+              </p>
+              <pre class="brush:shell">
+                git clone https://gitlab.cern.ch/hepmc/HepMC3.git # This will create a source directory called 'HepMC3'.
+                mkdir hepmc3_build  hepmc3_install                # This will create two directories where hepmc3 is built and installed.
+                cd hepmc3_build                                   # This is where building hepmc3 happens.
+                cmake -DCMAKE_INSTALL_PREFIX=../hepmc3_install -Dmomentum:STRING=GEV -Dlength:STRING=MM ../HepMC3
+                make                                              # This requires the C++ compilers (as checked by the previous command), and takes some time.
+                make install                                      # This will transfer files to the install directory.
+              </pre>
+              <div class="alert-box">
+                <strong>Note:</strong> HepMC is built with a certain python version. Changing the python version (or the conda environment) while using HepMC might cause problems later.
+              </div>
+
+              <h3 id="local-pythia">Setting up PYTHIA</h3>
+              <p>
+                PYTHIA is a program for simulating particle interactions as well as hadronization. It can be downloaded from the
+                <a href="https://www.pythia.org/" target="_blank">official website</a>. Installation instructions are provided there.
+                The following steps are used to install pythia with HepMC3 configuration. Make sure to give the full path to HepMC3 during configuration. I am using version 8.312, but these instructions are valid for all versions.
+              </p>
+              <pre class="brush:shell">
+                wget https://www.pythia.org/download/pythia83/pythia8312.tgz  # Downloading pythia
+                tar xvfz pythia8312.tgz                                       # Unzipping the tarball
+                cd pythia8312
+                ./configure --with-hepmc3=/home/phazarik/mcgeneration/hepmc3_install
+              </pre>
+              If eveything goes right, the following report should pop up.
+              <pre class="brush:plain">
+                ---------------------------------------------------------------------
+                |                    PYTHIA Configuration Summary                   |
+                ---------------------------------------------------------------------
+                  Architecture                = LINUX
+                  C++ compiler     CXX        = g++
+                  C++ dynamic tags CXX_DTAGS  = -Wl,--disable-new-dtags
+                  C++ flags        CXX_COMMON = -O2 -std=c++11 -pedantic -W -Wall -Wshadow -fPIC -pthread
+                  C++ shared flag  CXX_SHARED = -shared
+                  Further options             =
+
+                The following optional external packages will be used:
+                + HEPMC3 (-I/home/phazarik/mcgeneration/hepmc3_install/include)
+              </pre>
+
+              <h3 id="local-delphes">Setting up Delphes</h3>
+              <p>
+                Delphes is a fast simulation framework for high-energy physics detectors. The Delphes outputs are equivalent to NanoAOD, but the information is
+                structured differently in the ROOT files. It can be downloaded from the
+                <a href="https://github.com/delphes/delphes" target="_blank">GitHub</a> repository. Installation instructions are available there as well. Building delphes is pretty straight forward.
+              </p>
+              <pre class="brush:shell">
+                git clone https://github.com/delphes/delphes.git
+                cd delphes
+                make             #This takes a couple of minutes
+              </pre>
+
+              <p>After these installations, following are the list of MC-generation tools I have in my setup.</p>
+              <table class="styled-table", style="width: 60%;">
+                <thead>
+                  <tr>
+                    <th>Package</th>
+                    <th>Version</th>
+                    <th>Source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>mg5amnlo</td>
+                    <td>3.5.4</td>
+                    <td><a href="https://github.com/mg5amcnlo/mg5amcnlo.git" target="_blank">https://github.com/mg5amcnlo/mg5amcnlo.git</a></td>
+                  </tr>
+                  <tr>
+                    <td>hepmc</td>
+                    <td>3.3.0</td>
+                    <td><a href="https://gitlab.cern.ch/hepmc/HepMC3.git" target="_blank">https://gitlab.cern.ch/hepmc/HepMC3.git</a></td>
+                  </tr>
+                  <tr>
+                    <td>pythia</td>
+                    <td>8.312</td>
+                    <td><a href="https://www.pythia.org/" target="_blank">https://www.pythia.org/</a></td>
+                  </tr>
+                  <tr>
+                    <td>delphes</td>
+                    <td>3.5.0</td>
+                    <td><a href="https://github.com/delphes/delphes.git" target="_blank">https://github.com/delphes/delphes.git</a></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
+
+              <h2 id="toy">Toy example</h2>
+              <hr />
+
+            </section>
+          </div>
+          <!--end main panel-->
+        </div>
+        <!--end row-->
+      </div>
+      <!--end container-->
+    </div>
+    <!--end wrapper-->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/bootstrap-4.1.3-dist/js/bootstrap.js"></script>
+    <script src="/mystyles/custom.js"></script>
+    <!-- SyntaxHighlighter JavaScript -->
+    <!-- SyntaxHighlighter JavaScript -->
+    <script src="/syntax-highlighter/scripts/shCore.js"></script>
+    <script src="/syntax-highlighter/scripts/shBrushBash.js"></script>
+    <script src="/syntax-highlighter/scripts/shBrushCpp.js"></script>
+    <script src="/syntax-highlighter/scripts/shBrushPython.js"></script>
+    <script src="/syntax-highlighter/scripts/shBrushPlain.js"></script>
+    <script>
+      SyntaxHighlighter.all();
+    </script>
+    <!-- Custom javascript -->
+    <script src="/mystyles/custom_scripts.js"></script>
+
+    <!-- Footer content -->
+    <footer id="footer"></footer>
+  </body>
+</html>

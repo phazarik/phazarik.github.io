@@ -406,3 +406,29 @@ pre {
 .inline-math {
   font-size: 0.8em; /* Adjust font size if needed */
 }
+
+/*TABLE class*/
+.styled-table {
+  border-collapse: collapse;
+  width: 50%; /* Set width to 100% to fit the parent */
+  max-width: 100%; /* Optional: Set a maximum width */
+  margin: 20px auto; /* Center the table horizontally */
+  border: 1px solid #000; /* Border around the table */
+}
+/*Heafer*/
+.styled-table th {
+  background-color: #f0f0f0;
+  padding: 5px;
+  text-align: left;
+  border-bottom: 2px solid #000;
+}
+/*Rest*/
+.styled-table th,
+.styled-table td {
+  border: none;
+}
+.styled-table td {
+  padding: 2px; /* Reduced padding for less gap */
+  padding-left: 5px;
+  padding-right: 5px;
+}

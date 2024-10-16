@@ -69,6 +69,7 @@
               <ul class="nav" style="font-size: small">
                 <li><a href="/mypages/mc-contact.html">Tips for MC contacts</a></li>
                 <li><a href="/mypages/fornoobs.html">For beginners</a></li>
+                <li><a href="/mypages/mc-generation.html">Private MC generation</a></li>
               </ul>
             </nav>
           </div>
@@ -85,7 +86,8 @@
               <hr />
 
               <h3 id="lxplus-das-cli">Finding files using DAS CLI</h3>
-              The follwing python script takes a list of MC samples (dataset names) and lists all the files avaiable on DAS using the command line interface. If
+              The following python script takes a list of MC samples (dataset names) and lists all the files available on DAS using the command line interface.
+              If
               <code>dasgoclient</code> is not available, run it from a CMSSW environment.
               <pre class="brush: python">
 import os, sys
@@ -108,7 +110,7 @@ for name in das_names:
 
               <h3 id="lxplus-xrdcp">Directly downloading files using xrdcp</h3>
               <p>
-                Once I have a list of files I want to download, which can be made by using the previosly tool, or manually picking up files from DAS-GUI, I ran
+                Once I have a list of files I want to download, which can be made by using the previously tool, or manually picking up files from DAS-GUI, I ran
                 a python For loop to bring all those files in a local area. First, I move to my T3 storage location (T3_CH_CERNBOX) and generate proxy to access
                 the files.
               </p>
@@ -125,7 +127,7 @@ for name in das_names:
 /store/mc/Run3Summer22NanoAODv12/WWto2L2Nu_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/2530000/45e0cc8a-b2f7-4515-9d17-f48e6f888cde.root
 /store/mc/Run3Summer22NanoAODv12/TTtoLNu2Q_TuneCP5_13p6TeV_powheg-pythia8/NANOAODSIM/130X_mcRun3_2022_realistic_v5-v2/2520000/660979e9-a672-4654-aee2-aa4686dd3ca0.root
               </pre>
-              <p>Once the proxy is generated succesfully, I run the following python script to download the files to their respective directories.</p>
+              <p>Once the proxy is generated successfully, I run the following python script to download the files to their respective directories.</p>
               <pre class="brush:python">
 import os
 
@@ -251,8 +253,8 @@ print("All files copied.")
                 <li>Deleting the directories, starting from the deepest ones.</li>
               </ol>
               <p>
-                For this, use <a href="/mypages/files/codes/cleanT2.py.txt" target="_blank">cleanT2.py</a> and mention the directiories you want to remove in
-                the list inside.
+                For this, use <a href="/mypages/files/codes/cleanT2.py.txt" target="_blank">cleanT2.py</a> and mention the directories you want to remove in the
+                list inside.
               </p>
 
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
@@ -264,7 +266,7 @@ print("All files copied.")
               <h3 id="nanoaod-branches">Finding out NanoAOD branches and their types</h3>
               <p>
                 I made this tool to checkout and compare the branch types of different NanoAOD formats. For a given input file of a particular NanoAOD
-                structure, it finds out the "Events" branch which is releavant to us. Then loppong over each branch, it accesses the name and leaves associated
+                structure, it finds out the "Events" branch which is relevant to us. Then looping over each branch, it accesses the name and leaves associated
                 with the branch and prints out the type. The code can be found
                 <a href="/mypages/files/codes/find_nanoAOD_structure.C" target="_blank">here</a>.
               </p>
@@ -291,7 +293,7 @@ print("All files copied.")
               </pre>
               <p>
                 This should produce a template analyzer class named
-                <code>anaName</code>. The class is kept in a header file, and its funcions including the event loop is run in a C file. An example of such a
+                <code>anaName</code>. The class is kept in a header file, and its functions including the event loop is run in a C file. An example of such a
                 template code with some additional features is available in this git repository:
                 <a href="https://github.com/phazarik/nanoAOD_analyzer" target="_blank">phazarik:nanoAOD_analyzer</a>. I modified the template to be compatible
                 with multiple NanoAOD versions.
@@ -310,7 +312,7 @@ print("All files copied.")
                 first one is older and requires a more complicated setup, while TikZ-Feynman works smoothly with modern LaTeX, producing high-quality diagrams
                 with more customization options. If you're just starting out, TikZ-Feynman is often the better choice because it’s simpler and integrates well
                 with other LaTeX features. A template for drawing Feynman diagrams using tikz-feynman package can be found
-                <a href="/mypages/files/codes/feynman-template.txt" target="_blank">here</a>. It alreaady has some examples. It can be compiled using
+                <a href="/mypages/files/codes/feynman-template.txt" target="_blank">here</a>. It already has some examples. It can be compiled using
                 <code>pdflatex</code> as follows.
               </p>
               <pre class="brush: shell">
