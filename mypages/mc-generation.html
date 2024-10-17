@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="A collection of tools to work in experimental high energy physics" />
+    <meta name="description" content="A collection of tools to generate Monte Carlo samples for high energy physics" />
     <meta name="keywords" content="CERN, CMS, experimental, high energy, particle physics" />
     <meta name="author" content="Prachurjya Pran Hazarika" />
 
@@ -23,14 +23,13 @@
       <div id="header"></div>
 
       <div class="container">
-        <h1 style="text-align: center">Private MC generation</h1>
-
+        <p style="text-align: right"><a href="/mypages/documentation.html" class="button"> &larr; Go back</a></p>
+        <h1 style="text-align: center">Private MC sample generation</h1>
         <!--row, then col-md3 (side panel), then col-md9 (main panel)-->
         <div class="row">
           <div class="col-md-3">
             <nav class="docs-sidebar" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
               <ul class="nav">
-
                 <li class="collapsable-link">
                   <a href="#local">Local MC generation setup</a>
                   <ul class="nav collapse">
@@ -44,13 +43,11 @@
                 <li class="collapsable-link">
                   <a href="#toy">Toy example</a>
                   <ul class="nav collapse">
-                    <li><a href="#toy-madgraph"> MadGraph </a></li>
-                    <li><a href="#toy-hepmc3"> HepMC3 </a></li>
-                    <li><a href="#toy-pythia"> Pythia </a></li>
-                    <li><a href="#toy-delphes"> Delphes </a></li>
+                    <li><a href="#toy-generation"> Generation </a></li>
+                    <li><a href="#toy-hadronization"> Hadronization </a></li>
+                    <li><a href="#toy-simulation"> Simulation </a></li>
                   </ul>
                 </li>
-
               </ul>
             </nav>
           </div>
@@ -71,9 +68,7 @@
                 taken the latest VLL UFO file from the repository:
                 <a href="https://github.com/prudhvibhattiprolu/VLL-UFOs" target="_blank">github.com/prudhvibhattiprolu</a>.
               </p>
-              <p>
-                This is the order of installation for this setup.
-              </p>
+              <p>This is the order of installation for this setup.</p>
               <ol>
                 <li>Setting up MadGraph along with the BSM models.</li>
                 <li>Building HepMC3.</li>
@@ -82,9 +77,10 @@
               </ol>
 
               <p>
-                Here are some important packages required before installation. I am mentioning the versions I have, but any recent versions should also work fine. I recommend using conda to install everything.
+                Here are some important packages required before installation. I am mentioning the versions that I have in my setup, but any recent versions
+                should also work fine. I recommend using conda to install everything.
               </p>
-              <table class="styled-table" style="width: 20%;">
+              <table class="styled-table" style="width: 20%">
                 <tr>
                   <th>Packages</th>
                   <th>Versions</th>
@@ -108,13 +104,14 @@
               </table>
 
               <p>
-                I would also recommend to keep all of these MC-generation tools inside the same directory. For me, the working directory is <code>/home/phazarik/mcgeneration</code>.
+                I would also recommend to keep all of these MC-generation tools inside the same directory. For me, the working directory is
+                <code>/home/phazarik/mcgeneration</code>.
               </p>
 
               <h3 id="local-madgraph">Setting up MadGraph, including the BSM models</h3>
               <p>
-                MadGraph can be downloaded from the <a href="https://launchpad.net/mg5amcnlo" target="_blank">official website</a>. Building is not needed.
-                The binary file is available at <code>mg5amcnlo/bin/mg5_aMC</code>. I have given the full path to MadGraph in my <code>.bashrc</code> file as
+                MadGraph can be downloaded from the <a href="https://launchpad.net/mg5amcnlo" target="_blank">official website</a>. Building is not needed. The
+                binary file is available at <code>mg5amcnlo/bin/mg5_aMC</code>. I have given the full path to MadGraph in my <code>.bashrc</code> file as
                 follows.
               </p>
               <pre class="brush:shell">alias mg5="/home/phazarik/mcgeneration/mg5amcnlo/bin/mg5_aMC"</pre>
@@ -154,11 +151,11 @@
                 HepMC is widely used for exchanging event information between event generators and detector simulation tools. For this exercise, HepMC3 can be
                 downloaded from <a href="https://gitlab.cern.ch/hepmc/HepMC3" target="_blank">GitLab</a>. Some usage instructions are available
                 <a href="https://pythia.org/latest-manual/HepMCInterface.html" target="_blank">here</a>.
-                <div class="alert-box">
-                  <strong>Note:</strong> Building HepMC is required before installing pythia, because pythia configuration is done with HepMC.
-                </div>
-                HepMC3 can be brought from GitHub and built as follows.
               </p>
+              <div class="alert-box">
+                <strong>Note:</strong> Building HepMC3 is required before installing pythia, because PYTHIA configuration is done with HepMC3.
+              </div>
+              <p>HepMC3 can be brought from GitLab and built as follows.</p>
               <pre class="brush:shell">
                 git clone https://gitlab.cern.ch/hepmc/HepMC3.git # This will create a source directory called 'HepMC3'.
                 mkdir hepmc3_build  hepmc3_install                # This will create two directories where hepmc3 is built and installed.
@@ -168,66 +165,136 @@
                 make install                                      # This will transfer files to the install directory.
               </pre>
               <div class="alert-box">
-                <strong>Note:</strong> HepMC is built with a certain python version. Changing the python version (or the conda environment) while using HepMC might cause problems later.
+                <strong>Note:</strong> HepMC is built with a certain python version. Changing the python version (or the conda environment) while using HepMC
+                might cause problems later.
               </div>
 
               <h3 id="local-pythia">Setting up PYTHIA</h3>
               <p>
                 PYTHIA is a program for simulating particle interactions as well as hadronization. It can be downloaded from the
-                <a href="https://www.pythia.org/" target="_blank">official website</a>. Installation instructions are provided there.
-                The following steps are used to install pythia with HepMC3 configuration. Make sure to give the full path to HepMC3 during configuration. I am using version 8.312, but these instructions are valid for all versions.
+                <a href="https://www.pythia.org/" target="_blank">official website</a>. Installation instructions are provided there. The following steps are
+                used to install pythia with HepMC3 configuration. Make sure to <strong>give the full path to HepMC3</strong> during configuration. I am using
+                version 8.312, but these instructions are valid for all versions.
               </p>
               <pre class="brush:shell">
-                wget https://www.pythia.org/download/pythia83/pythia8312.tgz  # Downloading pythia
-                tar xvfz pythia8312.tgz                                       # Unzipping the tarball
+                wget https://www.pythia.org/download/pythia83/pythia8312.tgz  # Downloading pythia.
+                tar xvfz pythia8312.tgz                                       # Unzipping the tarball.
                 cd pythia8312
-                ./configure --with-hepmc3=/home/phazarik/mcgeneration/hepmc3_install
               </pre>
-              If eveything goes right, the following report should pop up.
-              <pre class="brush:plain">
-                ---------------------------------------------------------------------
-                |                    PYTHIA Configuration Summary                   |
-                ---------------------------------------------------------------------
-                  Architecture                = LINUX
-                  C++ compiler     CXX        = g++
-                  C++ dynamic tags CXX_DTAGS  = -Wl,--disable-new-dtags
-                  C++ flags        CXX_COMMON = -O2 -std=c++11 -pedantic -W -Wall -Wshadow -fPIC -pthread
-                  C++ shared flag  CXX_SHARED = -shared
-                  Further options             =
+              <p>
+                In the configuration, I am including the HepMC3 library. For this, I need to put the full path to HepMC3 along with the
+                <code>./configure</code> command as follows.
+              </p>
+              <pre class="brush:shell">
 
-                The following optional external packages will be used:
-                + HEPMC3 (-I/home/phazarik/mcgeneration/hepmc3_install/include)
+                ./configure --with-hepmc3=/home/phazarik/mcgeneration/hepmc3_install
+ 
+                # Alternative build commands:
+                #./configure --with-hepmc3=/home/phazarik/mcgeneration/hepmc3_install \
+                #            --with-python-include=/home/phazarik/miniconda3_backup_2024_10_09/envs/analysis/include/python3.10 \
+                #            --with-python-bin=/home/phazarik/miniconda3_backup_2024_10_09/envs/analysis/bin
+                # ./configure
+                # ./configure --with-python
+
+                #If everything goes right, the following report should pop up.
+                #---------------------------------------------------------------------
+                #|                    PYTHIA Configuration Summary                   |
+                #---------------------------------------------------------------------
+                #  Architecture                = LINUX
+                #  C++ compiler     CXX        = g++
+                #  C++ dynamic tags CXX_DTAGS  = -Wl,--disable-new-dtags
+                #  C++ flags        CXX_COMMON = -O2 -std=c++11 -pedantic -W -Wall -Wshadow -fPIC -pthread
+                #  C++ shared flag  CXX_SHARED = -shared
+                #  Further options             =
+
+                #The following optional external packages will be used:
+                #+ HEPMC3 (-I/home/phazarik/mcgeneration/hepmc3_install/include)
+
+                make clean                       # Removes temporary files from previous attempts, if any.
+                make                             # This takes a couple of minutes.
               </pre>
+
+              <p>
+                Hadronization happens in the <code>pythiaXXXX/examples</code> directory. That's why I have built pythia in my work-area for my convenience. But
+                it can also be kept along with the other tools and export the output files to work-area for the next steps. Anyway, once pythia is build, I
+                added the following paths to my <code>.bashrc</code> file, which is needed for C++ compilation of the hadronizer codes.
+              </p>
+              <pre class="brush:shell">
+                export PYTHIA8=/mnt/d/work/temp/mcgeneration/pythia8312
+                export PYTHIA8DATA=$PYTHIA8/share/Pythia8/xmldoc
+                export PATH=$PYTHIA8/bin:$PATH
+                export LD_LIBRARY_PATH=$PYTHIA8/lib:$LD_LIBRARY_PATH
+              </pre>
+
+              <h3><em>If you are a big fan of Python ... [optional]</em></h3>
+              <p>
+                In some of the examples, I have also seen PYTHIA used in a python based interface. For this, one can easily install PYTHIA and HepMC3 using
+                conda-forge. But this is not important for the <a href="#toy">toy example</a> that I have shared in the next section. For a new user, I would
+                not recommend this, because managing multiple versions of tools is messy.
+              </p>
+              <pre class="brush:shell">
+                conda install -c conda-forge pythia8        # not important
+                conda install -c conda-forge hepmc3         # not important
+              </pre>
+              <p>
+                I also found a nice YouTube video on this Python based PYTHIA interface, which is a part of an
+                <a href="https://hepsoftwarefoundation.org/" target="_blank">HSF</a> workshop. This video broadly covers the basics of a lot of things that can
+                be done with PYTHIA, starting form event generation.
+              </p>
+              <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                  <div class="media">
+                    <iframe
+                      width="560"
+                      height="315"
+                      src="https://www.youtube.com/embed/U8tPBxONr94?si=TzFEtnWau5p5Olwk"
+                      title="YouTube video player"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allowfullscreen
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
 
               <h3 id="local-delphes">Setting up Delphes</h3>
               <p>
                 Delphes is a fast simulation framework for high-energy physics detectors. The Delphes outputs are equivalent to NanoAOD, but the information is
                 structured differently in the ROOT files. It can be downloaded from the
-                <a href="https://github.com/delphes/delphes" target="_blank">GitHub</a> repository. Installation instructions are available there as well. Building delphes is pretty straight forward.
+                <a href="https://github.com/delphes/delphes" target="_blank">GitHub</a> repository. Installation instructions are available there as well.
+                Building delphes is pretty straight forward.
               </p>
               <pre class="brush:shell">
                 git clone https://github.com/delphes/delphes.git
                 cd delphes
-                make             #This takes a couple of minutes
+                make             # This takes a couple of minutes
               </pre>
 
-              <h3>Wrapping up ...</h3>
-              <p>Once everything is done, open a MadGraph prompt and add the paths to pythia and delples as follows. This has to be done once. I also added my fastjet setup, in case I need it later.</p>
+              <h3>Wrapping up ... [optional]</h3>
+              <p>
+                In some examples, PYTHIA, HEPMC3 etc. can be used from the MadGraph interface itself (I'm exploring it, not an expert yet). For this, paths to
+                PYTHIA and Delples should be included in MadGraph configuration. This has to be done once. I also added my fastjet setup, in case I need it
+                later.
+              </p>
               <pre class="brush:shell">
                 set pythia8_path /home/phazarik/mcgeneration/pythia8312
                 set delphes_path /home/phazarik/mcgeneration/delphes
-                set fastjet /home/phazarik/fastjet-3.4.2/bin/fastjet-config
+                set fastjet /home/phazarik/fastjet-3.4.2/bin/fastjet-config          #optional
               </pre>
               <p>
-                You can also manually add these paths my editing the <code>input/mg5_configuration.txt</code> file in the MadGraph directory. Also, MadGraph may ask for something called <code>lhapdf</code>, which is a standard tool for evaluating parton distribution functions (PDFs). This can be installed using conda as follows.
+                These paths are needed only when the hadronization etc is done inside MadGraph itself, by importing these modules. But in the
+                <a href="#toy">toy example</a>, I am doing each step of the sample generation individually. These paths can also be added manually by editing
+                the <code>input/mg5_configuration.txt</code> file in the MadGraph directory. Also, MadGraph may ask for something called <code>lhapdf</code>,
+                which is a standard tool for evaluating parton distribution functions (PDFs). This can be installed using conda as follows.
               </p>
-              
+
               <pre class="brush:shell">
                 conda install -c conda-forge lhapdf
               </pre>
 
               <p>After these installations, following are the list of MC-generation tools I have in my setup.</p>
-              <table class="styled-table", style="width: 30%;">
+              <table class="styled-table" , style="width: 35%">
                 <thead>
                   <tr>
                     <th>Packages</th>
@@ -242,7 +309,7 @@
                     <td><a href="https://github.com/mg5amcnlo/mg5amcnlo.git" target="_blank">GitHub</a></td>
                   </tr>
                   <tr>
-                    <td>hepmc</td>
+                    <td>hepmc3</td>
                     <td>3.3.0</td>
                     <td><a href="https://gitlab.cern.ch/hepmc/HepMC3.git" target="_blank">GitLab</a></td>
                   </tr>
@@ -265,22 +332,129 @@
               </table>
 
               <div class="alert-box">
-                <strong>Note:</strong> Pythia, HepMC and Delphes can also be installed by simply going to the MadGraph prompt and running <code>install pythia8</code> (for pythia and HepMC together) and <code>install Delphes</code> (for Delphes alone). These are kept in <code>mg5amcnlo/HEPTools</code>. But I don't trust it yet, and there is no control on the versions. I prefer to do it manually.
+                <strong>Note:</strong> Pythia, HepMC and Delphes can also be installed by simply going to the MadGraph prompt and running
+                <code>install pythia8</code> (for pythia and HepMC together) and <code>install Delphes</code> (for Delphes alone). These are kept in
+                <code>mg5amcnlo/HEPTools</code>. But I don't trust it yet, and there is no control on the versions. I prefer to do it manually.
               </div>
 
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
 
               <h2 id="toy">Toy example</h2>
               <hr />
+              <p>
+                The flowchart below illustrates the event simulation workflow I am going to use. The process begins with generation using MadGraph, where
+                parton-level events are generated in the LHE format. The output LHE file is then fed into PYTHIA for hadronization, where partons are converted
+                into physical hadrons, resulting in a DAT file. Finally, detector simulation is done using Delphes with a CMS card, which simulate how the CMS
+                would record these events, producing a ROOT file that can be used for further analysis.
+              </p>
 
+              <div class="mermaid">
+                graph LR; A[<strong>Generation</strong> in MadGraph <br />
+                Input: Interaction parameters, Output: LHE] --> B[<strong>Hadronization</strong> in pythia <br />
+                Input: LHE file, Output: HepMC file]; B --> C[<strong>Simulation</strong> in delphes <br />
+                Input: HepMC file, Output: ROOT file ];
+              </div>
+
+              <h3 id="toy-generation">Generation (QFT &rarr; LHE through MadGraph)</h3>
+              <p>
+                In the generation phase, tools like MadGraph are used to simulate hard scattering events based on quantum field theory. MadGraph takes in a
+                process definition and a set of parameters from the run_card and param_card. The input file typically consists of these cards and configuration
+                files, which define the physics process and the collider setup. The output of this phase is in the LHE format (Les Houches Event), a
+                standardized text file that contains detailed information about the parton-level event, such as particle IDs, momenta, and event weights. The
+                LHE file serves as the bridge to further event processing.
+              </p>
+              <p>
+                Let's try to generate a simple Drell-Yan process: pp &rarr; Z &rarr; ll. For this, be in your work area, go to MadGraph prompt, and define the
+                process.
+              </p>
               <pre class="brush:shell">
+                mg5                       # my shortcut for opening MadGraph prompt.
+                
+                #Now inside MadGraph prompt.
+                
+                display particle          # displays all the available individual particles.
+                display multiparticles    # displays all the labels for groups of particles.
+
                 generate p p > z > l+ l-
                 output ppToZToLL
-                cd ppToZToLL
+
+                exit
+              </pre>
+              <p>
+                The <code>output</code> line creates a new directory containing the pp &rarr; Z &rarr; ll process, including the run-cards and param-cards etc.
+                In principle, all of these can be done in a single step in the MadGraph prompt, but it's convenient to customize the parameters later. The cards
+                are kept at <code>ppToZToLL/Cards</code>. Let's edit the <code>run_card.dat</code> file and change/add some important parameters as follows, and
+                keep everything else as it is.
+              </p>
+              <pre class="brush:plain">
+                #Edited line:
+                100  = nevents ! Number of unweighted events requested, changed to 10
+                
+                #Newly added lines:
+                # -- customize according to your need --
+              </pre>
+              <p>
+                The <code>ppToZToLL/bin</code> directory contains the binaries used to run the event generator, and <code>ppToZToLL/Events</code> contains the
+                outputs for each run. Let's run a test and see what it does.
+              </p>
+              <pre class="brush:shell">
+                # Be inside ppToZToLL directory.
+
                 ./bin/generate_events testrun -f > /dev/null 2>&1
+                
+                # testrun          = name of the directory to be generated inside ppToZToLL/Events
+                # -f               = suppresses the MadGraph CLI prompts and takes the parameters from run_card.
+                # > /dev/null 2>&1 = Suppresses any GUI related issues (in WSL) 
+              </pre>
+              <p>
+                This creates a <code>ppToZToLL/Events/testrun</code> directory containing a <code>.gz</code> file which can be unzipped and used for later
+                purposes.
+              </p>
+              <pre class="brush:shell">
                 cd Events/testrun
                 gunzip unweighted_events.lhe.gz
               </pre>
+              <p>
+                This unzipped LHE file, <code>unweighted_events.lhe</code>, contains all the generated parton-level information, including particle IDs,
+                momenta, event weights, and other metadata.
+              </p>
+
+              <h3 id="toy-hadronization">Hadronization (LHE &rarr; DAT through PYTHIA and HepMC3)</h3>
+              <p>
+                The hadronization step happens in the <code>pythiaXXXX/examples</code> directory. For this, we need a code that reads the lhe file and
+                hadronizes them, and edit <code>pythiaXXXX/examples/Makefile</code> to include this code so that it is compiled along with the rest of the
+                staff.
+              </p>
+              <ul>
+                <li>
+                  The hadronizer file is named <code>hadlhe.cc</code>, and can be found <a href="/mypages/files/codes/hadlhe.cc" target="_blank">here</a>.
+                </li>
+                <li>
+                  The updated <code>Makefile</code> can be found <a href="/mypages/files/codes/Makefile_for_pythia.txt" target="_blank">here</a>, and should
+                  replace the old one.
+                </li>
+              </ul>
+              <p>These files can also be directly downloaded into the correct directory as follows.</p>
+              <pre class="brush:shell">
+                  cd [path to pythia]/examples
+                  wget -O hadlhe.cc https://raw.githubusercontent.com/phazarik/phazarik.github.io/main/mypages/files/codes/hadlhe.cc
+                  wget -O Makefile https://raw.githubusercontent.com/phazarik/phazarik.github.io/main/mypages/files/codes/Makefile_for_pythia.txt
+              </pre>
+              <p>
+                The <code>hadlhe.cc</code> file should be edited to give the correct path to the input LHE file that was generated using MadGraph, the number of
+                events in the input file, and a desired output path for the <code>dat</code> file that contains the hadronized outputs. This
+                <code>dat</code> file is later imported in Delphes for detector simulation. The hadronizer is executed as follows.
+              </p>
+              <pre class="brush:shell">
+                #inside the examples directory
+
+                make clean               # to get rid of any previous compiled files
+                make hadlhe              # this looks fof hadlhe.cc, compiles it, and creates an executable
+                ./hadlhe                 # execution
+              </pre>
+
+              <h3 id="toy-simulation">Simulation (DAT &rarr; ROOT through Delphes)</h3>
+              <p>[under progress]</p>
 
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>
@@ -316,6 +490,11 @@
     <script src="/syntax-highlighter/scripts/shBrushPlain.js"></script>
     <script>
       SyntaxHighlighter.all();
+    </script>
+    <!-- Include Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true });
     </script>
     <!-- Custom javascript -->
     <script src="/mystyles/custom_scripts.js"></script>
