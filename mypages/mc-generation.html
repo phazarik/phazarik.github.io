@@ -35,7 +35,7 @@
                   <ul class="nav collapse">
                     <li><a href="#local-madgraph"> Setting up MadGraph </a></li>
                     <li><a href="#local-hepmc3"> Setting up HepMC3 </a></li>
-                    <li><a href="#local-pythia"> Setting up Pythia </a></li>
+                    <li><a href="#local-pythia"> Setting up PYTHIA </a></li>
                     <li><a href="#local-delphes"> Setting up Delphes </a></li>
                   </ul>
                 </li>
@@ -46,6 +46,7 @@
                     <li><a href="#toy-generation"> Generation </a></li>
                     <li><a href="#toy-hadronization"> Hadronization </a></li>
                     <li><a href="#toy-simulation"> Simulation </a></li>
+                    <li><a href="#toy-hadronization-simulation"> PYTHIA8 + Delphes </a></li>
                   </ul>
                 </li>
               </ul>
@@ -239,7 +240,7 @@
               <p>
                 I also found a nice YouTube video on this Python based PYTHIA interface, which is a part of an
                 <a href="https://hepsoftwarefoundation.org/" target="_blank">HSF</a> workshop. This video broadly covers the basics of a lot of things that can
-                be done with PYTHIA, starting form event generation.
+                be done with PYTHIA, starting from event generation.
               </p>
               <div class="row">
                 <div class="col-md-8 col-md-offset-2">
@@ -347,11 +348,10 @@
                 into physical hadrons, resulting in a DAT file. Finally, detector simulation is done using Delphes with a CMS card, which simulate how the CMS
                 would record these events, producing a ROOT file that can be used for further analysis.
               </p>
-
-              <div class="mermaid">
+              <div class="mermaid" style="font-size: small">
                 graph LR; A[<strong>Generation</strong> in MadGraph <br />
                 Input: Interaction parameters, Output: LHE] --> B[<strong>Hadronization</strong> in pythia <br />
-                Input: LHE file, Output: HepMC file]; B --> C[<strong>Simulation</strong> in delphes <br />
+                Input: LHE file, Output: DAT file]; B --> C[<strong>Simulation</strong> in delphes <br />
                 Input: HepMC file, Output: ROOT file ];
               </div>
 
@@ -454,7 +454,120 @@
               </pre>
 
               <h3 id="toy-simulation">Simulation (DAT &rarr; ROOT through Delphes)</h3>
-              <p>[under progress]</p>
+              <p>
+                Delphes simulation can be run using the executable <code>DelphesHepMC3</code> followed by the arguments: card-name, output-file and input-file.
+                The first two arguments are the same in every case, so I added them in my bashrc as follows.
+              </p>
+              <pre class="brush:shell">
+                alias delphes="/home/phazarik/mcgeneration/delphes/DelphesHepMC3 /home/phazarik/mcgeneration/delphes/cards/delphes_card_CMS.tcl"
+              </pre>
+              <p>For this toy example, I ran the following from my work-directory to produce a delphes tree.</p>
+              <pre class="brush:shell">
+                delphes testroot.root pythia8312/examples/ppToZToLL_10.dat
+              </pre>
+
+              <h3 id="toy-hadronization-simulation">Hadronization and Simulation [combined step]</h3>
+              <p>
+                So far, the whole MC production process is done step-by-step. First, event generation at the LHE level, then producing the hadronized gen-level
+                information using PYTHIA, and then detector simulation using Delphes. This whole exercise is done for understanding what happens at the
+                back-end. The hadronization step produces large dat files, which needs to be handled by Delphes before being useful. It turns out that this
+                extra step can be avoided by merging the work of Delphes and PYTHIA, which is illustrated in the flowchart below.
+              </p>
+              <div class="mermaid" , style="font-size: small; align-items: center">
+                graph LR; A[<strong>Generation</strong> in MadGraph <br />
+                Input: Interaction parameters, Output: LHE] --> B[<strong>Hadronization and Simulation</strong> in Delphes <br />
+                Input: LHE, PYTHIA config file, Output: ROOT file];
+              </div>
+              <p>For this the following things need to be done.</p>
+              <ul>
+                <li>
+                  Make sure that the PYTHIA paths are available. The following lines can be added to <code>.bashrc</code>.
+                  <pre class="brush:shell">
+                    export PYTHIA8=[path to pythia8312] #Give the full path here
+                    export PYTHIA8DATA=$PYTHIA8/share/Pythia8/xmldoc
+                    export PATH=$PYTHIA8/bin:$PATH
+                    export LD_LIBRARY_PATH=$PYTHIA8/lib:$LD_LIBRARY_PATH
+                  </pre>
+                </li>
+                <li>
+                  Configure Delphes with PYTHIA8.
+                  <pre class="brush:shell">
+                    cd /home/phazarik/mcgeneration/delphes
+                    make clean
+                    make HAS_PYTHIA8=true   # This will take a while
+                  </pre>
+                </li>
+                <li>
+                  Write a PYTHIA config file for the process as <code>pythia8_ppToZToLL.cfg</code>, and keep it in the process directory. This contains a
+                  specific set of instructions that is needed during hadronization, including the path to the input files, how many events to process, etc. This
+                  file is fed as an input to Delphes. If the number of events specified in the configuration does not match the number of events available in
+                  the LHE file, PYTHIA will still proceed with whatever number of events it can read.
+                </li>
+                <pre class="brush:plain">
+                  ! Pythia8 configuration for pp -> Z -> LL process
+
+                  Main:numberOfEvents = 10     ! Number of events to simulate
+                  Main:timesAllowErrors = 10   ! How many errors Pythia will allow before stopping
+
+                  ! Set up beam parameters
+                  Beams:idA = 2212              ! Proton beam
+                  Beams:idB = 2212              ! Proton beam
+                  Beams:eCM = 13000.0           ! Center-of-mass energy in GeV
+
+                  ! Load the LHEF events generated by MadGraph
+                  Beams:LHEF = /mnt/d/work/temp/mcgeneration/ppToZToLL/Events/testrun/unweighted_events.lhe
+
+                  ! Pythia8-specific physics settings
+                  WeakSingleBoson:ffbar2gmZ = on   ! Enable Z boson production
+                  23:onMode = off                  ! Turn off all Z decays
+                  23:onIfAny = 11 13               ! Allow only decays to leptons (e+ e- and mu+ mu-)
+
+                  ! Hadronization and jet clustering
+                  HadronLevel:all = on
+                </pre>
+                <li>
+                  Instead of running <code>DelphesHepMC3</code>, run <code>DelphesPythia8</code> along with the CMS card. For this, I created an alias in the
+                  <code>.bashrc</code> file for my convenience.
+                  <pre class="brush:shell">
+                    alias delphespythia="/home/phazarik/mcgeneration/delphes/DelphesPythia8 /home/phazarik/mcgeneration/delphes/cards/delphes_card_CMS.tcl"
+                  </pre>
+                </li>
+              </ul>
+              <p>Once these changes are made, the following can be run from the work-directory.</p>
+              <pre class="brush:shell">
+                delphespythia ppToZToLL/pythia8_ppToZToLL.cfg test_output.root
+              </pre>
+              <p>
+                I find it convenient because I don't have to go to the <code>pythia8312/examples</code> directory and create a mess there with all the temporary
+                folders, and deal with the DAT files. However, this method complains about some missing libraries related to <code>ExRootAnalysis</code> at the
+                beginning, and ROOT prompts some warnings about the same while loading the output files. But as long as we are not using those features, it's
+                fine.
+              </p>
+
+              <hr />
+              <div class="alert-box">
+                <h3 style="padding: 2%; margin: 0%">Summary</h3>
+                <ol>
+                  <li>
+                    Generate LHE events in MadGraph.
+                    <ul>
+                      <li>Define the processes carefully in the MadGraph prompt.</li>
+                      <li>Save the process by doing <code>output processname</code>.</li>
+                      <li>Edit <code>run_card.dat</code> and specify the number of events.</li>
+                      <li>Run <code>./bin/generate_events testrun</code>.</li>
+                      <li>Unzip the output file in <code>Events/testrun</code>.</li>
+                    </ul>
+                  </li>
+                  <li>
+                    Run hadronization and detector simulation.
+                    <ul>
+                      <li>Write a PYTHIA config file mentioning the path to the LHE file along with hadronization parameters and how many events to run on.</li>
+                      <li>Run <code>delphes/DelphesPythia8</code> by providing the CMS card, the PYTHIA config file, and the output file as arguments.</li>
+                    </ul>
+                  </li>
+                </ol>
+              </div>
+              <hr />
 
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>

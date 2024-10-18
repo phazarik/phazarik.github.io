@@ -415,7 +415,8 @@ pre {
   margin: 20px auto; /* Center the table horizontally */
   border: 1px solid #000; /* Border around the table */
 }
-/*Heafer*/
+
+/*Header*/
 .styled-table th {
   background-color: #f0f0f0;
   padding: 5px;
