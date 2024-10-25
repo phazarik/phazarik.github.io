@@ -318,7 +318,75 @@ print("All files copied.")
               <pre class="brush: shell">
                 pdflatex feynman-template.tex
               </pre>
-              <p>Just make sure that you have the necessary LaTeX packages installed beforehand.</p>
+              <p>
+                Just make sure that you have the necessary LaTeX packages installed beforehand. I prefer to produce individual pdf files for each Feynman
+                diagram and convert them into high quality png files. The following is an example of a VLL production diagram.
+              </p>
+              <pre class="brush:plain">
+                \documentclass[tikz,border=3mm]{standalone}
+                \usepackage{tikz-feynman}
+                \tikzset{every picture/.style={line width=1.1pt}}
+
+                \begin{document}
+                  \begin{tikzpicture}[baseline={(current bounding box.center)}]
+                    \begin{feynman}
+                      \vertex (v1);
+                      \vertex [right =1.5cm of v1] (v2);
+                      %incoming vertices
+                      \vertex [above left =1.5cm of v1] (i1) {\(q\)};
+                      \vertex [below left =1.5cm of v1] (i2) {\(\bar{q}\)};
+                      %internal vertices connected to the v2
+                      \vertex at($(v2)+(1.2, +0.7)$) (b1);
+                      \vertex at($(v2)+(1.2, -0.7)$)(b2);
+                      %internal vertices connected to b1 and b2
+                      \vertex at($(b1)+(1.2, +0.1)$) (c1);
+                      \vertex at($(b2)+(1.2, -0.1)$) (c2);
+                      %outgoing vertices
+                      \vertex at($(b1) + (1.0, +1.2)$) (o1) {\( l \)};
+                      \vertex [above right =0.7cm of c1] (o2);
+                      \vertex [below right =0.7cm of c1] (o3);
+                      \vertex [above right =0.7cm of c2] (o4);
+                      \vertex [below right =0.7cm of c2] (o5);
+                      \vertex at($(b2) + (1.0, -1.2)$) (o6) {\( \nu \)};
+                      \diagram*{
+                        %incoming lines
+                        (i1) -- (v1) -- (i2);
+                        %internal lines
+                        (v1) --[boson, color=black, edge label = \({\color{black} Z/\gamma^*}\)] (v2);
+                        (b1) -- (v2) -- (b2);
+                        (b1) --[boson, edge label' = \(Z\)] (c1);
+                        (b2) --[boson, edge label = \(W\)] (c2);
+                        %outgoing lines
+                        (o1) -- (b1);
+                        (o2) -- (c1) -- (o3);
+                        (o4) -- (c2) -- (o5);
+                        (b2) -- (o6);
+                      };
+                      %labels (manually putting them here because too crowded)
+                      \vertex at($(o2) + (+0.3, +0.0)$) (l2) {\(q^{\prime}\)};
+                      \vertex at($(o3) + (+0.3, +0.0)$) (l3) {\(\bar{q}^\prime\)};
+                      \vertex at($(o4) + (+0.3, +0.0)$) (l4) {\( q^{\prime\prime}\)};
+                      \vertex at($(o5) + (+0.3, -0.0)$) (l5) {\( \bar{q}^{\prime\prime}\)};
+                      \vertex at($(b1) + (-0.6, +0.0)$) (tau1) {\( E \)};
+                      \vertex at($(b2) + (-0.6, -0.0)$) (tau2) {\( E \)};
+                    \end{feynman}
+                  \end{tikzpicture}
+                \end{document}
+              </pre>
+              <p>This example only requires the tikz-feynman package. The pdf output can be converted to png as follows.</p>
+              <pre class="brush:shell">
+                # Note: Don't use the -alpha remove option if you want transparent png files.
+                convert -density 300 vll_production.pdf \
+                -colorspace RGB -quality 90\
+                -alpha remove -background white\
+                vll_production.png
+              </pre>
+              <div style="display: flex; justify-content: center">
+                <figure class="fig-float" style="width: 420px">
+                  <img src="/mypics/tutorials/vll_production.png" alt="" />
+                  <figcaption>vll_production.png</figcaption>
+                </figure>
+              </div>
 
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>
@@ -351,8 +419,14 @@ print("All files copied.")
     <script src="/syntax-highlighter/scripts/shBrushBash.js"></script>
     <script src="/syntax-highlighter/scripts/shBrushCpp.js"></script>
     <script src="/syntax-highlighter/scripts/shBrushPython.js"></script>
+    <script src="/syntax-highlighter/scripts/shBrushPlain.js"></script>
     <script>
       SyntaxHighlighter.all();
+    </script>
+    <!-- Include Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true });
     </script>
     <!-- Custom javascript -->
     <script src="/mystyles/custom_scripts.js"></script>

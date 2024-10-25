@@ -49,6 +49,14 @@
                     <li><a href="#toy-hadronization-simulation"> PYTHIA8 + Delphes </a></li>
                   </ul>
                 </li>
+
+                <li class="collapsable-link">
+                  <a href="#lxplus-central">Central production</a>
+                  <ul class="nav collapse">
+                    <li><a href="#lxplus-requirements"> Requirements </a></li>
+                    <li><a href="#lxplus-links"> Important links </a></li>
+                  </ul>
+                </li>
               </ul>
             </nav>
           </div>
@@ -78,8 +86,10 @@
               </ol>
 
               <p>
-                Here are some important packages required before installation. I am mentioning the versions that I have in my setup, but any recent versions
-                should also work fine. I recommend using conda to install everything.
+                Here are some important packages <strong>required before installation</strong>. I am mentioning the versions that I have in my setup, but any
+                recent versions should also work fine. I recommend using conda to install everything. It's important that ROOT is build with the same Python
+                version that is used here. For detailed instructions on how to handle Python environments and install ROOT properly, visit
+                <a href="/mypages/fornoobs.html">here</a>.
               </p>
               <table class="styled-table" style="width: 20%">
                 <tr>
@@ -101,6 +111,10 @@
                 <tr>
                   <td>g++, gcc</td>
                   <td>11.4.0</td>
+                </tr>
+                <tr>
+                  <td>ROOT</td>
+                  <td>6.26/10</td>
                 </tr>
               </table>
 
@@ -166,7 +180,7 @@
                 make install                                      # This will transfer files to the install directory.
               </pre>
               <div class="alert-box">
-                <strong>Note:</strong> HepMC is built with a certain python version. Changing the python version (or the conda environment) while using HepMC
+                <strong>Note:</strong> HepMC3 is built with a certain Python version. Changing the Python version (or the conda environment) while using HepMC3
                 might cause problems later.
               </div>
 
@@ -339,8 +353,10 @@
               </div>
 
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
+            </section>
 
-              <h2 id="toy">Toy example</h2>
+            <section id="toy">
+              <h2>Toy example</h2>
               <hr />
               <p>
                 The flowchart below illustrates the event simulation workflow I am going to use. The process begins with generation using MadGraph, where
@@ -568,6 +584,22 @@
                 </ol>
               </div>
               <hr />
+
+              <p>
+                For analyzing Delphes trees and writing histograms, I created a <code>MakeSelelector()</code> based setup with instructions available in this
+                <a href="https://github.com/phazarik/delphes_analyzer" target="_blank">GitHub repository</a>.
+              </p>
+
+              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
+            </section>
+
+            <section id="lxplus-central" class="section">
+              <h2>Central production in CMS</h2>
+              <hr />
+
+              <h3 id="lxplus-requirements">Requirements</h3>
+
+              <h3 id="lxplus-links">Important links</h3>
 
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>
