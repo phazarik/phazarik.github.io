@@ -36,6 +36,7 @@
                     <li><a href="#lxplus-das-cli"> Find files using DAS CLI </a></li>
                     <li><a href="#lxplus-xrdcp"> Downlading from DAS using xrdcp </a></li>
                     <li><a href="#lxplus-brilcalc"> brilcalc (luminosity calculation)</a></li>
+                    <li><a href="#lxplus-crab"> CRAB-job (processing samples)</a></li>
                   </ul>
                 </li>
 
@@ -177,6 +178,55 @@ print("All files copied.")
               </pre>
               <p>More information can be found in the <a href="https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM" target="_blank">LUM POG TWiki page</a>.</p>
 
+              <h3 id="lxplus-crab">Submitting CRAB jobs and bringing samples</h3>
+              <p>
+                The CRAB framework manages distributed computing tasks by packaging user-defined analysis codes with configuration files that specify input
+                datasets and output locations. Upon submission, jobs are distributed across the WLCG using a scheduler for dynamic resource allocation. It
+                monitors job status through a database, allowing users to track progress and retrieve output files and logs, ensuring integration with CMS data
+                management for efficient data analysis. Detailed instructions can be found
+                <a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideCrab" target="_blank">here</a>. I inherited the CRAB setup from
+                <a href="https://github.com/alaha999" target="_blank">Arnab</a>, and organized it a bit. It is available in this
+                <a href="https://github.com/phazarik/crabSkimSetup" target="_blank">GitHub repository</a>. I use it to skim nanoAOD files in DAS and dump them
+                in T2_IN_TIFR before bringing them to our cluster. Go to my setup and follow these steps.
+              </p>
+              <ul>
+                <li>Login to lxplus8.</li>
+                <li>
+                  Be in a CMSSW environment. In my case, its CMSSW_13_0_13, but the exact version is not crucial. This is just needed for using RDataFrame and
+                  submitting crab jobs.
+                </li>
+                <li>Generate voms-proxy for CMS to access the files from DAS.</li>
+                <li>
+                  Clone the following repository in your work area.
+                  <pre class="brush:shell">
+                    git clone https://github.com/phazarik/crabSkimSetup.git
+                  </pre>
+                </li>
+                <li>
+                  Run <code>crab_script.sh</code> locally to see if it can process the input file mentioned in <code>PSet.py</code>. This is basically running a
+                  python script (<code>nanoRDF.py</code>) which is designed to skim the input file using RDataFrame. This may take a while to run in a local
+                  lxplus area.
+                </li>
+                <li>
+                  If previous step runs smoothly and produces an output file, submit the crab job by running <code>crab_config.py</code>. This submits a
+                  crab-job for one dataset and manages how <code>crab_script.sh</code> should run remotely. In my case, I run this in bulk, and feed some
+                  parameters externally. The following is an example of how to run the setup for one job.
+                  <pre class="brush:shell">
+                    crab submit crab_config.py General.requestName=nanoRDF_Run2_2017_UL_Rare_THQ General.workArea=submitted Data.inputDataset=/THQ_ctcvcp_4f_Hincl_TuneCP5_13TeV_madgraph_pythia8/RunIISummer20UL17NanoAODv9-106X_mc2017_realistic_v9-v2/NANOAODSIM
+    
+                    # Parameters fed from outside:
+                    # 1. General.requestName : Name of the crab-job that appears during monitoring.
+                    # 2. General.workArea : The crab-job logs are dumped in this folder, which is later used to monitor progress.
+                    # 3. Data.inputDataset : Full DAS string of the input sample
+                    # Rest of the parameters are same for all jobs, and are defined inside crab_config.py
+                  </pre>
+                </li>
+              </ul>
+              <p>
+                Once the crab-jobs are done, the output files can be brought to any other location for analysis, as discussed in the
+                <a href="#tifr-t2-copy">next section</a>.
+              </p>
+
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>
 
@@ -273,12 +323,22 @@ print("All files copied.")
 
               <h3 id="nanoaod-events">Checking number of events (generated) in NanoAOD files</h3>
               <p>
-                I made this <a href="/mypages/files/codes/find_nevents.C" target="_blank">tool</a> to cross-check the number of events in the NanoAOD files in
-                our cluster, because sometimes we may miss some files while transferring from DAS to T3. Losing a few MC files is okay, since we can update
-                their luminosity. We have to be careful to not lose data. I typically run this for a given directory containing nanoAOD files, by running the C
-                script over the list using a python driver file. The python file can be found
-                <a href="/mypages/files/codes/find_nevents_wholesample.py.txt" target="_blank">here</a>.
+                For luminosity calculation, the total number of generated events is required. In our cluster, we have a mixture of the original nanoAOD file and
+                skimmed nanoAOD files. In case of the original nanoAOD files, nEvtGen is simply the number of entries in the Event tree. For the skimmed files,
+                this number is kept in a branch called 'nevtgen'. (This branch is filled for each event, so this number is repeatedly filled for all the
+                entries; we just need to access the value at the first entry.) This number is needed in case we miss any file while transferring from DAS to our
+                cluster. Run <a href="/mypages/files/codes/calculate_True_nEvtGen.py.txt" target="_blank">calculate_True_nEvtGen.py</a> that works for both
+                skimmed and original nanoAOD files. <br />
+                <strong>Note:</strong> This uses pyROOT. So make sure that you are in a CMSSW environment, and a compatible python version (that supports
+                <code>import ROOT</code>) is used. The following is an example usage.
               </p>
+              <pre class="brush:shell">
+                python calculate_True_nEvtGen.py  /home/work/alaha1/public/RunII_ULSamples/2017/Rare
+                
+                # Note that
+                # 1. It's using python2.
+                # 2. Full-path to the sample-directory is given, where it finds all the sub-directories.
+              </pre>
 
               <h3 id="nanoaod-template">Generating a MakeSelector based template to analyze NanoAOD files</h3>
               <p>
