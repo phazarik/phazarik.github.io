@@ -55,7 +55,7 @@
                   <ul class="nav collapse">
                     <li><a href="#lxplus-settingup"> Setting up a CMSSW environment </a></li>
                     <li><a href="#lxplus-gridpack"> Gridpack generation </a></li>
-                    <li><a href="#lxplus-validation"> Local validation </a></li>
+                    <li><a href="#lxplus-validation"> Local validation (manual)</a></li>
                     <li><a href="#lxplus-links"> Important links </a></li>
                   </ul>
                 </li>
@@ -602,7 +602,7 @@
               <h3 id="lxplus-settingup">Setting up a CMSSW environment</h3>
               <p>
                 First, setup a suitable environment in lxplus. For this example, I am going with <code>slc7_amb64_gcc700</code> which is compatible with
-                <code>CMSSW_12_4_8</code>. This can be checked by running the following, and finding the right CMSSW version in the list..
+                <code>CMSSW_12_4_8</code>. This can be checked by running the following, and finding the right CMSSW version in the list.
               </p>
               <pre class="brush:shell">
                 scram --arch slc7_amd64_gcc700 list CMSSW
@@ -628,10 +628,10 @@
               <h3 id="lxplus-gridpack">Gridpack generation</h3>
               <p><a href="https://github.com/risharma27" target="_blank">Riya</a> is working on this. I will update this part later.</p>
 
-              <h3 id="lxplus-validation">Local validation</h3>
+              <h3 id="lxplus-validation">Local validation [manual, for one gridpack]</h3>
               <p>
                 I am going to demonstrate this using <code>CMSSW_12_4_8</code>. I logged into lxplus8 (with el8_amd64_gcc10 architecture). Inside
-                <code>src</code>, I copied a gen-fragment templaet for Run2 Ultra Legacy, edited the gridpack location to put the locally available gridpack
+                <code>src</code>, I copied a gen-fragment template for Run2 Ultra Legacy, edited the gridpack location to put the locally available gridpack
                 (produced with the same CMSSW release), and compiled the setup.
               </p>
               <pre class="brush:shell">
@@ -654,9 +654,25 @@
                     --step LHE,GEN --geometry DB:Extended --era Run2_2018 --no_exec --mc -n 10
                   </pre>
                 </li>
+                <li>
+                  <strong>RECO step:</strong>
+                </li>
               </ol>
 
               <h3 id="lxplus-links">Important links</h3>
+              <ul>
+                <li>
+                  <a href="https://exo-mc-and-i.gitbook.io/exo-mc-and-interpretation/how-to-sample-request#id-2.-run-local-validation-test" target="_blank"
+                    >Running local validation in condor</a
+                  >
+                </li>
+                <li>
+                  <a href="https://twiki.cern.ch/twiki/bin/view/CMS/SUSObjectExperts" target="_blank">SUS contacts</a>
+                </li>
+                <li>
+                  <a href="https://github.com/cms-sw/genproductions" target="_blank">Generator fragments repository</a>
+                </li>
+              </ul>
 
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>
