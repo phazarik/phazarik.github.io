@@ -53,7 +53,9 @@
                 <li class="collapsable-link">
                   <a href="#lxplus-central">Central production</a>
                   <ul class="nav collapse">
-                    <li><a href="#lxplus-requirements"> Requirements </a></li>
+                    <li><a href="#lxplus-settingup"> Setting up a CMSSW environment </a></li>
+                    <li><a href="#lxplus-gridpack"> Gridpack generation </a></li>
+                    <li><a href="#lxplus-validation"> Local validation </a></li>
                     <li><a href="#lxplus-links"> Important links </a></li>
                   </ul>
                 </li>
@@ -597,7 +599,62 @@
               <h2>Central production in CMS</h2>
               <hr />
 
-              <h3 id="lxplus-requirements">Requirements</h3>
+              <h3 id="lxplus-settingup">Setting up a CMSSW environment</h3>
+              <p>
+                First, setup a suitable environment in lxplus. For this example, I am going with <code>slc7_amb64_gcc700</code> which is compatible with
+                <code>CMSSW_12_4_8</code>. This can be checked by running the following, and finding the right CMSSW version in the list..
+              </p>
+              <pre class="brush:shell">
+                scram --arch slc7_amd64_gcc700 list CMSSW
+              </pre>
+              <p>
+                Unfortunately, in this particular case, <code>lxplus7</code> is no longer maintained. So we need to use a singularity image OS by running the
+                following right after logging into lxplus. More of this can be found here
+                <a href="https://cms-sw.github.io/singularity.html" target="_blank">here</a>.
+              </p>
+              <pre class="brush:shell">
+                cmssw-el7
+                echo $SCRAM_ARCH                        # This should display some slc7 architecture.
+                export SCRAM_ARCH=slc7_amd64_gcc700     # This will pick the right architecture.
+                echo $SCRAM_ARCH                        # Make sure that ou have the right architecture.
+              </pre>
+              <p>Now, go to a desired work-area (preferably in eos), create a CMSSW work area and select the environment.</p>
+              <pre class="brush:shell">
+                cmsrel CMSSW_12_4_8
+                cd CMSSW_12_4_8/src
+                cmsenv
+              </pre>
+
+              <h3 id="lxplus-gridpack">Gridpack generation</h3>
+              <p><a href="https://github.com/risharma27" target="_blank">Riya</a> is working on this. I will update this part later.</p>
+
+              <h3 id="lxplus-validation">Local validation</h3>
+              <p>
+                I am going to demonstrate this using <code>CMSSW_12_4_8</code>. I logged into lxplus8 (with el8_amd64_gcc10 architecture). Inside
+                <code>src</code>, I copied a gen-fragment templaet for Run2 Ultra Legacy, edited the gridpack location to put the locally available gridpack
+                (produced with the same CMSSW release), and compiled the setup.
+              </p>
+              <pre class="brush:shell">
+                wget --no-check-certificate --content-disposition --retry-connrefused --tries=3 -P Configuration/GenProduction/python/ https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_fragment/EXO-RunIISummer20UL18wmLHEGEN-01288
+                mv Configuration/GenProduction/python/EXO-RunIISummer20UL18wmLHEGEN-01288 Configuration/GenProduction/python/EXO-RunIISummer20UL18wmLHEGEN-01288.py
+
+                #Make sure the file extension is py and edit the gridpack location.
+
+                scram b -j8
+              </pre>
+              <ol>
+                <li>
+                  <strong>LHE step:</strong>
+                  <pre class="brush:shell">
+                    cmsDriver.py Configuration/GenProduction/python/EXO-RunIISummer20UL18wmLHEGEN-01288.py \
+                    --python_filename EXO-RunIISummer20UL18wmGEN-01288_cfg.py \
+                    --eventcontent RAWSIM,LHE --customise Configuration/DataProcessing/Utils.addMonitoring \
+                    --datatier GEN,LHE --fileout file:EXO-RunIISummer20UL18wmGEN-01288.root \
+                    --conditions 106X_upgrade2018_realistic_v4 --beamspot Realistic25ns13TeVEarly2018Collision \
+                    --step LHE,GEN --geometry DB:Extended --era Run2_2018 --no_exec --mc -n 10
+                  </pre>
+                </li>
+              </ol>
 
               <h3 id="lxplus-links">Important links</h3>
 
