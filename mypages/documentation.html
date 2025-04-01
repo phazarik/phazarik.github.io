@@ -36,6 +36,7 @@
                     <li><a href="#lxplus-das-cli"> Find files using DAS CLI </a></li>
                     <li><a href="#lxplus-xrdcp"> Downlading from DAS using xrdcp </a></li>
                     <li><a href="#lxplus-brilcalc"> brilcalc (luminosity calculation)</a></li>
+                    <li><a href="#lxplus-xsec"> GenXSecAnalyzer (cross-section calculation)</a></li>
                     <li><a href="#lxplus-crab"> CRAB-job (processing samples)</a></li>
                   </ul>
                 </li>
@@ -164,7 +165,7 @@ print("All files copied.")
               <h3 id="lxplus-brilcalc">Luminosity calculation from json</h3>
               <p>
                 <code>brilcalc</code> is available in lxplus at <code>~/.local/bin/brilcalc</code>. It takes a json file as input, which contains run-number and
-                lumisections in teh following format.
+                lumisections in the following format.
               </p>
               <pre class="brush:python">
                 {
@@ -177,6 +178,16 @@ print("All files copied.")
                 brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /fb -i [json file name]
               </pre>
               <p>More information can be found in the <a href="https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM" target="_blank">LUM POG TWiki page</a>.</p>
+
+              <h3 id="lxplus-xsec">Cross-section calculation</h3>
+              <p>
+                I made <a href="/mypages/files/codes/find_xsec_fromDAS.txt" target="_blank">this tool</a> for calculation of cross-section in MC samples using
+                <a href="https://twiki.cern.ch/twiki/bin/viewauth/CMS/HowToGenXSecAnalyzer" target="_blank">GenXSecAnalyzer</a>. It takes a nanoAOD DAS string
+                as input, finds a parent miniAOD file using DAS CLI and runs the GenXSecAnalyzer script. Example use:
+              </p>
+              <pre class="brush:shell">
+                python3 find_xsec_fromDAS.py --dataset /WtoLNu-2Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8/Run3Summer22NanoAODv12-130X_mcRun3_2022_realistic_v5-v2/NANOAODSIM --dryrun
+              </pre>
 
               <h3 id="lxplus-crab">Submitting CRAB jobs and bringing samples</h3>
               <p>

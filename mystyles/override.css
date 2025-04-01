@@ -5,10 +5,11 @@ August 27, 2024
 body {
   margin: 0px;
   padding: 0px;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  /*font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;*/
+  font-family: "Nunito", sans-serif;
   text-decoration: none;
   color: #444;
-  font-size: 1em;
+  font-size: 0.9em;
 }
 
 html,
