@@ -60,6 +60,12 @@
                 </li>
                 <li class="collapsable-link">
                   <a href="#gridpack-to-nanoaod">Gridpack &gg; NanoAOD</a>
+                  <ul class="nav collapse">
+                    <li><a href="#gridpack-to-lhe"> Gridpack &gg; LHE </a></li>
+                    <li><a href="#lhe-to-gensim">LHE &gg; GENSIM</a></li>
+                    <li><a href="#gensim-to-digiraw">GENSIM &gg; DIGIRAW</a></li>
+                    <li><a href="#digiraw-to-aodsim">DIGIRAW &gg; AODSIM</a></li>
+                  </ul>
                 </li>
               </ul>
             </nav>
@@ -780,7 +786,10 @@
 
               <h3 id="gridpack-generation">Generating one gridpack</h3>
               <p>Just to generate one gridpack, the following command can be run from the <code>genproductions/bin/MadGraph5_aMCatNLO</code> directory.</p>
-              <pre class="brush:shell"> ./gridpack_generation.sh VLLD_ele_M600 cards/VLL/VLLD_ele_M600 local ALL el8_amd64_gcc10 CMSSW_12_4_8</pre>
+              <pre class="brush:shell">
+                chmod +x gridpack_generation.sh
+                ./gridpack_generation.sh VLLD_ele_M600 cards/VLL/VLLD_ele_M600 local ALL el8_amd64_gcc10 CMSSW_12_4_8
+              </pre>
               <p>Where,</p>
               <ul>
                 <li><code>VLLD_ele_M600</code>: Name of the gridpack to be generated.</li>
@@ -817,6 +826,231 @@
             <section id="gridpack-to-nanoaod" class="section">
               <h2>Gridpack validation in lxplus</h2>
               <hr />
+
+              <p>
+                This section describes the local validation of the gridpacks after they are successfully generated, i.e, the full production chain to produce
+                NanoAOD. I am taking <code>VLLD_ele_M600</code> as an example. First, pick a separate work area for validating the test gridpack and unzip it as
+                follows.
+              </p>
+              <pre class="brush:shell">
+                mkdir VLLD_ele_M600
+                tar -xf VLLD_ele_M600_el8_amd64_gcc10_CMSSW_12_4_8_tarball.tar.xz -C VLLD_ele_M600
+              </pre>
+              <p>This creates a predefined structure required for event generation. A breakdown of the key contents is as follows:</p>
+
+              <pre class="brush:plain">
+                VLLD_ele_M600
+                ├── InputCards
+                ├── gridpack_generation.log
+                ├── merge.pl
+                ├── mgbasedir
+                ├── process
+                │   ├── madevent
+                │   └── run.sh
+                └── runcmsgrid.sh
+              </pre>
+              <ul>
+                <li><code>InputCards/</code>: Contains the cards used to generate the gridpack.</li>
+                <li><code>gridpack_generation.log</code>: Full log of the gridpack creation process for debugging.</li>
+                <li><code>mgbasedir/</code>: Contains the full MadGraph installation with model files, binaries etc. needed to reproduce the generation.</li>
+                <li>
+                  <code>process/</code>: Includes process-specific configuration and scripts, notably <code>run.sh</code> for launching the internal generation
+                  step.
+                </li>
+                <li><code>runcmsgrid.sh</code>: The main script used to generate LHE events.</li>
+              </ul>
+
+              <h3 id="gridpack-to-lhe">Gridpack &gg; LHE</h3>
+
+              <p>
+                Once the gridpack has been extracted, parton-level events in LHE (Les Houches Event) format can be produced using the
+                <code>runcmsgrid.sh</code> script. This script is included inside the unpacked gridpack directory and serves as the interface to MadGraph,
+                MadSpin (if applicable), and Pythia (if configured). It prepares the runtime environment, handles all necessary steps of event generation, and
+                produces a <code>cmsgrid_final.lhe</code> file containing the events. To run the script for a small test sample of events:
+              </p>
+              <pre class="brush:shell">
+                cd VLLD_ele_M600
+                ./runcmsgrid.sh 1000 12345 4
+              </pre>
+              <p>Where:</p>
+              <ul>
+                <li><code>1000</code> is the number of events to generate</li>
+                <li><code>12345</code> is the random seed</li>
+                <li><code>4</code> is the number of threads or parallel jobs to use</li>
+              </ul>
+              <p>
+                This also creates a temporary CMSSW environment under the hood and ensures all dependencies are properly set up for the run. The output file
+                <code>cmsgrid_final.lhe</code> contains all the generated parton-level four-vectors, with each event uniquely defined. Make sure to generate
+                enough events here to support the statistics needed for downstream steps such as full simulation and analysis.
+              </p>
+
+              <!--
+              ####################
+                    GENSIM
+              ####################
+              -->
+
+              <h3 id="lhe-to-gensim">LHE &gg; GENSIM</h3>
+              <p>
+                This step takes the parton-level LHE events and runs hadronization and particle showering using Pythia8 to produce GEN-SIM files that simulate
+                particles and their interactions with the detector. A CMSSW configuration is required for this step. First, set up the CMSSW environment and
+                directory structure as follows.
+              </p>
+              <pre class="brush:shell">
+                cd CMSSW_12_4_8/src/
+                cmsenv
+                mkdir -p Configuration/GenProduction/python
+              </pre>
+              <p>
+                The <code>Configuration/GenProduction/python</code> directory is used to store the fragment (configuration script) describing how to hadronize
+                the LHE events. The directory structure is important because <code>cmsDriver.py</code> (configuration maker tool) expects fragments to be in the
+                Python path under this namespace. Here is an example of a hadronizer, without using <code>externalLHEProducer</code> (since we are testing a
+                local LHE file).
+              </p>
+              <pre class="brush:python">
+                import FWCore.ParameterSet.Config as cms
+                from Configuration.Generator.Pythia8CommonSettings_cfi import *
+                from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *
+                from Configuration.Generator.PSweightsPythia.PythiaPSweightsSettings_cfi import *
+
+                generator = cms.EDFilter("Pythia8ConcurrentHadronizerFilter",
+                    maxEventsToPrint = cms.untracked.int32(1),
+                    pythiaPylistVerbosity = cms.untracked.int32(1),
+
+                    pythiaHepMCVerbosity = cms.untracked.bool(False),
+                    comEnergy = cms.double(13600.),
+                    PythiaParameters = cms.PSet(
+                        pythia8CommonSettingsBlock,
+                        pythia8CP5SettingsBlock,
+                        pythia8PSweightsSettingsBlock,
+                        parameterSets = cms.vstring('pythia8CommonSettings',
+                                                    'pythia8CP5Settings',
+                                                    'pythia8PSweightsSettings',
+                                                    )
+                    )
+                )
+              </pre>
+              <div class="alert-box">
+                <strong>Note:</strong> Make sure that the hadronization energy (in this case, <code>comEnergy = cms.double(13600.)</code>) matches the
+                center-of-mass energy of the LHE events. This is crucial for correct hadronization and particle showering.
+              </div>
+              <p>Call it <code>myfragment.py</code>. Once the fragment is in place, compile the setup.</p>
+              <pre class="brush:shell">
+                scram b -j8
+                which cmsDriver.py
+              </pre>
+              <p>
+                This should display the path to the <code>cmsDriver.py</code> available in the current CMSSW environment. This tool is used to convert the
+                generated LHE file into a GEN-SIM file. However, for debugging purposes, it is often useful to generate a configuration file first using the
+                <code>--no_exec</code> option. This config file can be inspected or modified before executing. Adjust filenames, number of events, and
+                detector-specific settings like beamspot and global conditions as needed. In the following, I am following an example of Run3Summer22 (pre-EE)
+                conditions.
+              </p>
+
+              <pre class="brush:shell">
+                cmsDriver.py \
+                Configuration/GenProduction/python/myfragment.py \
+                --filein file:../../cmsgrid_final.lhe \
+                --fileout file:VLLD_ele_M600_GENSIM.root \
+                --eventcontent RAWSIM \
+                --datatier GEN-SIM \
+                --beamspot Realistic25ns13p6TeVEarly2022Collision \
+                --step GEN,SIM \
+                --python_filename cfg_1_GENSIM.py \
+                --era Run3 \
+                --mc \
+                --geometry DB:Extended \
+                --no_exec \
+                --customise Configuration/DataProcessing/Utils.addMonitoring \
+                --conditions 124X_mcRun3_2022_realistic_v12 \
+                -n 10
+              </pre>
+
+              <div class="alert-box">
+                <strong>Note:</strong> Copy-pasting the command directly from the webpage into the terminal may introduce formatting issues (e.g. invisible line
+                breaks or special characters). It is recommended to paste it into a text editor first, review the parameters, and adjust them to match the
+                intended MC campaign.
+              </div>
+
+              <p>
+                This creates a configuration file named <code>cfg_1_GENSIM.py</code> without running the job immediately. Matching the parameters -
+                <code>--conditions</code>, <code>--beamspot</code>, and <code>--era</code> with the intended simulation campaign and CMSSW release is important.
+                Finally, run the generation step.
+              </p>
+              <pre class="brush:shell">cmsRun cfg_1_GENSIM.py</pre>
+              <p>
+                This produces a GEN-SIM ROOT file named <code>VLLD_ele_M600_GENSIM.root</code> from the LHE input, suitable for the next simulation steps. This
+                file contains both the generator-level information (i.e. final-state particles from MadGraph/Pythia) and the full detector simulation output
+                from GEANT4, which emulates how those particles would interact with the CMS detector. This includes simulated energy deposits, tracking hits,
+                and digitized detector responses. The GEN-SIM step is notably <strong>slow and computationally heavy</strong> because of the detailed physics
+                and geometry involved in the simulation. While crucial for realistic MC production, such jobs are typically done on grid resources rather than
+                locally, except for small-scale validation like this.
+              </p>
+
+              <!--
+              ####################
+                    DIGIRAW
+              ####################
+              -->
+
+              <h3 id="gensim-to-digiraw">GENSIM &gg; DIGIRAW</h3>
+              <p>
+                In this step, the simulated detector hits are converted into raw detector data format, and this is where pileup interactions can be added by
+                overlaying minimum bias events on top of the hard scattering. Access to pileup datasets from DBS requires a valid VOMS proxy. In this example, I
+                am not providing a pileup dataset.
+              </p>
+              <pre class="brush:shell">
+                cmsDriver.py \
+                step1 \
+                --filein file:VLLD_ele_M600_GENSIM.root \
+                --fileout file:VLLD_ele_M600_DIGIRAW.root \
+                --eventcontent FEVTDEBUGHLT \
+                --datatier GEN-SIM-DIGI-RAW \
+                --step DIGI,L1,DIGI2RAW,HLT:@relval2022 \
+                --nThreads 8 \
+                --python_filename cfg_2_DIGIRAW.py \
+                --era Run3 \
+                --mc \
+                --geometry DB:Extended \
+                --no_exec \
+                --customise Configuration/DataProcessing/Utils.addMonitoring \
+                --conditions 124X_mcRun3_2022_realistic_v12 \
+                -n 10
+              </pre>
+              <pre class="brush:shell">cmsRun cfg_2_DIGIRAW.py</pre>
+
+              <!--
+              ####################
+                    AODSIM
+              ####################
+              -->
+
+              <h3 id="digiraw-to-aodsim">DIGIRAW &gg; AODSIM</h3>
+              <p>
+                In this step, the full detector reconstruction is performed on the RAW or DIGIRAW data, producing reconstructed physics objects such as tracks,
+                jets, electrons, and muons. This completes the previous digitization step and produces fully analysis-ready objects. That’s why the
+                <strong>step2</strong> argument is specified in the <code>cmsDriver.py</code> command, indicating the reconstruction stage. The configuration
+                for step2 should contain the same settings as step1 to ensure consistency.
+              </p>
+              <pre class="brush:shell">
+              cmsDriver.py \
+              step2 \
+              --filein file:VLLD_ele_M600_DIGIRAW.root \
+              --fileout file:VLLD_ele_M600_AOD.root \
+              --eventcontent AODSIM \
+              --datatier AODSIM \
+              --step RAW2DIGI,L1Reco,RECO,RECOSIM \
+              --nThreads 8 \
+              --python_filename cfg_3_AOD.py \
+              --era Run3 \
+              --mc \
+              --geometry DB:Extended \
+              --no_exec \
+              --customise Configuration/DataProcessing/Utils.addMonitoring \
+              --conditions 124X_mcRun3_2022_realistic_v12 \
+              -n 10
+              </pre>
+              <pre class="brush:shell">cmsRun cfg_3_AOD.py</pre>
 
               <h3 id="gridpack-links">Important links</h3>
               <ul>
