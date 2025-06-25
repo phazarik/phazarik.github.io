@@ -1,0 +1,30 @@
+#----------------------------------------------------------------------------------------------------
+# Model configurations for different VLL scenarios
+#----------------------------------------------------------------------------------------------------
+# coupling     : sets the 'decay_lepton' parameter in proc_card template with the appropriate leptons.
+# model        : sets the 'model' parameter in proc_card
+# mass,doublet : sets the 'mass' and 'isospin' parameters in customizecards template.
+# tarfile      : sets the 'model_archive' parameter in extramodels template.
+# The run_card template is copied as it is; only the prefix is added to the filename.
+#----------------------------------------------------------------------------------------------------
+
+VLLD_mu:                      # Name-tag, used in the prefix.
+  model: VLL                  # Name of the UFO model to import
+  tarfile: VLL.tgz            # Archive file containing the UFO model
+  type: doublet               # Options: "doublet", "singlet"
+  coupling: mu                # Options: "mu", "ele", "tau"
+  masses: [100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 800, 1000, 1100, 1150, 1200, 1400, 1600]
+
+VLLD_ele:
+  model: VLL
+  tarfile: VLL.tgz
+  type: doublet
+  coupling: ele
+  masses: [100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 800, 1000, 1100, 1150, 1200, 1400, 1600]
+
+VLLD_tau:
+  model: VLL
+  tarfile: VLL.tgz
+  type: doublet
+  coupling: tau
+  masses: [100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 800, 1000, 1100, 1150, 1200, 1400, 1600]

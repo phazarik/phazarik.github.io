@@ -1,0 +1,10 @@
+import model {model}
+define L = lp lp~
+define N = vlp vlp~
+define lepton = {decay_lepton} #Taken from YAML
+
+generate p p > L L, (L > z lepton), (L > h lepton)      #Pair production
+add process p p > N N, (N > w+ lepton), (N > w- lepton) #Pair production 
+add process p p > L N, (L > z lepton), (L > h lepton), (N > w+ lepton), (N > w- lepton) #Associated production
+
+output {output_name} -nojpeg

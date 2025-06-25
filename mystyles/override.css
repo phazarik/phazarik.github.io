@@ -9,7 +9,7 @@ body {
   font-family: "Nunito", sans-serif;
   text-decoration: none;
   color: #444;
-  font-size: 0.9em;
+  font-size: 0.9rem;
 }
 
 html,
@@ -381,7 +381,7 @@ pre {
   margin: 10px 0; /* Spacing above and below the alert box */
   border: 1px solid #f1c40f; /* Border with a slightly darker yellow */
   border-radius: 4px; /* Rounded corners */
-  font-size: 1rem; /* Font size */
+  font-size: 0.8rem; /* Font size */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 

@@ -51,13 +51,15 @@
                 </li>
 
                 <li class="collapsable-link">
-                  <a href="#lxplus-central">Central production</a>
+                  <a href="#madgraph-to-gridpack">MadGraph &gg; Gridpack</a>
                   <ul class="nav collapse">
-                    <li><a href="#lxplus-settingup"> Setting up a CMSSW environment </a></li>
-                    <li><a href="#lxplus-gridpack"> Gridpack generation </a></li>
-                    <li><a href="#lxplus-validation"> Local validation (manual)</a></li>
-                    <li><a href="#lxplus-links"> Important links </a></li>
+                    <li><a href="#gridpack-setting-up"> Setting up the work area </a></li>
+                    <li><a href="#gridpack-cards"> Generating cards </a></li>
+                    <li><a href="#gridpack-generation"> Generating one gridpack </a></li>
                   </ul>
+                </li>
+                <li class="collapsable-link">
+                  <a href="#gridpack-to-nanoaod">Gridpack &gg; NanoAOD</a>
                 </li>
               </ul>
             </nav>
@@ -595,71 +597,228 @@
               <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>
 
-            <section id="lxplus-central" class="section">
-              <h2>Central production in CMS</h2>
+            <!--
+            ##########################################################################################################################################
+            CENTRAL PRODUCTION
+            ##########################################################################################################################################
+            -->
+
+            <section id="madgraph-to-gridpack" class="section">
+              <h2>Gridpack production in lxplus</h2>
               <hr />
-
-              <h3 id="lxplus-settingup">Setting up a CMSSW environment</h3>
               <p>
-                First, setup a suitable environment in lxplus. For this example, I am going with <code>slc7_amb64_gcc700</code> which is compatible with
-                <code>CMSSW_12_4_8</code>. This can be checked by running the following, and finding the right CMSSW version in the list.
+                Previous sections describe how to generate MC completely locally, using delphes to approximate detector simulation. This section focuses on
+                generating gridpacks, which are required to produce MC samples within the CMSSW framework, where full detector simulation is performed using
+                GEANT4. This section is completely independant of the earlier ones.
               </p>
-              <pre class="brush:shell">
-                scram --arch slc7_amd64_gcc700 list CMSSW
-              </pre>
+
               <p>
-                Unfortunately, in this particular case, <code>lxplus7</code> is no longer maintained. So we need to use a singularity image OS by running the
-                following right after logging into lxplus. More of this can be found here
-                <a href="https://cms-sw.github.io/singularity.html" target="_blank">here</a>.
+                MC generation in CMS follows a standard sequence: <strong>Gridpack &gt; LHEGS &gt; Premix &gt; AODSIM &gt; MINIAODSIM &gt; NANOAODSIM</strong>.
+                These steps include event generation (e.g., MadGraph), parton showering and hadronization (Pythia), detector simulation (GEANT4 via CMSSW), and
+                full reconstruction. Each step is configured through CMSSW fragments, and production is aligned with centrally defined campaign configurations.
+                Users generate gridpacks using the <code>gridpack_generation.sh</code> script from the
+                <a href="https://github.com/cms-sw/genproductions/blob/master/bin/MadGraph5_aMCatNLO/gridpack_generation.sh" target="_blank"
+                  >GitHub:genproductions/MadGraph5_aMCatNLO</a
+                >
+                tool, specifying the model and process. For central production, the gridpack, Pythia fragment, number of events, and other metadata are provided
+                to the NPS MC contact. For local validation, the gridpack is processed with <code>cmsDriver.py</code> to create GEN-SIM or full AOD workflows.
               </p>
-              <pre class="brush:shell">
-                cmssw-el7
-                echo $SCRAM_ARCH                        # This should display some slc7 architecture.
-                export SCRAM_ARCH=slc7_amd64_gcc700     # This will pick the right architecture.
-                echo $SCRAM_ARCH                        # Make sure that ou have the right architecture.
-              </pre>
-              <p>Now, go to a desired work-area (preferably in eos), create a CMSSW work area and select the environment.</p>
-              <pre class="brush:shell">
-                cmsrel CMSSW_12_4_8
-                cd CMSSW_12_4_8/src
-                cmsenv
-              </pre>
 
-              <h3 id="lxplus-gridpack">Gridpack generation</h3>
-              <p><a href="https://github.com/risharma27" target="_blank">Riya</a> is working on this. I will update this part later.</p>
+              <h3>Prerequisites</h3>
+              <ul>
+                <li>Access to CMS computing grid (lxplus).</li>
+                <li>Access to CRAB client and gridpack tools.</li>
+                <li>CMS VOMS proxy, incase any external file used during production (such as pile-up profile).</li>
+                <li>A BSM model UFO file (contact a theorist for this).</li>
+                <li>Required cards/fragments in correct format (discuss this with the NPS MC contact).</li>
+              </ul>
 
-              <h3 id="lxplus-validation">Local validation [manual, for one gridpack]</h3>
+              <h3 id="gridpack-setting-up">Setting up the work area</h3>
               <p>
-                I am going to demonstrate this using <code>CMSSW_12_4_8</code>. I logged into lxplus8 (with el8_amd64_gcc10 architecture). Inside
-                <code>src</code>, I copied a gen-fragment template for Run2 Ultra Legacy, edited the gridpack location to put the locally available gridpack
-                (produced with the same CMSSW release), and compiled the setup.
+                As an example, I am producing a VLL doublet (electron type) sample with mass of both new leptons being 600 GeV. I prepared some helper scripts
+                to manage and organize the outputs. These are to be brought to the work area as follows.
               </p>
-              <pre class="brush:shell">
-                wget --no-check-certificate --content-disposition --retry-connrefused --tries=3 -P Configuration/GenProduction/python/ https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_fragment/EXO-RunIISummer20UL18wmLHEGEN-01288
-                mv Configuration/GenProduction/python/EXO-RunIISummer20UL18wmLHEGEN-01288 Configuration/GenProduction/python/EXO-RunIISummer20UL18wmLHEGEN-01288.py
-
-                #Make sure the file extension is py and edit the gridpack location.
-
-                scram b -j8
-              </pre>
               <ol>
                 <li>
-                  <strong>LHE step:</strong>
-                  <pre class="brush:shell">
-                    cmsDriver.py Configuration/GenProduction/python/EXO-RunIISummer20UL18wmLHEGEN-01288.py \
-                    --python_filename EXO-RunIISummer20UL18wmGEN-01288_cfg.py \
-                    --eventcontent RAWSIM,LHE --customise Configuration/DataProcessing/Utils.addMonitoring \
-                    --datatier GEN,LHE --fileout file:EXO-RunIISummer20UL18wmGEN-01288.root \
-                    --conditions 106X_upgrade2018_realistic_v4 --beamspot Realistic25ns13TeVEarly2018Collision \
-                    --step LHE,GEN --geometry DB:Extended --era Run2_2018 --no_exec --mc -n 10
-                  </pre>
+                  <a href="/mypages/files/codes/mc-generation/modeldict.yaml" target="_blank"><code>modeldict.yaml</code></a
+                  >: YAML file containing information on the signal models. This is used to auto-generate the cards from a template.
                 </li>
                 <li>
-                  <strong>RECO step:</strong>
+                  Template cards which can be customized according to the needs of each model:
+                  <ul>
+                    <li>
+                      <a href="/mypages/files/codes/mc-generation/templates/proc_card_doublet.dat.txt" target="_blank"
+                        ><code>templates/proc_card_doublet.dat</code></a
+                      >
+                    </li>
+                    <li>
+                      <a href="/mypages/files/codes/mc-generation/templates/proc_card_singlet.dat.txt" target="_blank"
+                        ><code>templates/proc_card_singlet.dat</code></a
+                      >
+                    </li>
+                    <li>
+                      <a href="/mypages/files/codes/mc-generation/templates/run_card.dat.txt" target="_blank"><code>templates/run_card.dat</code></a>
+                    </li>
+                    <li>
+                      <a href="/mypages/files/codes/mc-generation/templates/extramodels.dat.txt" target="_blank"><code>templates/extramodels.dat</code></a>
+                    </li>
+                    <li>
+                      <a href="/mypages/files/codes/mc-generation/templates/customizecards.dat.txt" target="_blank"
+                        ><code>templates/customizecards.dat</code></a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  Python scripts to generate the cards and gridpacks:
+                  <ul>
+                    <li>
+                      <a href="/mypages/files/codes/mc-generation/generate_cards.py.txt" target="_blank"><code>generate_cards.py</code></a>
+                    </li>
+                    <li>
+                      <a href="/mypages/files/codes/mc-generation/generate_one_gridpack.py.txt" target="_blank"><code>generate_one_gridpack.py</code></a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  Python scripts for organization:
+                  <ul>
+                    <li>
+                      <a href="/mypages/files/codes/mc-generation/move_cards.py.txt" target="_blank"><code>move_cards.py</code></a>
+                    </li>
+                    <li>
+                      <a href="/mypages/files/codes/mc-generation/move_gridpacks.py.txt" target="_blank"><code>move_gridpacks.py</code></a>
+                    </li>
+                  </ul>
                 </li>
               </ol>
+              <p>Next, the genproductions tool is cloned inside a directory named Run3.</p>
+              <pre class="brush:shell">
+                mkdir Run3 && cd Run3
+                git clone https://github.com/cms-sw/genproductions.git --depth=1
+              </pre>
+              <div class="alert-box" style="background-color: #e0e0e0; border: #505050">
+                <p>
+                  In case of Run2, a specific branch <code>mg265UL</code> is recommended, and that's why it should be kept in a separate repository to avoid
+                  conflicts.
+                </p>
+                <pre class="brush:shell">
+                mkdir Run2 && cd Run2
+                git clone https://github.com/cms-sw/genproductions.git --depth=1 -b mg265UL
+              </pre
+                >
+              </div>
 
-              <h3 id="lxplus-links">Important links</h3>
+              <p>At this point, the work area should look like this:</p>
+              <pre class="brush:plain">
+                .
+                ├── Run3
+                │   └── genproductions.
+                ├── generate_cards.py
+                ├── generate_one_gridpack.py
+                ├── modeldict.yaml
+                ├── move_cards.py
+                ├── move_gridpacks.py
+                └── templates
+                    ├── customizecards.dat
+                    ├── extramodels.dat
+                    ├── proc_card_doublet.dat
+                    ├── proc_card_singlet.dat
+                    └── run_card.dat
+              </pre>
+
+              <h3 id="gridpack-cards">Generating cards</h3>
+              <p>
+                The card generation is automatically handled by
+                <a href="/mypages/files/codes/mc-generation/generate_cards.py.txt" target="_blank"><code>generate_cards.py</code></a> which loops over the
+                different mass points described in the YAML file, fills up the parameters (such as beam energy, decay leptons, masses of the VLLs etc.) in the
+                template cards and creates a set of cards for each mass point. After this,
+                <a href="/mypages/files/codes/mc-generation/move_cards.py.txt" target="_blank"><code>move_cards.py</code></a> is used to move the generated
+                cards to the <code>genproductions/bin/MadGraph5_aMCatNLO/cards/VLL</code> directory. Now the setup is ready to generate gridpacks. At this
+                point, relevant files/directories in the genproductions setup should look like this:
+              </p>
+              <pre class="brush:plain">
+                .
+                └── Run3
+                    └── genproductions
+                        └──bin
+                            └──MadGraph5_aMCatNLO
+                                ├── PLUGIN
+                                ├── Utilities
+                                ├── cards
+                                │   └── VLL
+                                └── gridpack_generation.sh
+              </pre>
+              <div class="alert-box">
+                <strong>Note:</strong> For gridpack production, CMSSW environment is not needed, but the CMSSW release and the SCRAM architecture can be
+                mentioned while runnning the tool. This is important for ensuring compatibility with the downstream workflow. Also, make sure that the BSM model
+                (<code>VLL.tgz</code> in this case) is available in the central repository (<a
+                  href="https://cms-project-generators.web.cern.ch/cms-project-generators/"
+                  target="_blank"
+                  >cms-project-generators</a
+                >).
+              </div>
+
+              <p>
+                <br />
+                <strong>A note on VLL M-100: </strong>In the cards, the logic for producing the vector-like charged lepton L, and the neutral lepton N (both of
+                which couple to muons in this example) is the following.
+              </p>
+              <pre class="brush:python">
+                define lepton = mu+ mu- vm vm~                                                          # Taken from YAML
+                generate p p > L L, (L > z lepton), (L > h lepton)                                      # Pair production
+                add process p p > N N, (N > w+ lepton), (N > w- lepton)                                 # Pair production
+                add process p p > L N, (L > z lepton), (L > h lepton), (N > w+ lepton), (N > w- lepton) # Associated production
+              </pre>
+              <p>
+                However, there is an issue with these for the low mass-point. For M = 100 GeV, some of the decay chains (e.g., L > higgs + lepton with mH = 125
+                GeV) are not kinematically allowed (if the Higgs is on-shell). So MadGraph tries to include these subprocesses but fails midway. The same thing
+                is true for the associated production. The gridpack generation tries to compile all 24 processes regardless of whether they are viable or not.
+                If even one fails, the entire gridpack generation fails. MadGraph is designed to produce on-shell bosons with minimal instructions, and it is
+                safe to skip this mass point if it's not too important.
+              </p>
+
+              <h3 id="gridpack-generation">Generating one gridpack</h3>
+              <p>Just to generate one gridpack, the following command can be run from the <code>genproductions/bin/MadGraph5_aMCatNLO</code> directory.</p>
+              <pre class="brush:shell"> ./gridpack_generation.sh VLLD_ele_M600 cards/VLL/VLLD_ele_M600 local ALL el8_amd64_gcc10 CMSSW_12_4_8</pre>
+              <p>Where,</p>
+              <ul>
+                <li><code>VLLD_ele_M600</code>: Name of the gridpack to be generated.</li>
+                <li><code>cards/VLL/VLLD_ele_M600</code>: Path to the process card directory.</li>
+                <li><code>local</code>: Run mode (<code>condor</code> can be used here).</li>
+                <li><code>ALL</code>: Indicates that all available cores should be used. Number of cores can also be mentioned here.</li>
+                <li><code>CMSSW_12_4_8</code>: Version of CMSSW to be used for the subsequent steps.</li>
+                <li><code>el8_amd64_gcc10</code>: SCRAM architecture (must be compatible with the CMSSW release).</li>
+              </ul>
+              <p>
+                To simplify the process, I have automated gridpack generation using
+                <a href="/mypages/files/codes/mc-generation/generate_one_gridpack.py.txt" target="_blank"><code>generate_one_gridpack.py</code></a
+                >. This script automatically sets the run mode, SCRAM architecture, and CMSSW version - requiring only the sample name as input. After
+                generating the gridpack, it also transfers the output to EOS to conserve space in the AFS workspace. The script can be executed from the base
+                working directory as shown below:
+              </p>
+              <pre class="brush:python"> python3 generate_one_gridpack.py --name VLLD_ele_M600</pre>
+              <p>
+                Full automation has not been implemented for this setup, as gridpack generation is a one-time task and the process cards are rarely modified.
+                The resulting gridpacks will be available in the EOS directory.
+              </p>
+
+              <div class="alert-box">
+                <strong>Note: </strong> The <code>genproductions/bin/MadGraph5_aMCatNLO</code> directory also contains several <code>submit_*.sh</code> scripts,
+                such as <code>submit_cmsconnect_gridpack_generation.sh</code> and <code>submit_condor_gridpack_generation.sh</code>. These are wrapper scripts
+                around <code>gridpack_generation.sh</code>, originally created to simplify submission in specific environments like CMSConnect or HTCondor.
+                While they can still be useful for batch submission, site-specific configurations, or legacy workflows, they are not strictly necessary. The
+                current setup uses this main script directly, without relying on the wrappers.
+              </div>
+
+              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
+            </section>
+
+            <section id="gridpack-to-nanoaod" class="section">
+              <h2>Gridpack validation in lxplus</h2>
+              <hr />
+
+              <h3 id="gridpack-links">Important links</h3>
               <ul>
                 <li>
                   <a href="https://exo-mc-and-i.gitbook.io/exo-mc-and-interpretation/how-to-sample-request#id-2.-run-local-validation-test" target="_blank"
@@ -673,8 +832,6 @@
                   <a href="https://github.com/cms-sw/genproductions" target="_blank">Generator fragments repository</a>
                 </li>
               </ul>
-
-              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
             </section>
           </div>
           <!--end main panel-->

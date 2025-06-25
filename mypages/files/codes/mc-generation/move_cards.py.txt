@@ -1,0 +1,23 @@
+import os
+
+cards_dir  = "Run3/genproductions/bin/MadGraph5_aMCatNLO/cards"
+source_dir = "cards_Run3"
+target_dir = os.path.join(cards_dir, "VLL")
+
+if not os.path.isdir(cards_dir):
+    print("\033[91m[ERROR]\033[0m Target cards directory not found:", cards_dir)
+    exit(1)
+
+os.makedirs(target_dir, exist_ok=True)
+
+for item in os.listdir(source_dir):
+    src = os.path.join(source_dir, item)
+    dst = os.path.join(target_dir, item)
+
+    if os.path.exists(dst):
+        if os.path.isdir(dst): os.system(f'rm -rf "{dst}"')
+        else: os.remove(dst)
+
+    os.system(f'cp "{src}" "{dst}"')
+
+print("\033[93m[DONE]\033[0m All card directories moved into VLL.")

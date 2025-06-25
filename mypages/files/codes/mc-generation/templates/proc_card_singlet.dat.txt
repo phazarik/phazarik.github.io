@@ -1,0 +1,6 @@
+import model {model}
+define L = lp lp~
+define boson = w+ w- z h
+define lepton = {decay_lepton}
+generate p p > L L, (L > boson lepton)
+output {output_name} -nojpeg

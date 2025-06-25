@@ -1,0 +1,96 @@
+import os
+import subprocess
+import argparse
+import time
+from datetime import timedelta
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--name', required=True, help='Name of the gridpack (e.g. VLLD_ele_M300)')
+parser.add_argument('--dryrun', action='store_true', help='Enable debug output (no execution)')
+args = parser.parse_args()
+
+name = args.name
+dryrun = args.dryrun
+
+## CONFIG ##
+run = "Run3"
+scram_arch = "el8_amd64_gcc10"
+cmssw_version = "CMSSW_12_4_8"
+
+## Paths
+basedir = os.getcwd()
+mg5dir = os.path.join(basedir, run, "genproductions/bin/MadGraph5_aMCatNLO")
+user = os.environ["USER"]
+dumpdir = f"/eos/user/{user[0]}/{user}/VLLgridpacks_{run}"
+if not dryrun: os.system(f"mkdir -p {dumpdir}")
+
+## Cleaning work directory:
+start_cleanup = time.time()
+tempdir = os.path.join(dumpdir, "temp")
+print(f"\033[93m\n==> Cleaning up the work directory. Moving gridpacks to : {tempdir}\033[0m")
+for entry in os.listdir(mg5dir):
+    if entry.startswith("VLL"):
+        path = os.path.join(mg5dir, entry)
+        if os.path.isdir(path):
+            command = f"rm -rf {path}"
+            print(f">> \033[33;3m{command}\033[0m")
+            if not dryrun: os.system(command)
+        else:
+            target = os.path.join(tempdir, entry)
+            command = f"mv {path} {target}"
+            print(f">> \033[33;3m{command}\033[0m")
+            if not dryrun: os.system(command)
+end_cleanup = time.time()
+cleanup_duration = timedelta(seconds=int(end_cleanup - start_cleanup))
+print(f"Time taken: {str(cleanup_duration)}")
+            
+#---------------------------------------------------------------------------------------------
+## DON'T CHANGE BELOW ##
+print(f"\033[93m\n==> Changing to: {mg5dir}\033[0m")
+os.chdir(mg5dir)
+
+start_gen = time.time()
+print(f"\033[93m\n==> Running gridpack_generation.sh for {name}\033[0m")
+carddir = os.path.join("cards", "VLL", name)
+if not os.path.isdir(carddir):
+    print(f"\033[31m!! Card directory not found: {carddir}\033[0m")
+    exit(1)
+command = f"./gridpack_generation.sh {name} {carddir} local ALL {scram_arch} {cmssw_version}"
+print(f">> \033[33;3m{command}\033[0m\n")
+if dryrun:
+    print("\033[93mDry run mode — command not executed.\033[0m")
+    exit(0)
+
+## Main ##
+result = subprocess.run(command, shell=True)
+end_gen = time.time()
+gen_duration = timedelta(seconds=int(end_gen - start_gen))
+print(f"Time taken: {str(gen_duration)}")
+#---------------------------------------------------------------------------------------------
+
+## Managing outputs:
+if result.returncode != 0:
+    print("\033[31m!! Gridpack generation failed!\033[0m")
+    exit(1)
+
+print("\033[94m ✓ Gridpack generation complete.\033[0m")
+
+tarball = f"{name}_{scram_arch}_{cmssw_version}_tarball.tar.xz"
+source_tarball = os.path.join(mg5dir, tarball)
+target_tarball = os.path.join(dumpdir, tarball)
+
+print(f"\033[93m\n==> Moving gridpack to: {target_tarball}\033[0m")
+
+if not os.path.exists(source_tarball):
+    print(f"\033[31m!! Tarball not found: {source_tarball}\033[0m")
+    exit(1)
+
+try:
+    subprocess.run(["cp", source_tarball, target_tarball], check=True)
+    os.remove(source_tarball)
+    print("\033[94m ✓ Gridpack copied to EOS and removed from local disk.\033[0m\n")
+
+except Exception as e:
+    print(f"\033[31m!! Failed to move gridpack: {e}\033[0m")
+    exit(1)
+    
