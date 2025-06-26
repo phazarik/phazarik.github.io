@@ -36,6 +36,7 @@
                   <ul class="nav collapse">
                     <li><a href="#setting-up-miniconda"> Installing miniconda </a></li>
                     <li><a href="#setting-up-root"> Installing ROOT </a></li>
+                    <li><a href="#setting-up-root-without-sudo"> ROOT without sudo [special]</a></li>
                     <li><a href="#setting-up-jupyter"> Installing Jupyter [optional] </a></li>
                     <li><a href="#setting-up-bashrc"> Customizing bashrc [optional] </a></li>
                   </ul>
@@ -112,6 +113,93 @@
                 There, you will find detailed instructions on how to build and install for linux. Make sure that you have installed the
                 <a href="https://root.cern/install/dependencies/#ubuntu-and-other-debian-based-distributions">dependencies</a> first (including git).
               </p>
+
+              <h3 id="setting-up-root-without-sudo">Installing ROOT without sudo access [special]</h3>
+              <p>
+                In environments where <code>sudo</code> access is unavailable, ROOT can be installed and built entirely using <code>conda</code>. Most required
+                system libraries are available through the <code>conda-forge</code> channel under alternate package names.
+              </p>
+
+              <b>Step 1: Required packages</b>
+              <p>
+                If the standard dependencies listed on the ROOT website fail to install or are not sufficient, the following alternative packages from
+                <code>conda-forge</code> can be used instead to provide compilers, build tools, and X11 development libraries:
+              </p>
+              <pre class="brush:shell">
+                conda install -c conda-forge \
+                gcc g++ cmake make expat \
+                xorg-libx11 xorg-libxext xorg-libxrender \
+                xorg-libxft xorg-libxpm xorg-xproto
+              </pre>
+              <p>
+                These packages provide the necessary headers and libraries for compiling ROOT with X11 (GUI) support. (In case these packages fail to install or
+                the X11 headers are still not found, the <code>-DX11</code> option in CMake should be set to <code>OFF</code>. As a result, GUI features such as
+                <code>TBrowser</code> will not be available in the built ROOT installation.) Presence of essential X11 headers can be verified as follows.
+              </p>
+              <pre class="brush:shell">
+                ls $CONDA_PREFIX/include/X11/X.h
+                ls $CONDA_PREFIX/include/X11/Xfuncproto.h
+              </pre>
+
+              <b>Step 3: Environment variable configuration</b>
+              <p>
+                The following variables should be appended to the <code>~/.bashrc</code> file to ensure proper usage of the conda-provided headers and libraries
+                during the build.
+              </p>
+              <pre class="brush:shell">
+                export CPATH=$CONDA_PREFIX/include:$CPATH
+                export C_INCLUDE_PATH=$CONDA_PREFIX/include:$C_INCLUDE_PATH
+                export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/include:$CPLUS_INCLUDE_PATH
+                export PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+                export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+              </pre>
+              <p>Make sure to source the <code>~/.bashrc</code> file after editing.</p>
+
+              <b>Step 4: Building and Installing ROOT</b>
+              <p>
+                Assuming the source is extracted at <code>../root_src</code>, and the install directory is at <code>../root_install/</code>, the following
+                commands should be executed in the <code>root_build</code> directory.
+              </p>
+              <pre class="brush:shell">
+                cmake -S ../root_src -B . \
+                  -DCMAKE_INSTALL_PREFIX=../root_install \
+                  -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
+                  -Dx11=ON \
+                  -Dgui=ON \
+                  -Dasimage=ON \
+                  -Deve=OFF \
+                  -Dopengl=OFF \
+                  -Dgl=OFF \
+                  -Drgl=OFF \
+                  -Dbuiltin_glew=OFF \
+                  -DCMAKE_INCLUDE_PATH=$CONDA_PREFIX/include \
+                  -DCMAKE_LIBRARY_PATH=$CONDA_PREFIX/lib \
+                  -Wno-dev
+              </pre>
+              <pre class="brush:shell">
+                cmake --build . --target install -j8
+              </pre>
+              <p>
+                Hopefully this will compile ROOT using the compilers and libraries provided by the conda environment, and install it to
+                <code>../root_install</code>. In case it fails, contact me.
+              </p>
+
+              <b>Explanations of the CMake Options</b>
+              <ul>
+                <li><strong>-S ../root_src</strong>: Specifies the source directory (contains the ROOT source code).</li>
+                <li><strong>-B .</strong>: Specifies the build directory (uses the current directory).</li>
+                <li><strong>-DCMAKE_INSTALL_PREFIX=../root_install</strong>: Defines the directory where ROOT will be installed after building.</li>
+                <li><strong>-DCMAKE_PREFIX_PATH=$CONDA_PREFIX</strong>: Instructs CMake to search for dependencies under the conda environment.</li>
+                <li><strong>-Dx11=ON</strong>: Enables X11 support (required for GUI features like <code>TCanvas</code>, <code>TBrowser</code>).</li>
+                <li><strong>-Dgui=ON</strong>: Enables ROOT's GUI components.</li>
+                <li><strong>-Dasimage=ON</strong>: Enables image support via ASImage (for manipulating and displaying images).</li>
+                <li><strong>-Deve=OFF</strong>: Disables EVE (Event Visualization Environment) to avoid extra dependencies.</li>
+                <li><strong>-Dopengl=OFF, -Dgl=OFF, -Drgl=OFF</strong>: Disables all OpenGL-based rendering and 3D visualization modules.</li>
+                <li><strong>-Dbuiltin_glew=OFF</strong>: Disables ROOT’s internal GLEW (since OpenGL is off anyway).</li>
+                <li><strong>-DCMAKE_INCLUDE_PATH=$CONDA_PREFIX/include</strong>: Adds this path for header file lookup.</li>
+                <li><strong>-DCMAKE_LIBRARY_PATH=$CONDA_PREFIX/lib</strong>: Adds this path for shared library (.so) lookup.</li>
+                <li><strong>-Wno-dev</strong>: Suppresses non-critical developer warnings during configuration.</li>
+              </ul>
 
               <h3 id="setting-up-jupyter">Installing Jupyter Notebook [optional]</h3>
               <p>
