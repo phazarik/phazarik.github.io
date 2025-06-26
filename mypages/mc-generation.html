@@ -64,7 +64,9 @@
                     <li><a href="#gridpack-to-lhe"> Gridpack &gg; LHE </a></li>
                     <li><a href="#lhe-to-gensim">LHE &gg; GENSIM</a></li>
                     <li><a href="#gensim-to-digiraw">GENSIM &gg; DIGIRAW</a></li>
-                    <li><a href="#digiraw-to-aodsim">DIGIRAW &gg; AODSIM</a></li>
+                    <li><a href="#digiraw-to-aod">DIGIRAW &gg; AOD</a></li>
+                    <li><a href="#aod-to-miniaod">AOD &gg; MINIAOD</a></li>
+                    <li><a href="#miniaod-to-nanoaod">MINIAOD &gg; NANOAOD</a></li>
                   </ul>
                 </li>
               </ul>
@@ -613,9 +615,9 @@
               <h2>Gridpack production in lxplus</h2>
               <hr />
               <p>
-                Previous sections describe how to generate MC completely locally, using delphes to approximate detector simulation. This section focuses on
-                generating gridpacks, which are required to produce MC samples within the CMSSW framework, where full detector simulation is performed using
-                GEANT4. This section is completely independant of the earlier ones.
+                Previous sections describe how to generate MC completely outside CMSSW framework, using delphes to approximate detector simulation. This section
+                focuses on generating gridpacks, which are required to produce MC samples within the CMSSW framework, where full detector simulation is
+                performed using GEANT4. This section is completely independent of the earlier ones.
               </p>
 
               <p>
@@ -893,13 +895,21 @@
               <h3 id="lhe-to-gensim">LHE &gg; GENSIM</h3>
               <p>
                 This step takes the parton-level LHE events and runs hadronization and particle showering using Pythia8 to produce GEN-SIM files that simulate
-                particles and their interactions with the detector. A CMSSW configuration is required for this step. First, set up the CMSSW environment and
-                directory structure as follows.
+                particles and their interactions with the detector. A CMSSW configuration is required for this step. The gridpack was produced with
+                <code>CMSSW_12_4_8</code>. However, I will proceed with <code>CMSSW_13_0_13</code> to match 2022 (preEE) MC conditions. First, set up the CMSSW
+                environment and directory structure as follows.
               </p>
+              <div class="alert-box">
+                <strong>Note: </strong> The exact CMSSW version used for this step typically does not matter much, as long as it is compatible with the target
+                era (e.g., Run 3). For Run 3, versions like <code>CMSSW_12_4_X</code> or <code>CMSSW_13_0_X</code> can be used interchangeably for GEN-SIM.
+                However, Run 2 productions require a separate branch of the <code>genproductions</code> repository and use an older version of MadGraph, along
+                with older CMSSW versions executed inside a <code>cmssw-el7</code> container. These setups are not interchangeable with the Run 3 setup.
+              </div>
               <pre class="brush:shell">
-                cd CMSSW_12_4_8/src/
-                cmsenv
-                mkdir -p Configuration/GenProduction/python
+                echo $SCRAM_ARCH   # It has to be compatible with the target CMSSW release
+                cmsrel CMSSW_13_0_13
+                cd CMSSW_13_0_13/src/
+                mkdir -p Configuration/GenProduction/python/
               </pre>
               <p>
                 The <code>Configuration/GenProduction/python</code> directory is used to store the fragment (configuration script) describing how to hadronize
@@ -909,26 +919,31 @@
               </p>
               <pre class="brush:python">
                 import FWCore.ParameterSet.Config as cms
+
                 from Configuration.Generator.Pythia8CommonSettings_cfi import *
-                from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *
+                from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *            ## Used till 2022
+                #from Configuration.Generator.MCTunesRun3ECM13p6TeV.PythiaCP5Settings_cfi import * ## From 2023 onwards
                 from Configuration.Generator.PSweightsPythia.PythiaPSweightsSettings_cfi import *
 
                 generator = cms.EDFilter("Pythia8ConcurrentHadronizerFilter",
+                    comEnergy = cms.double(13600.),
                     maxEventsToPrint = cms.untracked.int32(1),
                     pythiaPylistVerbosity = cms.untracked.int32(1),
-
                     pythiaHepMCVerbosity = cms.untracked.bool(False),
-                    comEnergy = cms.double(13600.),
+                    nAttempts = cms.uint32(1),
                     PythiaParameters = cms.PSet(
                         pythia8CommonSettingsBlock,
                         pythia8CP5SettingsBlock,
                         pythia8PSweightsSettingsBlock,
-                        parameterSets = cms.vstring('pythia8CommonSettings',
-                                                    'pythia8CP5Settings',
-                                                    'pythia8PSweightsSettings',
-                                                    )
+                        parameterSets = cms.vstring(
+                            'pythia8CommonSettings',
+                            'pythia8CP5Settings',
+                            'pythia8PSweightsSettings'
+                        )
                     )
                 )
+
+                ProductionFilterSequence = cms.Sequence(generator)
               </pre>
               <div class="alert-box">
                 <strong>Note:</strong> Make sure that the hadronization energy (in this case, <code>comEnergy = cms.double(13600.)</code>) matches the
@@ -948,22 +963,22 @@
               </p>
 
               <pre class="brush:shell">
-                cmsDriver.py \
-                Configuration/GenProduction/python/myfragment.py \
-                --filein file:../../cmsgrid_final.lhe \
-                --fileout file:VLLD_ele_M600_GENSIM.root \
-                --eventcontent RAWSIM \
-                --datatier GEN-SIM \
-                --beamspot Realistic25ns13p6TeVEarly2022Collision \
-                --step GEN,SIM \
-                --python_filename cfg_1_GENSIM.py \
-                --era Run3 \
-                --mc \
-                --geometry DB:Extended \
-                --no_exec \
-                --customise Configuration/DataProcessing/Utils.addMonitoring \
-                --conditions 124X_mcRun3_2022_realistic_v12 \
-                -n 10
+                cmsDriver.py Configuration/GenProduction/python/myfragment.py \
+                  --filein file:../../cmsgrid_final.lhe \
+                  --fileout file:VLLD_ele_M600_GENSIM.root \
+                  --mc \
+                  --eventcontent RAWSIM \
+                  --datatier GEN-SIM \
+                  --beamspot Realistic25ns13p6TeVEarly2022Collision \
+                  --step GEN,SIM \
+                  --nThreads 8 \
+                  --geometry DB:Extended \
+                  --era Run3 \
+                  --conditions 130X_mcRun3_2022_realistic_v5 \
+                  --customise Configuration/DataProcessing/Utils.addMonitoring \
+                  --python_filename cfg_1_GENSIM.py \
+                  --no_exec \
+                  -n 100
               </pre>
 
               <div class="alert-box">
@@ -984,7 +999,9 @@
                 from GEANT4, which emulates how those particles would interact with the CMS detector. This includes simulated energy deposits, tracking hits,
                 and digitized detector responses. The GEN-SIM step is notably <strong>slow and computationally heavy</strong> because of the detailed physics
                 and geometry involved in the simulation. While crucial for realistic MC production, such jobs are typically done on grid resources rather than
-                locally, except for small-scale validation like this.
+                locally, except for small-scale validation like this. During the validation, it also runs the GenXsecAnalyzer, which computes the cross-section
+                of the generated events, and displays the time taken per event. Estimation of <strong>time-per-event</strong> and
+                <strong>size-per-event</strong> is needed so that PdmV can estimate how long the central production might take.
               </p>
 
               <!--
@@ -1000,22 +1017,22 @@
                 am not providing a pileup dataset.
               </p>
               <pre class="brush:shell">
-                cmsDriver.py \
-                step1 \
-                --filein file:VLLD_ele_M600_GENSIM.root \
-                --fileout file:VLLD_ele_M600_DIGIRAW.root \
-                --eventcontent FEVTDEBUGHLT \
-                --datatier GEN-SIM-DIGI-RAW \
-                --step DIGI,L1,DIGI2RAW,HLT:@relval2022 \
-                --nThreads 8 \
-                --python_filename cfg_2_DIGIRAW.py \
-                --era Run3 \
-                --mc \
-                --geometry DB:Extended \
-                --no_exec \
-                --customise Configuration/DataProcessing/Utils.addMonitoring \
-                --conditions 124X_mcRun3_2022_realistic_v12 \
-                -n 10
+                cmsDriver.py step1 \
+                  --filein file:VLLD_ele_M600_GENSIM.root \
+                  --fileout file:VLLD_ele_M600_DIGIRAW.root \
+                  --eventcontent FEVTDEBUGHLT \
+                  --datatier GEN-SIM-DIGI-RAW \
+                  --step DIGI,L1,DIGI2RAW,HLT:@fake2 \
+                  --nThreads 8 \
+                  --geometry DB:Extended \
+                  --era Run3 \
+                  --conditions 130X_mcRun3_2022_realistic_v5 \
+                  --beamspot Realistic25ns13p6TeVEarly2022Collision \
+                  --customise Configuration/DataProcessing/Utils.addMonitoring \
+                  --python_filename cfg_2_DIGIRAW.py \
+                  --no_exec \
+                  --mc \
+                  -n 100
               </pre>
               <pre class="brush:shell">cmsRun cfg_2_DIGIRAW.py</pre>
 
@@ -1025,32 +1042,100 @@
               ####################
               -->
 
-              <h3 id="digiraw-to-aodsim">DIGIRAW &gg; AODSIM</h3>
+              <h3 id="digiraw-to-aod">DIGIRAW &gg; AOD</h3>
               <p>
                 In this step, the full detector reconstruction is performed on the RAW or DIGIRAW data, producing reconstructed physics objects such as tracks,
-                jets, electrons, and muons. This completes the previous digitization step and produces fully analysis-ready objects. That’s why the
-                <strong>step2</strong> argument is specified in the <code>cmsDriver.py</code> command, indicating the reconstruction stage. The configuration
-                for step2 should contain the same settings as step1 to ensure consistency.
+                jets, electrons, and muons. This completes the previous digitization step and produces fully analysis-ready objects.
               </p>
               <pre class="brush:shell">
-              cmsDriver.py \
-              step2 \
-              --filein file:VLLD_ele_M600_DIGIRAW.root \
-              --fileout file:VLLD_ele_M600_AOD.root \
-              --eventcontent AODSIM \
-              --datatier AODSIM \
-              --step RAW2DIGI,L1Reco,RECO,RECOSIM \
-              --nThreads 8 \
-              --python_filename cfg_3_AOD.py \
-              --era Run3 \
-              --mc \
-              --geometry DB:Extended \
-              --no_exec \
-              --customise Configuration/DataProcessing/Utils.addMonitoring \
-              --conditions 124X_mcRun3_2022_realistic_v12 \
-              -n 10
+                cmsDriver.py step2 \
+                  --filein file:VLLD_ele_M600_DIGIRAW.root \
+                  --fileout file:VLLD_ele_M600_AOD.root \
+                  --eventcontent AODSIM \
+                  --datatier AODSIM \
+                  --step RAW2DIGI,L1Reco,RECO,RECOSIM \
+                  --nThreads 8 \
+                  --geometry DB:Extended \
+                  --era Run3 \
+                  --conditions 130X_mcRun3_2022_realistic_v5 \
+                  --beamspot Realistic25ns13p6TeVEarly2022Collision \
+                  --customise Configuration/DataProcessing/Utils.addMonitoring \
+                  --python_filename cfg_3_AOD.py \
+                  --no_exec \
+                  --mc \
+                  -n 100
               </pre>
               <pre class="brush:shell">cmsRun cfg_3_AOD.py</pre>
+
+              <!--
+              ####################
+                    MINIAODSIM
+              ####################
+              -->
+
+              <h3 id="aodsim-to-miniaod">AOD &gg; MINIAOD</h3>
+              <p>
+                MINIAOD is a reduced format derived from AOD where reconstruction is not redone but the data is skimmed and slimmed to contain only essential
+                reconstructed objects and variables. Some high-level corrections and possibly DNN-based identification variables can be added at this stage.
+              </p>
+              <pre class="brush:shell">
+                cmsDriver.py step3 \
+                  --filein file:VLLD_ele_M600_AOD.root \
+                  --fileout file:VLLD_ele_M600_MINIAOD.root \
+                  --eventcontent MINIAODSIM \
+                  --datatier MINIAODSIM \
+                  --step PAT \
+                  --nThreads 8 \
+                  --geometry DB:Extended \
+                  --era Run3 \
+                  --conditions 130X_mcRun3_2022_realistic_v5 \
+                  --beamspot Realistic25ns13p6TeVEarly2022Collision \
+                  --customise Configuration/DataProcessing/Utils.addMonitoring \
+                  --python_filename cfg_4_MINIAOD.py \
+                  --no_exec \
+                  --mc \
+                  -n 100
+              </pre>
+              <pre class="brush:shell">cmsRun cfg_4_MINIAOD.py</pre>
+
+              <!--
+              ####################
+                    NANOAODSIM
+              ####################
+              -->
+
+              <h3 id="miniaod-to-nanoaod">MINIAOD &gg; NANOAOD</h3>
+              <p>
+                NanoAOD further reduces the data size for fast physics analysis, containing selected reconstructed objects and variables, often including DNN
+                outputs for particle identification or event classification. No reconstruction is performed here; it uses the objects produced in previous
+                steps.
+              </p>
+              <pre class="brush:shell">
+                cmsDriver.py step4 \
+                  --filein file:VLLD_ele_M600_MINIAOD.root \
+                  --fileout file:VLLD_ele_M600_NANOAOD.root \
+                  --eventcontent NANOAODSIM \
+                  --datatier NANOAODSIM \
+                  --step NANO \
+                  --nThreads 8 \
+                  --geometry DB:Extended \
+                  --era Run3 \
+                  --conditions 130X_mcRun3_2022_realistic_v5 \
+                  --beamspot Realistic25ns13p6TeVEarly2022Collision \
+                  --customise Configuration/DataProcessing/Utils.addMonitoring \
+                  --python_filename cfg_5_NANOAOD.py \
+                  --no_exec \
+                  --mc \
+                  -n 100
+              </pre>
+              <pre class="brush:shell">(cmsRun cfg_5_NANOAOD.py)>nanoaod.log</pre>
+              <div class="alert-box">
+                <strong>Note:</strong> If events fail during CMS production steps (e.g., GEN-SIM, DIGI-RAW, AOD, MiniAOD, NanoAOD), check the log for errors or
+                failed event numbers. To avoid crashes in the subsequent steps, you can reduce the number of events using <code>-n</code> or skip specific
+                events with <code>process.source.skipEvents</code>. To skip events that raise <code>ProductNotFound</code> errors automatically, add
+                <code>process.options = cms.untracked.PSet(SkipEvent = cms.untracked.vstring('ProductNotFound'))</code> to the config. Always validate the
+                outputs with <code>edmDumpEventContent</code> to ensure key branches are populated.
+              </div>
 
               <h3 id="gridpack-links">Important links</h3>
               <ul>
