@@ -147,11 +147,15 @@
                 during the build.
               </p>
               <pre class="brush:shell">
-                export CPATH=$CONDA_PREFIX/include:$CPATH
-                export C_INCLUDE_PATH=$CONDA_PREFIX/include:$C_INCLUDE_PATH
-                export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/include:$CPLUS_INCLUDE_PATH
-                export PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
-                export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+                # Only activate in interactive shell (otherwise SFTP may fail)
+                if [[ $- == *i* ]]; then
+                    export CPATH=$CONDA_PREFIX/include:$CPATH
+                    export C_INCLUDE_PATH=$CONDA_PREFIX/include:$C_INCLUDE_PATH
+                    export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/include:$CPLUS_INCLUDE_PATH
+                    export PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+                    export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+                    source ~/root_install/bin/thisroot.sh
+                fi
               </pre>
               <p>Make sure to source the <code>~/.bashrc</code> file after editing.</p>
 
