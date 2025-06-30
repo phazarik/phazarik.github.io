@@ -12,7 +12,7 @@ isospin_map = {"singlet": "0", "doublet": "-0.5"}
 ##Select run:
 run = 'run3'
 
-dump = 'cards_Run2'
+dump = 'cards_Run2UL'
 proton_E = 6500
 if run == 'run3':
     proton_E = 6800

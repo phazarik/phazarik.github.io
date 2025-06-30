@@ -15,7 +15,11 @@ dryrun = args.dryrun
 ## CONFIG ##
 run = "Run3"
 scram_arch = "el8_amd64_gcc10"
-cmssw_version = "CMSSW_12_4_8"
+cmssw_version = "CMSSW_13_0_13"
+
+if run=="Run2UL":
+    scram_arch = "slc7_amd64_gcc700"
+    cmssw_version = "CMSSW_10_6_26"
 
 ## Paths
 basedir = os.getcwd()
@@ -58,7 +62,7 @@ if not os.path.isdir(carddir):
 command = f"./gridpack_generation.sh {name} {carddir} local ALL {scram_arch} {cmssw_version}"
 print(f">> \033[33;3m{command}\033[0m\n")
 if dryrun:
-    print("\033[93mDry run mode — command not executed.\033[0m")
+    print("\033[93mDry run mode: command not executed.\033[0m")
     exit(0)
 
 ## Main ##
@@ -73,7 +77,7 @@ if result.returncode != 0:
     print("\033[31m!! Gridpack generation failed!\033[0m")
     exit(1)
 
-print("\033[94m ✓ Gridpack generation complete.\033[0m")
+print("\033[94m\n==> Gridpack generation complete.\033[0m")
 
 tarball = f"{name}_{scram_arch}_{cmssw_version}_tarball.tar.xz"
 source_tarball = os.path.join(mg5dir, tarball)
@@ -88,7 +92,7 @@ if not os.path.exists(source_tarball):
 try:
     subprocess.run(["cp", source_tarball, target_tarball], check=True)
     os.remove(source_tarball)
-    print("\033[94m ✓ Gridpack copied to EOS and removed from local disk.\033[0m\n")
+    print("\033[94m\n==> Gridpack copied to EOS and removed from local disk.\033[0m\n")
 
 except Exception as e:
     print(f"\033[31m!! Failed to move gridpack: {e}\033[0m")
