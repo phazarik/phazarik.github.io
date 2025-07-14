@@ -434,3 +434,13 @@ pre {
   padding-left: 5px;
   padding-right: 5px;
 }
+
+.syntaxhighlighter {
+  font-family: "Nunito Mono", monospace !important;
+  color: #444 !important;
+}
+.syntaxhighlighter .plain,
+.syntaxhighlighter .code {
+  font-family: "Nunito Mono", monospace !important;
+  color: #444 !important;
+}

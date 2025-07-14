@@ -1,0 +1,138 @@
+import os
+import argparse
+
+# ANSI color codes
+BLUE_B   = "\033[34;1m"
+YELLOW_B = "\033[33;1m"
+YELLOW_I = "\033[33;3m"
+GREEN_B  = "\033[32;3m"
+RED      = "\033[31;0m"
+RESET = "\033[0m"
+
+# Campaign settings dictionary
+campaign_settings = {
+    "2018_UL": {
+        "conditions": "106X_upgrade2018_realistic_v15",
+        "beamspot": "Realistic25ns13TeVEarly2018Collision",
+        "hlt": "HLT:@relval2018",
+        "era": "Run2_2018"
+    },
+    "Run3Summer22": {
+        "conditions": "130X_mcRun3_2022_realistic_v5",
+        "beamspot": "Realistic25ns13p6TeVEarly2022Collision",
+        "hlt": "HLT:@relval2022",
+        "era": "Run3"
+    }
+}
+
+# Global configuration variables
+global_config = {
+    "nThreads": 8,
+    "geometry": "DB:Extended",
+    "customise": "Configuration/DataProcessing/Utils.addMonitoring",
+    "no_exec": True,
+    "mc": True,
+    "n": 100,
+    "fragment": "Configuration/GenProduction/python/myfragment.py",
+    "base_name": "VLLD_ele_M600"
+}
+
+# Main configuration dictionary
+main = {
+    "GENSIM": {
+        "filein": "../../cmsgrid_final.lhe",
+        "fileout": f"{global_config['base_name']}_GENSIM.root",
+        "eventcontent": "RAWSIM",
+        "datatier": "GEN-SIM",
+        "step": "GEN,SIM",
+        "python_filename": "cfg_1_GENSIM.py"
+    },
+    "DIGIRAW": {
+        "filein": f"{global_config['base_name']}_GENSIM.root",
+        "fileout": f"{global_config['base_name']}_DIGIRAW.root",
+        "eventcontent": "FEVTDEBUGHLT",
+        "datatier": "GEN-SIM-DIGI-RAW",
+        "step": "DIGI,L1,DIGI2RAW,",
+        "python_filename": "cfg_2_DIGIRAW.py"
+    },
+    "AOD": {
+        "filein": f"{global_config['base_name']}_DIGIRAW.root",
+        "fileout": f"{global_config['base_name']}_AOD.root",
+        "eventcontent": "AODSIM",
+        "datatier": "AODSIM",
+        "step": "RAW2DIGI,L1Reco,RECO,RECOSIM",
+        "python_filename": "cfg_3_AOD.py"
+    },
+    "MINIAOD": {
+        "filein": f"{global_config['base_name']}_AOD.root",
+        "fileout": f"{global_config['base_name']}_MINIAOD.root",
+        "eventcontent": "MINIAODSIM",
+        "datatier": "MINIAODSIM",
+        "step": "PAT",
+        "runUnscheduled": True,
+        "python_filename": "cfg_4_MINIAOD.py"
+    },
+    "NANOAOD": {
+        "filein": f"{global_config['base_name']}_MINIAOD.root",
+        "fileout": f"{global_config['base_name']}_NANOAOD.root",
+        "eventcontent": "NANOAODSIM",
+        "datatier": "NANOAODSIM",
+        "step": "NANO",
+        "python_filename": "cfg_5_NANOAOD.py"
+    }
+}
+
+def generate_cmsdriver_command(step, config, campaign):
+    cmd = ["cmsDriver.py"]
+
+    if step == "GENSIM": cmd.append(global_config.get("fragment", ""))
+    else: cmd.append(f"step{list(main.keys()).index(step) + 1}")
+
+    if config.get("filein"): cmd.extend(["--filein", f"file:{config['filein']}"])
+    if config.get("fileout"): cmd.extend(["--fileout", f"file:{config['fileout']}"])
+    if config.get("eventcontent"): cmd.append(f"--eventcontent {config['eventcontent']}")
+    if config.get("datatier"): cmd.append(f"--datatier {config['datatier']}")
+    if config.get("step"):
+        step_value = config['step']
+        if step == "DIGIRAW" and campaign in campaign_settings and campaign_settings[campaign].get("hlt"):
+            step_value += campaign_settings[campaign]["hlt"]
+        cmd.append(f"--step {step_value}")
+    if global_config.get("nThreads"): cmd.append(f"--nThreads {global_config['nThreads']}")
+    if global_config.get("geometry"): cmd.append(f"--geometry {global_config['geometry']}")
+
+    if campaign in campaign_settings:
+        cmd.append(f"--conditions {campaign_settings[campaign]['conditions']}")
+        cmd.append(f"--beamspot {campaign_settings[campaign]['beamspot']}")
+        cmd.append(f"--era {campaign_settings[campaign]['era']}")
+
+    if global_config.get("customise"): cmd.append(f"--customise {global_config['customise']}")
+    if config.get("runUnscheduled"): cmd.append("--runUnscheduled")
+    if config.get("python_filename"): cmd.append(f"--python_filename {config['python_filename']}")
+    if global_config.get("no_exec"): cmd.append("--no_exec")
+    if global_config.get("mc"): cmd.append("--mc")
+    if global_config.get("n"): cmd.append(f"-n {global_config['n']}")
+
+    return cmd
+
+def main_function(dryrun=False, test=False, campaign="Run3Summer22"):
+    for step, config in main.items():
+        cmd_list = generate_cmsdriver_command(step, config, campaign)
+        formatted_command = " \\\n  ".join(cmd_list)
+        print(f"\n{YELLOW_B}==> Running {step} step: {RESET}")
+        print(f"{YELLOW_I}{formatted_command}{RESET}")
+
+        if not dryrun:
+            result = os.system(formatted_command)
+            if result == 0: print(f"\n{BLUE_B}Config file generated for {step} step.{RESET}")
+            else: print(f"{RED}\n!! Execution failed for {step} step with return code {result}.{RESET}")
+
+        if test: break
+    print("\nDone. Run the config files in the correct order as 'cmsRun <confile_file>'.\n")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Generate and execute cmsDriver.py commands")
+    parser.add_argument("--dryrun", action="store_true", help="Display commands without executing")
+    parser.add_argument("--test", action="store_true", help="Run only one step")
+    parser.add_argument("--campaign", default="Run3Summer22", help="Specify campaign (default: Run3Summer22)")
+    args = parser.parse_args()
+    main_function(dryrun=args.dryrun, test=args.test, campaign=args.campaign)

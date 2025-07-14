@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/syntax-highlighter/styles/shCoreEmacs.css" />
     <link rel="stylesheet" href="/syntax-highlighter/styles/shThemeDefault.css" />
     <!--Override styles here-->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Mono&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/mystyles/override.css" />
     <link rel="stylesheet" href="/mystyles/phone-compatibility.css" />
     <title>MC generation</title>
@@ -67,6 +68,7 @@
                     <li><a href="#digiraw-to-aod">DIGIRAW &gg; AOD</a></li>
                     <li><a href="#aod-to-miniaod">AOD &gg; MINIAOD</a></li>
                     <li><a href="#miniaod-to-nanoaod">MINIAOD &gg; NANOAOD</a></li>
+                    <li><a href="#validation-automation">Automation</a></li>
                   </ul>
                 </li>
               </ul>
@@ -1133,15 +1135,30 @@
                 outputs with <code>edmDumpEventContent</code> to ensure key branches are populated.
               </div>
 
+              <h3 id="validation-automation">Automation of the validation step</h3>
+              <p>
+                Once the LHE files are ready, the CMSSW configuration files for the subsequent steps can be automatically generated using the
+                <a href="/mypages/files/codes/mc-generation/generate_configs.py.txt" target="_blank"><code>generate_configs.py</code></a> file. This script is
+                currently configured to work with the 2018 and 2022-preEE MC campaigns. It generates all the configs described above, including the GENSIM,
+                DIGIRAW, AOD, MINIAOD, and NANOAOD steps. Usage:
+              </p>
+              <pre class="brush:shell">
+                python3 generate_configs.py --campaign Run3Summer22 
+              </pre>
+
               <h3 id="gridpack-links">Important links</h3>
               <ul>
                 <li>
-                  <a href="https://exo-mc-and-i.gitbook.io/exo-mc-and-interpretation/how-to-sample-request#id-2.-run-local-validation-test" target="_blank"
-                    >Running local validation in condor</a
-                  >
+                  <a href="https://exo-mc-and-i.gitbook.io/exo-mc-and-interpretation" target="_blank">EXO gitbook</a>
                 </li>
                 <li>
-                  <a href="https://twiki.cern.ch/twiki/bin/view/CMS/SUSObjectExperts" target="_blank">SUS contacts</a>
+                  <a href="https://nps-wiki.docs.cern.ch/" target="_blank">NPS internal documentation</a>
+                </li>
+                <li>
+                  <a href="https://twiki.cern.ch/twiki/bin/view/CMS/SUSObjectExperts" target="_blank">NPS MC contacts</a>
+                </li>
+                <li>
+                  <a href="https://gitlab.cern.ch/sus-pag/mc-and-interpretation/requests" target="_blank">NPS GitLab: MC requests [private access]</a>
                 </li>
                 <li>
                   <a href="https://github.com/cms-sw/genproductions" target="_blank">Generator fragments repository</a>
