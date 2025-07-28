@@ -771,10 +771,15 @@
                 which couple to muons in this example) is the following.
               </p>
               <pre class="brush:python">
-                define lepton = mu+ mu- vm vm~                                                          # Taken from YAML
-                generate p p > L L, (L > z lepton), (L > h lepton)                                      # Pair production
-                add process p p > N N, (N > w+ lepton), (N > w- lepton)                                 # Pair production
-                add process p p > L N, (L > z lepton), (L > h lepton), (N > w+ lepton), (N > w- lepton) # Associated production
+                import model VLL
+                define L = lp lp~
+                define N = vlp vlp~
+                define boson = w+ w- z h
+                define lepton   = e+ e- #Taken from YAML
+                generate p p > L L, (L > boson lepton)    #Pair production
+                add process p p > N N, (N > boson lepton) #Pair production
+                add process p p > L N, (L > boson lepton), (N > boson lepton) #Associated production
+                output VLLD_ele_M100 -nojpeg
               </pre>
               <p>
                 However, there is an issue with these for the low mass-point. For M = 100 GeV, some of the decay chains (e.g., L > higgs + lepton with mH = 125
@@ -945,7 +950,8 @@
               </pre>
               <div class="alert-box">
                 <strong>Note:</strong> Make sure that the hadronization energy (in this case, <code>comEnergy = cms.double(13600.)</code>) matches the
-                center-of-mass energy of the LHE events. This is crucial for correct hadronization and particle showering.
+                center-of-mass energy of the LHE events. This is crucial for correct hadronization and particle showering. Also, this fragment is not compatible
+                with <code>CMSSW_15_X_X</code>.
               </div>
               <p>Call it <code>myfragment.py</code>. Once the fragment is in place, compile the setup.</p>
               <pre class="brush:shell">

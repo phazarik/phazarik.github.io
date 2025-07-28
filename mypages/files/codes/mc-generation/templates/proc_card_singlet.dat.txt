@@ -1,6 +1,8 @@
 import model {model}
 define L = lp lp~
 define boson = w+ w- z h
-define lepton = {decay_lepton}
-generate p p > L L, (L > boson lepton)
+define lepton = {decay_lep}
+define neutrino = {decay_nu}
+define lepneu = lepton neutrino
+generate p p > L L, (L > boson lepneu)
 output {output_name} -nojpeg

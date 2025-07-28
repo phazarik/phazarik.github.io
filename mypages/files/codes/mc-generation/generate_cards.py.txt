@@ -10,7 +10,7 @@ with open("templates/run_card.dat") as f:          run_card_template     = f.rea
 isospin_map = {"singlet": "0", "doublet": "-0.5"}
 
 ##Select run:
-run = 'run3'
+run = 'run2'
 
 dump = 'cards_Run2UL'
 proton_E = 6500
@@ -28,10 +28,18 @@ for idx, (tag, info) in enumerate(modeldict.items()):
     model_archive = f"{model}.tar.gz"
 
     # Define decay leptons based on coupling
-    if   coupling == "mu":  decay_lepton = "mu+ mu- vm vm~"
-    elif coupling == "ele": decay_lepton = "e+ e- ve ve~"
-    elif coupling == "tau": decay_lepton = "ta+ ta- vt vt~"
-    else : decay_lepton = "e+ e- mu+ mu- ta+ ta- ve ve~ vm vm~ vt vt~"
+    if   coupling == "mu":
+        decay_lep = "mu+ mu-"
+        decay_nu  = "vm vm~"
+    elif coupling == "ele":
+        decay_lep = "e+ e-"
+        decay_nu  = "ve ve~"
+    elif coupling == "tau":
+        decay_lep = "ta+ ta-"
+        decay_nu  = "vt vt~"
+    else :
+        decay_lep = "e+ e- mu+ mu- ta+ ta-"
+        decay_nu  = "ve ve~ vm vm~ vt vt~"
 
     for mass in masses:
         count += 1
@@ -43,8 +51,8 @@ for idx, (tag, info) in enumerate(modeldict.items()):
         print(f"{count}. Processing cards for: {prefix} .. ", end = '\t')
 
         # 1) proc_card
-        if info["type"] == "singlet": proc = proc_singlet_template.format(model=model, decay_lepton=decay_lepton, output_name=prefix)
-        else:                         proc = proc_doublet_template.format(model=model, decay_lepton=decay_lepton, output_name=prefix)
+        if info["type"] == "singlet": proc = proc_singlet_template.format(model=model, decay_lep=decay_lep, decay_nu=decay_nu, output_name=prefix)
+        else:                         proc = proc_doublet_template.format(model=model, decay_lep=decay_lep, decay_nu=decay_nu, output_name=prefix)
         with open(os.path.join(outdir, f"{prefix}_proc_card.dat"), "w") as f: f.write(proc)
 
         # 2) customizecards
