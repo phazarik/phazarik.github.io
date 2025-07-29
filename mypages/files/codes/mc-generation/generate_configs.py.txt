@@ -134,8 +134,5 @@ if __name__ == "__main__":
     parser.add_argument("--dryrun", action="store_true", help="Display commands without executing")
     parser.add_argument("--test", action="store_true", help="Run only one step")
     parser.add_argument("--campaign", default="Run3Summer22", help="Specify campaign (default: Run3Summer22)")
-    parser.add_argument("--basename", required=True, help="Base name for output files (mandatory)")
     args = parser.parse_args()
-
-    global_config["base_name"] = args.basename
     main_function(dryrun=args.dryrun, test=args.test, campaign=args.campaign)
