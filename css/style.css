@@ -319,18 +319,20 @@ b {
   background-color: var(--primary-color) !important;
   border-bottom: none;
   box-shadow: none !important;
+  padding: 0.2rem 1rem;
 }
 .navbar .navbar-brand {
   font-size: 1.5rem;
   font-weight: 300;
   color: #fff !important;
+  padding: 0.25rem 0;
 }
 .navbar .nav-link {
   font-size: 1rem;
   font-weight: 400;
   color: #f4f4f4 !important;
   margin-left: 10px;
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-radius: 6px;
   line-height: 1.2;
   transition: background-color 0.2s, opacity 0.2s;
@@ -949,6 +951,25 @@ mjx-container {
    Responsive / Mobile
    ========================================================= */
 @media (max-width: 768px) {
+  /* headers */
+  h1 {
+    font-size: 1.6rem;
+  }
+  h2 {
+    font-size: 1.4rem;
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
+  h4 {
+    font-size: 1.05rem;
+  }
+  h5,
+  h6 {
+    font-size: 0.95rem;
+  }
+
+  /* Sidebar */
   aside.col-md-3 {
     width: 100% !important;
     padding: 0;
@@ -966,6 +987,19 @@ mjx-container {
   aside .d-grid .sub-btns {
     padding-left: 0;
   }
+  aside .d-grid .nav-btn {
+    font-size: 0.95rem;
+    padding: 8px 12px;
+  }
+  aside .d-grid .sub-btns .nav-sub-btn {
+    font-size: 0.95rem;
+    padding: 8px 12px 8px 22px; /* extra left padding for dot */
+  }
+  aside .d-grid .sub-btns .nav-sub-btn::before {
+    left: 8px;
+  }
+
+  /* Grid and columns */
   .container {
     padding: 10px;
   }
@@ -973,15 +1007,14 @@ mjx-container {
   .col-md-8 {
     margin-bottom: 15px;
   }
-  aside .d-grid .nav-btn,
-  aside .d-grid .sub-btns .nav-sub-btn {
-    font-size: 0.95rem;
-    padding: 8px 12px;
-  }
+
+  /* Sections */
   .section {
     padding: 6px 8px;
     margin: 8px 0;
   }
+
+  /* Figures */
   .subfigure-container {
     flex-direction: column;
     align-items: center;
@@ -989,33 +1022,6 @@ mjx-container {
   .subfigure {
     width: 100%;
   }
-}
-
-@media (max-width: 576px) {
-  figure.figure {
-    margin: 1rem auto;
-    padding: 0 0.5rem;
-  }
-  figure.figure figcaption {
-    font-size: 0.75rem;
-  }
-  .progress {
-    width: 100%;
-    height: 20px;
-    margin-bottom: 0.5rem;
-  }
-  .progress-bar {
-    font-size: 0.85rem;
-    line-height: 20px;
-    padding: 0 4px;
-  }
-  .section {
-    padding: 4px 6px;
-    margin: 6px 0;
-  }
-}
-
-@media (max-width: 767px) {
   .blog-figure {
     min-width: 50% !important;
     max-width: 100% !important;
@@ -1029,10 +1035,41 @@ mjx-container {
   .blog-figure-center figcaption {
     font-size: 0.85rem;
   }
+
+  /* Text */
+  p {
+    font-size: var(--font-size-small);
+  }
+  .assamese p {
+    font-size: var(--assamese-font-size-small);
+  }
 }
 
-@media (max-width: 768px) {
-  .assamese p {
-    font-size: var(--assamese-font-size-small); /* smaller on mobile */
+@media (max-width: 576px) {
+  /* Figures */
+  figure.figure {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+  figure.figure figcaption {
+    font-size: 0.75rem;
+  }
+
+  /* Progress bars */
+  .progress {
+    width: 100%;
+    height: 20px;
+    margin-bottom: 0.5rem;
+  }
+  .progress-bar {
+    font-size: 0.85rem;
+    line-height: 20px;
+    padding: 0 4px;
+  }
+
+  /* Sections */
+  .section {
+    padding: 4px 6px;
+    margin: 6px 0;
   }
 }
