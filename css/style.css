@@ -169,6 +169,10 @@ b {
   margin-bottom: 1rem;
 }
 
+.lead {
+  font-size: x-large;
+}
+
 .page-title {
   text-align: center;
   font-size: 3rem;
@@ -1054,15 +1058,15 @@ mjx-container {
 @media (width <= 768px) {
   /* headers */
   h1 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
 
   h2 {
-    font-size: 1.4rem;
+    font-size: x-large;
   }
 
   h3 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   h4 {
@@ -1072,6 +1076,25 @@ mjx-container {
   h5,
   h6 {
     font-size: 0.95rem;
+  }
+
+  .name {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+  }
+
+  .section-title {
+    font-size: x-large;
+  }
+
+  .page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin: 1rem 0;
   }
 
   /* Sidebar */
@@ -1154,6 +1177,8 @@ mjx-container {
 
   /* Text */
   p,
+  b,
+  strong,
   li,
   small,
   sub,
