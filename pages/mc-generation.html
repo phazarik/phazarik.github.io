@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MC generation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <link href="/css/style.css" rel="stylesheet" />
+
+    <!-- Highlight.js core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Highlight.js line-numbers plugin -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body>
+    <!-- header placeholder -->
+    <div id="header"></div>
+
+    <main class="container my-4">
+      <div class="row g-4">
+        <!-- Navigation (left side) -->
+        <aside class="col-md-3">
+          <section class="section">
+            <div class="d-grid gap-2">
+              <div class="nav-section"><a href="/pages/tools.html">Tools</a> &gt; <a href="#">MC generation</a></div>
+
+              <button class="nav-btn">Setting up locally</button>
+              <div class="sub-btns">
+                <a href="#local-madgraph" class="nav-sub-btn"> Setting up MadGraph </a>
+                <a href="#local-hepmc3" class="nav-sub-btn"> Setting up HepMC3 </a>
+                <a href="#local-pythia" class="nav-sub-btn"> Setting up PYTHIA </a>
+                <a href="#local-delphes" class="nav-sub-btn"> Setting up Delphes </a>
+              </div>
+              <button class="nav-btn">Toy example</button>
+              <div class="sub-btns">
+                <a href="#toy-generation" class="nav-sub-btn"> Generation </a>
+                <a href="#toy-hadronization" class="nav-sub-btn"> Hadronization </a>
+                <a href="#toy-simulation" class="nav-sub-btn"> Simulation </a>
+                <a href="#toy-hadronization-simulation" class="nav-sub-btn"> PYTHIA8 + Delphes </a>
+              </div>
+              <button class="nav-btn">MadGraph <i class="bi bi-arrow-right"></i> Gridpack</button>
+              <div class="sub-btns">
+                <a href="#gridpack-setting-up" class="nav-sub-btn"> Setting up the work area </a>
+                <a href="#gridpack-cards" class="nav-sub-btn"> Generating cards </a>
+                <a href="#gridpack-generation" class="nav-sub-btn"> Generating one gridpack </a>
+              </div>
+              <button class="nav-btn">Gridpack <i class="bi bi-arrow-right"></i> NanoAOD</button>
+              <div class="sub-btns">
+                <a href="#gridpack-to-lhe" class="nav-sub-btn"> Gridpack <i class="bi bi-arrow-right"></i> LHE </a>
+                <a href="#lhe-to-gensim" class="nav-sub-btn">LHE <i class="bi bi-arrow-right"></i> GENSIM</a>
+                <a href="#gensim-to-digiraw" class="nav-sub-btn"> GENSIM <i class="bi bi-arrow-right"></i> DIGIRAW</a>
+                <a href="#digiraw-to-aod" class="nav-sub-btn"> DIGIRAW <i class="bi bi-arrow-right"></i> AOD</a>
+                <a href="#aod-to-miniaod" class="nav-sub-btn"> AOD <i class="bi bi-arrow-right"></i> MINIAOD</a>
+                <a href="#miniaod-to-nanoaod" class="nav-sub-btn"> MINIAOD <i class="bi bi-arrow-right"></i> NANOAOD</a>
+                <a href="#validation-automation" class="nav-sub-btn"> Automation</a>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Main content -->
+        <div class="col-md-9">
+          <!-- Text -->
+          <section class="section">
+            <h1 class="page-title">Private MC sample generation</h1>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Setting up the tools locally</h2>
+
+            <p>
+              In CMS, the SM processes are generated and simulated centrally, and we don't have to worry about them. But for a specific BSM search, a physicist
+              has to take care of the BSM samples themselves, if they are not being handled already. For this section, I am using vector-like leptons as a
+              reference BSM signal [<a href="https://arxiv.org/abs/1510.03456" target="_blank">arXiv:1510.03556</a>]. First, we need to integrate this new
+              physics model to the existing standard model in an event generator like MadGraph. Typically, theorists share their BSM model in the Universal
+              FeynRules Output (UFO) format, which contain automatized matrix-element generators. These files contain python modules which can be easily
+              included as an extension to MadGraph. This allows us to play with the new particles and the Feynman rules associated with them. I have taken the
+              latest VLL UFO file from the repository:
+              <a href="https://github.com/prudhvibhattiprolu/VLL-UFOs" target="_blank">github.com/prudhvibhattiprolu</a>.
+            </p>
+            <p>This is the order of installation for this setup.</p>
+            <ol>
+              <li>Setting up MadGraph along with the BSM models.</li>
+              <li>Building HepMC3.</li>
+              <li>Installing and configuring pythia for hadronization.</li>
+              <li>Building Delphes for detector simulation.</li>
+            </ol>
+
+            <p>
+              Here are some important packages <strong>required before installation</strong>. I am mentioning the versions that I have in my setup, but any
+              recent versions should also work fine. I recommend using conda to install everything. It's important that ROOT is build with the same Python
+              version that is used here. For detailed instructions on how to handle Python environments and install ROOT properly, visit
+              <a href="/mypages/fornoobs.html">here</a>.
+            </p>
+
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Packages</th>
+                  <th>Versions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>python</td>
+                  <td>3.10.9</td>
+                </tr>
+                <tr>
+                  <td>cmake</td>
+                  <td>3.22.1</td>
+                </tr>
+                <tr>
+                  <td>git</td>
+                  <td>2.34.1</td>
+                </tr>
+                <tr>
+                  <td>g++, gcc</td>
+                  <td>11.4.0</td>
+                </tr>
+                <tr>
+                  <td>ROOT</td>
+                  <td>6.26/10</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              I would also recommend to keep all of these MC-generation tools inside the same directory. For me, the working directory is
+              <code>/home/phazarik/mcgeneration</code>.
+            </p>
+
+            <hr />
+
+            <h3 id="local-madgraph">Setting up MadGraph, including the BSM models</h3>
+            <p>
+              MadGraph can be downloaded from the <a href="https://launchpad.net/mg5amcnlo" target="_blank">official website</a>. Building is not needed. The
+              binary file is available at <code>mg5amcnlo/bin/mg5_aMC</code>. I have given the full path to MadGraph in my <code>.bashrc</code> file as follows.
+            </p>
+            <pre><code class="language-bash">alias mg5="/home/phazarik/mcgeneration/mg5amcnlo/bin/mg5_aMC"</code></pre>
+            <p>
+              If you are not importing any BSM model, MadGraph setup is done. In case of any BSM model (like VLL in my case), the BSM models are unpacked into
+              the MadGraph directory as follows.
+            </p>
+            <pre><code class="language-bash">
+/home/phazarik/mcgeneration/mg5amcnlo/models/VLLS_NLO
+/home/phazarik/mcgeneration/mg5amcnlo/models/VLLD_NLO
+              </code> </pre>
+            <p>
+              These model files in my example are compatible with MadGraph version v2 that was built on python2, but should also work with the latest MadGraph
+              v3 that uses python3. In order to use MadGraph v3, these model files are made compatible with python3, and then imported into MadGraph as follows.
+            </p>
+            <pre><code class="language-bash">
+mg5                        # Takes me into MadGraph interface.
+set auto_convert_model T   # For compatibility with python3.
+import model VLLD_NLO
+            </code> </pre>
+
+            <p>If the following outputs pop-up successfully, then the setup is ready.</p>
+            <pre><code class="language-plain">
+INFO: Change particles name to pass to MG5 convention <br>
+the definition of 'j' and 'p' to 5 flavour scheme. <br>
+definitions of multiparticles l+ / l- / vl / vl~ unchanged <br>
+multiparticle all = g ghg ghg~ u c d s b u~ c~ d~ s~ b~ a gha gha~ ve vm vt e- mu- ta- ve~ vm~ vt~ e+ mu+ ta+ t t~ z w+ ghz ghwp ghwm h w- ghz~
+ghwp~ ghwm~ taup nup taup~ nup~ <br>
+INFO: Change particles name to pass to MG5 convention <br>
+definitions of multiparticles p / j / l+ / l- / vl / vl~ unchanged <br>
+multiparticle all = g ghg ghg~ u c d s b u~ c~ d~ s~ b~ a gha gha~ ve vm vt e- mu- ta- ve~ vm~ vt~ e+ mu+ ta+ t t~ z w+ ghz ghwp ghwm h w- ghz~
+ghwp~ ghwm~ taup nup taup~ nup~
+            </code></pre>
+
+            <hr />
+
+            <h3 id="local-hepmc3">Setting up HepMC3</h3>
+            <p>
+              HepMC is widely used for exchanging event information between event generators and detector simulation tools. For this exercise, HepMC3 can be
+              downloaded from <a href="https://gitlab.cern.ch/hepmc/HepMC3" target="_blank">GitLab</a>. Some usage instructions are available
+              <a href="https://pythia.org/latest-manual/HepMCInterface.html" target="_blank">here</a>.
+            </p>
+
+            <div class="alert alert-warning">⚠️ Building HepMC3 is required before installing pythia, because PYTHIA configuration is done with HepMC3.</div>
+
+            <p>HepMC3 can be brought from GitLab and built as follows.</p>
+
+            <pre><code class="language-bash">
+git clone https://gitlab.cern.ch/hepmc/HepMC3.git # This will create a source directory called 'HepMC3'.
+mkdir hepmc3_build  hepmc3_install                # This will create two directories where hepmc3 is built and installed.
+cd hepmc3_build                                   # This is where building hepmc3 happens.
+cmake -DCMAKE_INSTALL_PREFIX=../hepmc3_install -Dmomentum:STRING=GEV -Dlength:STRING=MM ../HepMC3
+make                                              # This requires the C++ compilers (as checked by the previous command), and takes some time.
+make install                                      # This will transfer files to the install directory.
+</code></pre>
+
+            <div class="alert alert-warning">
+              ⚠️ HepMC3 is built with a certain Python version. Changing the Python version (or the conda environment) while using HepMC3 might cause problems
+              later.
+            </div>
+
+            <hr />
+
+            <h3 id="local-pythia">Setting up PYTHIA</h3>
+            <p>
+              PYTHIA is a program for simulating particle interactions as well as hadronization. It can be downloaded from the
+              <a href="https://www.pythia.org/" target="_blank">official website</a>. Installation instructions are provided there. The following steps are used
+              to install pythia with HepMC3 configuration. Make sure to <strong>give the full path to HepMC3</strong> during configuration. I am using version
+              8.312, but these instructions are valid for all versions.
+            </p>
+            <pre><code class="language-bash">
+wget https://www.pythia.org/download/pythia83/pythia8312.tgz  # Downloading pythia.
+tar xvfz pythia8312.tgz                                       # Unzipping the tarball.
+cd pythia8312
+              </code></pre>
+            <p>
+              In the configuration, I am including the HepMC3 library. For this, I need to put the full path to HepMC3 along with the
+              <code>./configure</code> command as follows.
+            </p>
+            <pre><code class="language-bash">
+./configure --with-hepmc3=/home/phazarik/mcgeneration/hepmc3_install
+ 
+# Alternative build commands:
+#./configure --with-hepmc3=/home/phazarik/mcgeneration/hepmc3_install \
+#            --with-python-include=/home/phazarik/miniconda3_backup_2024_10_09/envs/analysis/include/python3.10 \
+#            --with-python-bin=/home/phazarik/miniconda3_backup_2024_10_09/envs/analysis/bin
+# ./configure
+# ./configure --with-python
+ 
+#If everything goes right, the following report should pop up.
+#---------------------------------------------------------------------
+#|                    PYTHIA Configuration Summary                   |
+#---------------------------------------------------------------------
+#  Architecture                = LINUX
+#  C++ compiler     CXX        = g++
+#  C++ dynamic tags CXX_DTAGS  = -Wl,--disable-new-dtags
+#  C++ flags        CXX_COMMON = -O2 -std=c++11 -pedantic -W -Wall -Wshadow -fPIC -pthread
+#  C++ shared flag  CXX_SHARED = -shared
+#  Further options             =
+ 
+#The following optional external packages will be used:
+#+ HEPMC3 (-I/home/phazarik/mcgeneration/hepmc3_install/include)
+ 
+make clean                       # Removes temporary files from previous attempts, if any.
+make                             # This takes a couple of minutes.
+              </code></pre>
+            <p>
+              Hadronization happens in the <code>pythiaXXXX/examples</code> directory. That's why I have built pythia in my work-area for my convenience. But it
+              can also be kept along with the other tools and export the output files to work-area for the next steps. Anyway, once pythia is build, I added the
+              following paths to my <code>.bashrc</code> file, which is needed for C++ compilation of the hadronizer codes.
+            </p>
+
+            <pre><code class="language-bash">
+export PYTHIA8=/mnt/d/work/temp/mcgeneration/pythia8312
+export PYTHIA8DATA=$PYTHIA8/share/Pythia8/xmldoc
+export PATH=$PYTHIA8/bin:$PATH
+export LD_LIBRARY_PATH=$PYTHIA8/lib:$LD_LIBRARY_PATH
+              </code></pre>
+
+            <hr />
+
+            <h3>If you are a big fan of Python ... [optional]</h3>
+            <p>
+              In some of the examples, I have also seen PYTHIA used in a python based interface. For this, one can easily install PYTHIA and HepMC3 using
+              conda-forge. But this is not important for the <a href="#toy">toy example</a> that I have shared in the next section. For a new user, I would not
+              recommend this, because managing multiple versions of tools is messy.
+            </p>
+            <pre><code class="language-bash">
+conda install -c conda-forge pythia8        # not important
+conda install -c conda-forge hepmc3         # not important
+            </code></pre>
+
+            <p>
+              I also found a nice YouTube video on this Python based PYTHIA interface, which is a part of an
+              <a href="https://hepsoftwarefoundation.org/" target="_blank">HSF</a> workshop. This video broadly covers the basics of a lot of things that can be
+              done with PYTHIA, starting from event generation.
+            </p>
+            <div class="row">
+              <div class="col-md-8 col-md-offset-2">
+                <div class="media">
+                  <iframe
+                    width="560"
+                    height="315"
+                    src="https://www.youtube.com/embed/U8tPBxONr94?si=TzFEtnWau5p5Olwk"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+            <h3 id="local-delphes">Setting up Delphes</h3>
+            <p>
+              Delphes is a fast simulation framework for high-energy physics detectors. The Delphes outputs are equivalent to NanoAOD, but the information is
+              structured differently in the ROOT files. It can be downloaded from the
+              <a href="https://github.com/delphes/delphes" target="_blank">GitHub</a> repository. Installation instructions are available there as well.
+              Building delphes is pretty straight forward.
+            </p>
+            <pre><code class="language-bash">
+git clone https://github.com/delphes/delphes.git
+cd delphes
+make             # This takes a couple of minutes
+            </code></pre>
+
+            <h3>Wrapping up ... [optional]</h3>
+            <p>
+              In some examples, PYTHIA, HEPMC3 etc. can be used from the MadGraph interface itself (I'm exploring it, not an expert yet). For this, paths to
+              PYTHIA and Delples should be included in MadGraph configuration. This has to be done once. I also added my fastjet setup, in case I need it later.
+            </p>
+            <pre><code class="language-bash">
+set pythia8_path /home/phazarik/mcgeneration/pythia8312
+set delphes_path /home/phazarik/mcgeneration/delphes
+set fastjet /home/phazarik/fastjet-3.4.2/bin/fastjet-config          #optional
+            </code></pre>
+            <p>
+              These paths are needed only when the hadronization etc is done inside MadGraph itself, by importing these modules. But in the
+              <a href="#toy">toy example</a>, I am doing each step of the sample generation individually. These paths can also be added manually by editing the
+              <code>input/mg5_configuration.txt</code> file in the MadGraph directory. Also, MadGraph may ask for something called <code>lhapdf</code>, which is
+              a standard tool for evaluating parton distribution functions (PDFs). This can be installed using conda as follows.
+            </p>
+
+            <pre><code class="language-bash">
+conda install -c conda-forge lhapdf
+            </code></pre>
+
+            <p>After these installations, following are the list of MC-generation tools I have in my setup.</p>
+
+            <table class="table table-striped table-bordered" style="width: 35%">
+              <thead>
+                <tr>
+                  <th>Packages</th>
+                  <th>Versions</th>
+                  <th>Sources</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>mg5amnlo</td>
+                  <td>3.5.4</td>
+                  <td><a href="https://github.com/mg5amcnlo/mg5amcnlo.git" target="_blank">GitHub</a></td>
+                </tr>
+                <tr>
+                  <td>hepmc3</td>
+                  <td>3.3.0</td>
+                  <td><a href="https://gitlab.cern.ch/hepmc/HepMC3.git" target="_blank">GitLab</a></td>
+                </tr>
+                <tr>
+                  <td>pythia</td>
+                  <td>8.312</td>
+                  <td><a href="https://www.pythia.org/" target="_blank">pythia.org</a></td>
+                </tr>
+                <tr>
+                  <td>delphes</td>
+                  <td>3.5.0</td>
+                  <td><a href="https://github.com/delphes/delphes.git" target="_blank">GitHub</a></td>
+                </tr>
+                <tr>
+                  <td>lhapdf</td>
+                  <td>6.5.4</td>
+                  <td>conda-forge</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="alert alert-info">
+              ℹ️ Pythia, HepMC and Delphes can also be installed by simply going to the MadGraph prompt and running <code>install pythia8</code> (for pythia and
+              HepMC together) and <code>install Delphes</code> (for Delphes alone). These are kept in <code>mg5amcnlo/HEPTools</code>. But I don't trust it yet,
+              and there is no control on the versions. I prefer to do it manually.
+            </div>
+
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <br />
+          </section>
+
+          <section class="section">
+            <h2 class="section-title" id="toy">Toy example</h2>
+
+            <p>
+              The flowchart below illustrates the event simulation workflow I am going to use. The process begins with generation using MadGraph, where
+              parton-level events are generated in the LHE format. The output LHE file is then fed into PYTHIA for hadronization, where partons are converted
+              into physical hadrons, resulting in a DAT file. Finally, detector simulation is done using Delphes with a CMS card, which simulate how the CMS
+              would record these events, producing a ROOT file that can be used for further analysis.
+            </p>
+
+            <div class="mermaid" style="font-size: small">
+              graph LR; A[<strong>Generation</strong> in MadGraph <br />
+              Input: Interaction parameters, Output: LHE] --> B[<strong>Hadronization</strong> in pythia <br />
+              Input: LHE file, Output: DAT file]; B --> C[<strong>Simulation</strong> in delphes <br />
+              Input: HepMC file, Output: ROOT file ];
+            </div>
+
+            <hr />
+
+            <h3 id="toy-generation">Generation (QFT &rarr; LHE through MadGraph)</h3>
+            <p>
+              In the generation phase, tools like MadGraph are used to simulate hard scattering events based on quantum field theory. MadGraph takes in a
+              process definition and a set of parameters from the run_card and param_card. The input file typically consists of these cards and configuration
+              files, which define the physics process and the collider setup. The output of this phase is in the LHE format (Les Houches Event), a standardized
+              text file that contains detailed information about the parton-level event, such as particle IDs, momenta, and event weights. The LHE file serves
+              as the bridge to further event processing.
+            </p>
+            <p>
+              Let's try to generate a simple Drell-Yan process: \( pp \to Z \to \ell\ell \). For this, be in your work area, go to MadGraph prompt, and define
+              the process.
+            </p>
+            <pre><code class="language-python">
+mg5                       # my shortcut for opening MadGraph prompt.
+ 
+# Now inside MadGraph prompt.
+display particle          # displays all the available individual particles.
+display multiparticles    # displays all the labels for groups of particles.
+generate p p > z > l+ l-
+output ppToZToLL 
+exit
+            </code></pre>
+            <p>
+              The <code>output</code> line creates a new directory containing the pp &rarr; Z &rarr; ll process, including the run-cards and param-cards etc. In
+              principle, all of these can be done in a single step in the MadGraph prompt, but it's convenient to customize the parameters later. The cards are
+              kept at <code>ppToZToLL/Cards</code>. Let's edit the <code>run_card.dat</code> file and change/add some important parameters as follows, and keep
+              everything else as it is.
+            </p>
+            <pre><code class="language-plain">
+#Edited line:
+100  = nevents ! Number of unweighted events requested, changed to 10
+
+#Newly added lines:
+# -- customize according to your need --
+            </code></pre>
+            <p>
+              The <code>ppToZToLL/bin</code> directory contains the binaries used to run the event generator, and <code>ppToZToLL/Events</code> contains the
+              outputs for each run. Let's run a test and see what it does. Be inside the ppToZToLL directory and run the following.
+            </p>
+            <pre><code class="language-bash">./bin/generate_events testrun -f > /dev/null 2>&1</code></pre>
+            <ul>
+              <li><code>testrun</code> : name of the directory to be generated inside ppToZToLL/Events</li>
+              <li><code>-f</code> : suppresses the MadGraph CLI prompts and takes the parameters from run_card.</li>
+              <li><code>> /dev/null 2>&1</code> : Suppresses any GUI related issues (in WSL)</li>
+            </ul>
+            <p>
+              This creates a <code>ppToZToLL/Events/testrun</code> directory containing a <code>.gz</code> file which can be unzipped and used for later
+              purposes.
+            </p>
+            <pre><code class="language-bash">
+cd Events/testrun
+                gunzip unweighted_events.lhe.gz
+            </code></pre>
+            <p>
+              This unzipped LHE file, <code>unweighted_events.lhe</code>, contains all the generated parton-level information, including particle IDs, momenta,
+              event weights, and other metadata.
+            </p>
+
+            <hr />
+
+            <h3 id="toy-hadronization">Hadronization (LHE &rarr; DAT through PYTHIA and HepMC3)</h3>
+            <p>
+              The hadronization step happens in the <code>pythiaXXXX/examples</code> directory. For this, we need a code that reads the lhe file and hadronizes
+              them, and edit <code>pythiaXXXX/examples/Makefile</code> to include this code so that it is compiled along with the rest of the staff.
+            </p>
+            <ul>
+              <li>
+                The hadronizer file is named <code>hadlhe.cc</code>, and can be found <a href="/files/codes/mc-generation/hadlhe.cc" target="_blank">here</a>.
+              </li>
+              <li>
+                The updated <code>Makefile</code> can be found <a href="/files/codes/mc-generation/Makefile_for_pythia.txt" target="_blank">here</a>, and should
+                replace the old one.
+              </li>
+            </ul>
+            <p>These files can also be directly downloaded into the correct directory as follows.</p>
+            <pre><code class="language-bash">
+cd [path to pythia]/examples
+wget -O hadlhe.cc https://raw.githubusercontent.com/phazarik/phazarik.github.io/main/files/codes/mc-generation/hadlhe.cc
+wget -O Makefile https://raw.githubusercontent.com/phazarik/phazarik.github.io/main/files/codes/mc-generation/Makefile_for_pythia.txt
+# needs to be updated
+            </code></pre>
+            <p>
+              The <code>hadlhe.cc</code> file should be edited to give the correct path to the input LHE file that was generated using MadGraph, the number of
+              events in the input file, and a desired output path for the <code>dat</code> file that contains the hadronized outputs. This <code>dat</code> file
+              is later imported in Delphes for detector simulation. The hadronizer is executed as follows.
+            </p>
+            <pre><code class="language-bash">
+# inside the examples directory
+make clean               # to get rid of any previous compiled files
+make hadlhe              # this looks fof hadlhe.cc, compiles it, and creates an executable
+./hadlhe                 # execution
+            </code></pre>
+
+            <hr />
+
+            <h3 id="toy-simulation">Simulation (DAT &rarr; ROOT through Delphes)</h3>
+            <p>
+              Delphes simulation can be run using the executable <code>DelphesHepMC3</code> followed by the arguments: card-name, output-file and input-file.
+              The first two arguments are the same in every case, so I added them in my bashrc as follows.
+            </p>
+            <pre><code class="language-bash">alias delphes="/home/phazarik/mcgeneration/delphes/DelphesHepMC3 /home/phazarik/mcgeneration/delphes/cards/delphes_card_CMS.tcl"</code></pre>
+            <p>For this toy example, I ran the following from my work-directory to produce a delphes tree.</p>
+            <pre><code class="language-bash">delphes testroot.root pythia8312/examples/ppToZToLL_10.dat</code></pre>
+
+            <hr />
+
+            <h3 id="toy-hadronization-simulation">Hadronization and Simulation [combined step]</h3>
+            <p>
+              So far, the whole MC production process is done step-by-step. First, event generation at the LHE level, then producing the hadronized gen-level
+              information using PYTHIA, and then detector simulation using Delphes. This whole exercise is done for understanding what happens at the back-end.
+              The hadronization step produces large dat files, which needs to be handled by Delphes before being useful. It turns out that this extra step can
+              be avoided by merging the work of Delphes and PYTHIA, which is illustrated in the flowchart below.
+            </p>
+            <div class="mermaid" , style="font-size: small; align-items: center">
+              graph LR; A[<strong>Generation</strong> in MadGraph <br />
+              Input: Interaction parameters, Output: LHE] --> B[<strong>Hadronization and Simulation</strong> in Delphes <br />
+              Input: LHE, PYTHIA config file, Output: ROOT file];
+            </div>
+
+            <p>For this the following things need to be done.</p>
+            <ul>
+              <li>
+                Make sure that the PYTHIA paths are available. The following lines can be added to <code>.bashrc</code>.
+                <pre><code class="language-bash">
+export PYTHIA8=[path to pythia8312] #Give the full path here
+export PYTHIA8DATA=$PYTHIA8/share/Pythia8/xmldoc
+export PATH=$PYTHIA8/bin:$PATH
+ export LD_LIBRARY_PATH=$PYTHIA8/lib:$LD_LIBRARY_PATH
+                </code></pre>
+              </li>
+              <li>
+                Configure Delphes with PYTHIA8.
+                <pre><code class="language-bash">
+cd /home/phazarik/mcgeneration/delphes
+make clean
+make HAS_PYTHIA8=true   # This will take a while
+                </code></pre>
+              </li>
+              <li>
+                Write a PYTHIA config file for the process as <code>pythia8_ppToZToLL.cfg</code>, and keep it in the process directory. This contains a specific
+                set of instructions that is needed during hadronization, including the path to the input files, how many events to process, etc. This file is
+                fed as an input to Delphes. If the number of events specified in the configuration does not match the number of events available in the LHE
+                file, PYTHIA will still proceed with whatever number of events it can read.
+                <pre><code class="language-plain">
+! Pythia8 configuration for pp -> Z -> LL process
+ 
+Main:numberOfEvents = 10     ! Number of events to simulate
+Main:timesAllowErrors = 10   ! How many errors Pythia will allow before stopping
+ 
+! Set up beam parameters
+Beams:idA = 2212              ! Proton beam
+Beams:idB = 2212              ! Proton beam
+Beams:eCM = 13000.0           ! Center-of-mass energy in GeV
+ 
+! Load the LHEF events generated by MadGraph
+Beams:LHEF = /mnt/d/work/temp/mcgeneration/ppToZToLL/Events/testrun/unweighted_events.lhe
+ 
+! Pythia8-specific physics settings
+WeakSingleBoson:ffbar2gmZ = on   ! Enable Z boson production
+23:onMode = off                  ! Turn off all Z decays
+23:onIfAny = 11 13               ! Allow only decays to leptons (e+ e- and mu+ mu-)
+ 
+! Hadronization and jet clustering
+HadronLevel:all = on
+                </code></pre>
+              </li>
+              <li>
+                Instead of running <code>DelphesHepMC3</code>, run <code>DelphesPythia8</code> along with the CMS card. For this, I created an alias in the
+                <code>.bashrc</code> file for my convenience.
+                <pre><code class="language-bash">
+alias delphespythia="/home/phazarik/mcgeneration/delphes/DelphesPythia8 /home/phazarik/mcgeneration/delphes/cards/delphes_card_CMS.tcl"
+                </code></pre>
+              </li>
+            </ul>
+            <p>Once these changes are made, the following can be run from the work-directory.</p>
+            <pre><code class="language-bash">
+delphespythia ppToZToLL/pythia8_ppToZToLL.cfg test_output.root
+                </code></pre>
+            <p>
+              I find it convenient because I don't have to go to the <code>pythia8312/examples</code> directory and create a mess there with all the temporary
+              folders, and deal with the DAT files. However, this method complains about some missing libraries related to <code>ExRootAnalysis</code> at the
+              beginning, and ROOT prompts some warnings about the same while loading the output files. But as long as we are not using those features, it's
+              fine.
+            </p>
+
+            <div class="alert alert-success">
+              <h5 style="margin: 0.25rem 0 0.75rem 0">✅ Summary</h5>
+              <ol>
+                <li>
+                  Generate LHE events in MadGraph.
+                  <ul>
+                    <li>Define the processes carefully in the MadGraph prompt.</li>
+                    <li>Save the process by doing <code>output processname</code>.</li>
+                    <li>Edit <code>run_card.dat</code> and specify the number of events.</li>
+                    <li>Run <code>./bin/generate_events testrun</code>.</li>
+                    <li>Unzip the output file in <code>Events/testrun</code>.</li>
+                  </ul>
+                </li>
+                <li>
+                  Run hadronization and detector simulation.
+                  <ul>
+                    <li>Write a PYTHIA config file mentioning the path to the LHE file along with hadronization parameters and how many events to run on.</li>
+                    <li>Run <code>delphes/DelphesPythia8</code> by providing the CMS card, the PYTHIA config file, and the output file as arguments.</li>
+                  </ul>
+                </li>
+              </ol>
+            </div>
+
+            <p>
+              For analyzing Delphes trees and writing histograms, I created a <code>MakeSelelector()</code> based setup with instructions available in this
+              <a href="https://github.com/phazarik/delphes_analyzer" target="_blank">GitHub repository</a>.
+            </p>
+
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <br />
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Gridpack production in lxplus</h2>
+
+            <p>
+              Previous sections describe how to generate MC completely outside CMSSW framework, using delphes to approximate detector simulation. This section
+              focuses on generating gridpacks, which are required to produce MC samples within the CMSSW framework, where full detector simulation is performed
+              using GEANT4. This section is completely independent of the earlier ones.
+            </p>
+
+            <p>
+              MC generation in CMS follows a standard sequence: <strong>Gridpack &gt; LHEGS &gt; Premix &gt; AODSIM &gt; MINIAODSIM &gt; NANOAODSIM</strong>.
+              These steps include event generation (e.g., MadGraph), parton showering and hadronization (Pythia), detector simulation (GEANT4 via CMSSW), and
+              full reconstruction. Each step is configured through CMSSW fragments, and production is aligned with centrally defined campaign configurations.
+              Users generate gridpacks using the <code>gridpack_generation.sh</code> script from the
+              <a href="https://github.com/cms-sw/genproductions/blob/master/bin/MadGraph5_aMCatNLO/gridpack_generation.sh" target="_blank"
+                >GitHub:genproductions/MadGraph5_aMCatNLO</a
+              >
+              tool, specifying the model and process. For central production, the gridpack, Pythia fragment, number of events, and other metadata are provided
+              to the NPS MC contact. For local validation, the gridpack is processed with <code>cmsDriver.py</code> to create GEN-SIM or full AOD workflows.
+            </p>
+
+            <h5>Prerequisites</h5>
+            <ul>
+              <li>Access to CMS computing grid (lxplus).</li>
+              <li>Access to CRAB client and gridpack tools.</li>
+              <li>CMS VOMS proxy, incase any external file used during production (such as pile-up profile).</li>
+              <li>A BSM model UFO file (contact a theorist for this).</li>
+              <li>Required cards/fragments in correct format (discuss this with the NPS MC contact).</li>
+            </ul>
+
+            <hr />
+
+            <h3 id="gridpack-setting-up">Setting up the work area</h3>
+            <p>
+              As an example, I am producing a VLL doublet (electron type) sample with mass of both new leptons being 600 GeV. I prepared some helper scripts to
+              manage and organize the outputs. These are to be brought to the work area as follows.
+            </p>
+            <ol>
+              <li>
+                <a href="/files/codes/mc-generation/modeldict.yaml" target="_blank"><code>modeldict.yaml</code></a
+                >: YAML file containing information on the signal models. This is used to auto-generate the cards from a template.
+              </li>
+              <li>
+                Template cards which can be customized according to the needs of each model:
+                <ul>
+                  <li>
+                    <a href="/files/codes/mc-generation/templates/proc_card_doublet.dat.txt" target="_blank"><code>templates/proc_card_doublet.dat</code></a>
+                  </li>
+                  <li>
+                    <a href="/files/codes/mc-generation/templates/proc_card_singlet.dat.txt" target="_blank"><code>templates/proc_card_singlet.dat</code></a>
+                  </li>
+                  <li>
+                    <a href="/files/codes/mc-generation/templates/run_card.dat.txt" target="_blank"><code>templates/run_card.dat</code></a>
+                  </li>
+                  <li>
+                    <a href="/files/codes/mc-generation/templates/extramodels.dat.txt" target="_blank"><code>templates/extramodels.dat</code></a>
+                  </li>
+                  <li>
+                    <a href="/files/codes/mc-generation/templates/customizecards.dat.txt" target="_blank"><code>templates/customizecards.dat</code></a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                Python scripts to generate the cards and gridpacks:
+                <ul>
+                  <li>
+                    <a href="/files/codes/mc-generation/generate_cards.py.txt" target="_blank"><code>generate_cards.py</code></a>
+                  </li>
+                  <li>
+                    <a href="/files/codes/mc-generation/generate_one_gridpack.py.txt" target="_blank"><code>generate_one_gridpack.py</code></a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                Python script for organization:
+                <ul>
+                  <li>
+                    <a href="/files/codes/mc-generation/move_cards.py.txt" target="_blank"><code>move_cards.py</code></a>
+                  </li>
+                </ul>
+              </li>
+            </ol>
+
+            <p>Next, the genproductions tool is cloned inside a directory named Run3.</p>
+            <pre><code class="language-bash">
+mkdir Run3 && cd Run3
+git clone https://github.com/cms-sw/genproductions.git --depth=1
+            </code></pre>
+            <div class="alert alert-warning">
+              ⚠️ In case of Run2, a specific branch <code>mg265UL</code> is recommended, and that's why it should be kept in a separate repository to avoid
+              conflicts.
+              <pre><code class="language-bash">
+mkdir Run2 && cd Run2
+git clone https://github.com/cms-sw/genproductions.git --depth=1 -b mg265UL
+            </code></pre>
+            </div>
+            <p>At this point, the work area should look like this:</p>
+            <pre><code class="language-plain">
+.
+├── Run3
+│   └── genproductions.
+├── generate_cards.py
+├── generate_one_gridpack.py
+├── modeldict.yaml
+├── move_cards.py
+└── templates
+    ├── customizecards.dat
+    ├── extramodels.dat
+    ├── proc_card_doublet.dat
+    ├── proc_card_singlet.dat
+    └── run_card.dat
+            </code></pre>
+
+            <hr />
+            <h3 id="gridpack-cards">Generating cards</h3>
+            <p>
+              The card generation is automatically handled by
+              <a href="/files/codes/mc-generation/generate_cards.py.txt" target="_blank"><code>generate_cards.py</code></a> which loops over the different mass
+              points described in the YAML file, fills up the parameters (such as beam energy, decay leptons, masses of the VLLs etc.) in the template cards and
+              creates a set of cards for each mass point. After this,
+              <a href="/files/codes/mc-generation/move_cards.py.txt" target="_blank"><code>move_cards.py</code></a> is used to move the generated cards to the
+              <code>genproductions/bin/MadGraph5_aMCatNLO/cards/VLL</code> directory. Now the setup is ready to generate gridpacks. At this point, relevant
+              files/directories in the genproductions setup should look like this:
+            </p>
+            <pre><code class="language-plain">
+.
+└── Run3
+    └── genproductions
+        └──bin
+            └──MadGraph5_aMCatNLO
+                ├── PLUGIN
+                ├── Utilities
+                ├── cards
+                │   └── VLL
+                └── gridpack_generation.sh
+            </code></pre>
+            <div class="alert alert-warning">
+              ⚠️ For gridpack production, CMSSW environment is not needed, but the CMSSW release and the SCRAM architecture can be mentioned while runnning the
+              tool. This is important for ensuring compatibility with the downstream workflow. Also, make sure that the BSM model (<code>VLL.tgz</code> in this
+              case) is available in the central repository (<a href="https://cms-project-generators.web.cern.ch/cms-project-generators/" target="_blank"
+                >cms-project-generators</a
+              >).
+            </div>
+
+            <p>
+              <br />
+              <strong>A note on VLL M-100: </strong>In the cards, the logic for producing the vector-like charged lepton L, and the neutral lepton N (both of
+              which couple to muons in this example) is the following.
+            </p>
+            <pre><code class="language-python">
+import model VLL
+define L = lp lp~
+define N = vlp vlp~
+define boson = w+ w- z h
+define lepton   = e+ e- #Taken from YAML
+generate p p > L L, (L > boson lepton)    #Pair production
+add process p p > N N, (N > boson lepton) #Pair production
+add process p p > L N, (L > boson lepton), (N > boson lepton) #Associated production
+output VLLD_ele_M100 -nojpeg
+              </code></pre>
+            <p>
+              However, there is an issue with these for the low mass-point. For M = 100 GeV, some of the decay chains (e.g., \( L \to H + \ell \) where \( m_H =
+              125 \) GeV) are not kinematically allowed (if the Higgs is on-shell). So MadGraph tries to include these subprocesses but fails midway. The same
+              thing is true for the associated production. The gridpack generation tries to compile all 24 processes regardless of whether they are viable or
+              not. If even one fails, the entire gridpack generation fails. MadGraph is designed to produce on-shell bosons with minimal instructions, and it is
+              safe to skip this mass point if it's not too important.
+            </p>
+
+            <hr />
+
+            <h3 id="gridpack-generation">Generating one gridpack</h3>
+            <p>Just to generate one gridpack, the following command can be run from the <code>genproductions/bin/MadGraph5_aMCatNLO</code> directory.</p>
+            <pre><code class="language-bash">
+chmod +x gridpack_generation.sh
+./gridpack_generation.sh VLLD_ele_M600 cards/VLL/VLLD_ele_M600 local ALL el8_amd64_gcc12 CMSSW_13_0_13
+            </code></pre>
+            <p>Where,</p>
+            <ul>
+              <li><code>VLLD_ele_M600</code>: Name of the gridpack to be generated.</li>
+              <li><code>cards/VLL/VLLD_ele_M600</code>: Path to the process card directory.</li>
+              <li><code>local</code>: Run mode (<code>condor</code> can be used here).</li>
+              <li><code>ALL</code>: Indicates that all available cores should be used. Number of cores can also be mentioned here.</li>
+              <li><code>CMSSW_13_0_13</code>: Version of CMSSW to be used for the subsequent steps.</li>
+              <li><code>el8_amd64_gcc12</code>: SCRAM architecture (must be compatible with the CMSSW release).</li>
+            </ul>
+            <p>
+              To simplify the process, I have automated gridpack generation using
+              <a href="/files/codes/mc-generation/generate_one_gridpack.py.txt" target="_blank"><code>generate_one_gridpack.py</code></a
+              >. This script automatically sets the run mode, SCRAM architecture, and CMSSW version - requiring only the sample name as input. After generating
+              the gridpack, it also transfers the output to EOS to conserve space in the AFS workspace. The script can be executed from the base working
+              directory as shown below:
+            </p>
+            <pre><code class="language-bash">
+python3 generate_one_gridpack.py --name VLLD_ele_M600
+              </code></pre>
+            <p>
+              Full automation has not been implemented for this setup, as gridpack generation is a one-time task and the process cards are rarely modified. The
+              resulting gridpacks will be available in the EOS directory.
+            </p>
+
+            <div class="alert alert-warning">
+              ⚠️ The <code>genproductions/bin/MadGraph5_aMCatNLO</code> directory also contains several <code>submit_*.sh</code> scripts, such as
+              <code>submit_cmsconnect_gridpack_generation.sh</code> and <code>submit_condor_gridpack_generation.sh</code>. These are wrapper scripts around
+              <code>gridpack_generation.sh</code>, originally created to simplify submission in specific environments like CMSConnect or HTCondor. While they
+              can still be useful for batch submission, site-specific configurations, or legacy workflows, they are not strictly necessary. The current setup
+              uses this main script directly, without relying on the wrappers.
+            </div>
+
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <br />
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Gridpack validation in lxplus</h2>
+
+            <p>
+              This section describes the local validation of the gridpacks after they are successfully generated, i.e, the full production chain to produce
+              NanoAOD. I am taking <code>VLLD_ele_M600</code> as an example. First, pick a separate work area for validating the test gridpack and unzip it as
+              follows.
+            </p>
+
+            <pre><code class="language-bash">
+mkdir VLLD_ele_M600
+tar -xf VLLD_ele_M600_el8_amd64_gcc10_CMSSW_12_4_8_tarball.tar.xz -C VLLD_ele_M600
+              </code></pre>
+            <p>This creates a predefined structure required for event generation. A breakdown of the key contents is as follows:</p>
+            <pre><code class="language-plain">
+VLLD_ele_M600
+├── InputCards
+├── gridpack_generation.log
+├── merge.pl
+├── mgbasedir
+├── process
+│   ├── madevent
+│   └── run.sh
+└── runcmsgrid.sh
+              </code></pre>
+            <ul>
+              <li><code>InputCards/</code>: Contains the cards used to generate the gridpack.</li>
+              <li><code>gridpack_generation.log</code>: Full log of the gridpack creation process for debugging.</li>
+              <li><code>mgbasedir/</code>: Contains the full MadGraph installation with model files, binaries etc. needed to reproduce the generation.</li>
+              <li>
+                <code>process/</code>: Includes process-specific configuration and scripts, notably <code>run.sh</code> for launching the internal generation
+                step.
+              </li>
+              <li><code>runcmsgrid.sh</code>: The main script used to generate LHE events.</li>
+            </ul>
+
+            <hr />
+
+            <h3 id="gridpack-to-lhe">Gridpack <i class="bi bi-arrow-right"></i> LHE</h3>
+
+            <p>
+              Once the gridpack has been extracted, parton-level events in LHE (Les Houches Event) format can be produced using the
+              <code>runcmsgrid.sh</code> script. This script is included inside the unpacked gridpack directory and serves as the interface to MadGraph, MadSpin
+              (if applicable), and Pythia (if configured). It prepares the runtime environment, handles all necessary steps of event generation, and produces a
+              <code>cmsgrid_final.lhe</code> file containing the events. To run the script for a small test sample of events:
+            </p>
+            <pre><code class="language-bash">
+cd VLLD_ele_M600
+./runcmsgrid.sh 1000 12345 4
+              </code></pre>
+            <p>Where:</p>
+            <ul>
+              <li><code>1000</code> is the number of events to generate</li>
+              <li><code>12345</code> is the random seed</li>
+              <li><code>4</code> is the number of threads or parallel jobs to use</li>
+            </ul>
+            <p>
+              This also creates a temporary CMSSW environment under the hood and ensures all dependencies are properly set up for the run. The output file
+              <code>cmsgrid_final.lhe</code> contains all the generated parton-level four-vectors, with each event uniquely defined. Make sure to generate
+              enough events here to support the statistics needed for downstream steps such as full simulation and analysis.
+            </p>
+
+            <!--
+              ####################
+                    GENSIM
+              ####################
+              -->
+
+            <br />
+
+            <h3 id="lhe-to-gensim">LHE <i class="bi bi-arrow-right"></i> GENSIM</h3>
+            <p>
+              This step takes the parton-level LHE events and runs hadronization and particle showering using Pythia8 to produce GEN-SIM files that simulate
+              particles and their interactions with the detector. A CMSSW configuration is required for this step. The gridpack was produced with
+              <code>CMSSW_12_4_8</code>. However, I will proceed with <code>CMSSW_13_0_13</code> to match 2022 (preEE) MC conditions. First, set up the CMSSW
+              environment and directory structure as follows.
+            </p>
+            <div class="alert alert-warning">
+              ⚠️ The exact CMSSW version used for this step typically does not matter much, as long as it is compatible with the target era (e.g., Run 3). For
+              Run 3, versions like <code>CMSSW_12_4_X</code> or <code>CMSSW_13_0_X</code> can be used interchangeably for GEN-SIM. However, Run 2 productions
+              require a separate branch of the <code>genproductions</code> repository and use an older version of MadGraph, along with older CMSSW versions
+              executed inside a <code>cmssw-el7</code> container. These setups are not interchangeable with the Run 3 setup.
+            </div>
+            <pre><code class="language-bash">
+echo $SCRAM_ARCH   # It has to be compatible with the target CMSSW release
+cmsrel CMSSW_13_0_13
+cd CMSSW_13_0_13/src/
+mkdir -p Configuration/GenProduction/python/
+              </code></pre>
+            <p>
+              The <code>Configuration/GenProduction/python</code> directory is used to store the fragment (configuration script) describing how to hadronize the
+              LHE events. The directory structure is important because <code>cmsDriver.py</code> (configuration maker tool) expects fragments to be in the
+              Python path under this namespace. Here is an example of a hadronizer, without using <code>externalLHEProducer</code> (since we are testing a local
+              LHE file).
+            </p>
+            <pre><code class="language-python">
+import FWCore.ParameterSet.Config as cms
+ 
+from Configuration.Generator.Pythia8CommonSettings_cfi import *
+from Configuration.Generator.MCTunes2017.PythiaCP5Settings_cfi import *            ## Used till 2022
+#from Configuration.Generator.MCTunesRun3ECM13p6TeV.PythiaCP5Settings_cfi import * ## From 2023 onwards
+from Configuration.Generator.PSweightsPythia.PythiaPSweightsSettings_cfi import *
+ 
+generator = cms.EDFilter("Pythia8ConcurrentHadronizerFilter",
+    comEnergy = cms.double(13600.),
+    maxEventsToPrint = cms.untracked.int32(1),
+    pythiaPylistVerbosity = cms.untracked.int32(1),
+    pythiaHepMCVerbosity = cms.untracked.bool(False),
+    nAttempts = cms.uint32(1),
+    PythiaParameters = cms.PSet(
+        pythia8CommonSettingsBlock,
+        pythia8CP5SettingsBlock,
+        pythia8PSweightsSettingsBlock,
+        parameterSets = cms.vstring(
+            'pythia8CommonSettings',
+            'pythia8CP5Settings',
+            'pythia8PSweightsSettings'
+        )
+    )
+)
+ 
+ProductionFilterSequence = cms.Sequence(generator)
+              </code></pre>
+            <div class="alert alert-warning">
+              ⚠️ Make sure that the hadronization energy (in this case, <code>comEnergy = cms.double(13600.)</code>) matches the center-of-mass energy of the
+              LHE events. This is crucial for correct hadronization and particle showering. Also, this fragment is not compatible with
+              <code>CMSSW_15_X_X</code>.
+            </div>
+            <pre><code class="language-bash">
+scram b -j8
+which cmsDriver.py
+            </code></pre>
+            <p>Call it <code>myfragment.py</code>. Once the fragment is in place, compile the setup.</p>
+            <pre><code class="language-bash">
+cmsDriver.py Configuration/GenProduction/python/myfragment.py \
+  --filein file:../../cmsgrid_final.lhe \
+  --fileout file:VLLD_ele_M600_GENSIM.root \
+  --mc \
+  --eventcontent RAWSIM \
+  --datatier GEN-SIM \
+  --beamspot Realistic25ns13p6TeVEarly2022Collision \
+  --step GEN,SIM \
+  --nThreads 8 \
+  --geometry DB:Extended \
+  --era Run3 \
+  --conditions 130X_mcRun3_2022_realistic_v5 \
+  --customise Configuration/DataProcessing/Utils.addMonitoring \
+  --python_filename cfg_1_GENSIM.py \
+  --no_exec \
+  -n 100
+            </code></pre>
+            <div class="alert alert-warning">
+              ⚠️ Copy-pasting the command directly from the webpage into the terminal may introduce formatting issues (e.g. invisible line breaks or special
+              characters). It is recommended to paste it into a text editor first, review the parameters, and adjust them to match the intended MC campaign.
+            </div>
+            <p>
+              This creates a configuration file named <code>cfg_1_GENSIM.py</code> without running the job immediately. Matching the parameters -
+              <code>--conditions</code>, <code>--beamspot</code>, and <code>--era</code> with the intended simulation campaign and CMSSW release is important.
+              Finally, run the generation step.
+            </p>
+            <pre><code class="language-bash">cmsRun cfg_1_GENSIM.py</code></pre>
+            <p>
+              This produces a GEN-SIM ROOT file named <code>VLLD_ele_M600_GENSIM.root</code> from the LHE input, suitable for the next simulation steps. This
+              file contains both the generator-level information (i.e. final-state particles from MadGraph/Pythia) and the full detector simulation output from
+              GEANT4, which emulates how those particles would interact with the CMS detector. This includes simulated energy deposits, tracking hits, and
+              digitized detector responses. The GEN-SIM step is notably <strong>slow and computationally heavy</strong> because of the detailed physics and
+              geometry involved in the simulation. While crucial for realistic MC production, such jobs are typically done on grid resources rather than
+              locally, except for small-scale validation like this. During the validation, it also runs the GenXsecAnalyzer, which computes the cross-section of
+              the generated events, and displays the time taken per event. Estimation of <strong>time-per-event</strong> and <strong>size-per-event</strong> is
+              needed so that PdmV can estimate how long the central production might take.
+            </p>
+
+            <!--
+              ####################
+                    DIGIRAW
+              ####################
+              -->
+
+            <hr />
+            <h3 id="gensim-to-digiraw">GENSIM <i class="bi bi-arrow-right"></i> DIGIRAW</h3>
+            <p>
+              In this step, the simulated detector hits are converted into raw detector data format, and this is where pileup interactions can be added by
+              overlaying minimum bias events on top of the hard scattering. Access to pileup datasets from DBS requires a valid VOMS proxy. In this example, I
+              am not providing a pileup dataset.
+            </p>
+            <pre><code class="language-bash">
+cmsDriver.py step1 \
+  --filein file:VLLD_ele_M600_GENSIM.root \
+  --fileout file:VLLD_ele_M600_DIGIRAW.root \
+  --eventcontent FEVTDEBUGHLT \
+  --datatier GEN-SIM-DIGI-RAW \
+  --step DIGI,L1,DIGI2RAW,HLT:@relval2022 \
+  --nThreads 8 \
+  --geometry DB:Extended \
+  --era Run3 \
+  --conditions 130X_mcRun3_2022_realistic_v5 \
+  --beamspot Realistic25ns13p6TeVEarly2022Collision \
+  --customise Configuration/DataProcessing/Utils.addMonitoring \
+  --python_filename cfg_2_DIGIRAW.py \
+  --no_exec \
+  --mc \
+  -n 100
+            </code></pre>
+            <pre><code class="language-bash">
+cmsRun cfg_2_DIGIRAW.py
+            </code></pre>
+
+            <!--
+              ####################
+                    AODSIM
+              ####################
+              -->
+            <hr />
+            <h3 id="digiraw-to-aod">DIGIRAW <i class="bi bi-arrow-right"></i> AOD</h3>
+            <p>
+              In this step, the full detector reconstruction is performed on the RAW or DIGIRAW data, producing reconstructed physics objects such as tracks,
+              jets, electrons, and muons. This completes the previous digitization step and produces fully analysis-ready objects.
+            </p>
+            <pre><code class="language-bash">
+cmsDriver.py step2 \
+  --filein file:VLLD_ele_M600_DIGIRAW.root \
+  --fileout file:VLLD_ele_M600_AOD.root \
+  --eventcontent AODSIM \
+  --datatier AODSIM \
+  --step RAW2DIGI,L1Reco,RECO,RECOSIM \
+  --nThreads 8 \
+  --geometry DB:Extended \
+  --era Run3 \
+  --conditions 130X_mcRun3_2022_realistic_v5 \
+  --beamspot Realistic25ns13p6TeVEarly2022Collision \
+  --customise Configuration/DataProcessing/Utils.addMonitoring \
+  --python_filename cfg_3_AOD.py \
+  --no_exec \
+  --mc \
+  -n 100
+            </code></pre>
+            <pre><code class="language-bash">
+cmsRun cfg_3_AOD.py
+            </code></pre>
+
+            <!--
+              ####################
+                    MINIAODSIM
+              ####################
+              -->
+
+            <hr />
+            <h3 id="aod-to-miniaod">AOD <i class="bi bi-arrow-right"></i> MINIAOD</h3>
+            <p>
+              MINIAOD is a reduced format derived from AOD where reconstruction is not redone but the data is skimmed and slimmed to contain only essential
+              reconstructed objects and variables. Some high-level corrections and possibly DNN-based identification variables can be added at this stage.
+            </p>
+            <pre><code class="language-bash">
+cmsDriver.py step3 \
+  --filein file:VLLD_ele_M600_AOD.root \
+  --fileout file:VLLD_ele_M600_MINIAOD.root \
+  --eventcontent MINIAODSIM \
+  --datatier MINIAODSIM \
+  --step PAT \
+  --nThreads 8 \
+  --geometry DB:Extended \
+  --era Run3 \
+  --conditions 130X_mcRun3_2022_realistic_v5 \
+  --beamspot Realistic25ns13p6TeVEarly2022Collision \
+  --customise Configuration/DataProcessing/Utils.addMonitoring \
+  --python_filename cfg_4_MINIAOD.py \
+  --no_exec \
+  --mc \
+  -n 100
+            </code></pre>
+            <pre><code class="language-bash">
+cmsRun cfg_4_MINIAOD.py
+            </code></pre>
+
+            <!--
+              ####################
+                    NANOAODSIM
+              ####################
+              -->
+
+            <hr />
+            <h3 id="miniaod-to-nanoaod">MINIAOD <i class="bi bi-arrow-right"></i> NANOAOD</h3>
+            <p>
+              NanoAOD further reduces the data size for fast physics analysis, containing selected reconstructed objects and variables, often including DNN
+              outputs for particle identification or event classification. No reconstruction is performed here; it uses the objects produced in previous steps.
+            </p>
+            <pre><code class="language-bash">
+cmsDriver.py step4 \
+  --filein file:VLLD_ele_M600_MINIAOD.root \
+  --fileout file:VLLD_ele_M600_NANOAOD.root \
+  --eventcontent NANOAODSIM \
+  --datatier NANOAODSIM \
+  --step NANO \
+  --nThreads 8 \
+  --geometry DB:Extended \
+  --era Run3 \
+  --conditions 130X_mcRun3_2022_realistic_v5 \
+  --beamspot Realistic25ns13p6TeVEarly2022Collision \
+  --customise Configuration/DataProcessing/Utils.addMonitoring \
+  --python_filename cfg_5_NANOAOD.py \
+  --no_exec \
+  --mc \
+  -n 100
+            </code></pre>
+            <pre><code class="language-bash">
+cmsRun cfg_5_NANOAOD.py
+            </code></pre>
+
+            <div class="alert alert-warning">
+              ⚠️ If events fail during CMS production steps (e.g., GEN-SIM, DIGI-RAW, AOD, MiniAOD, NanoAOD), check the log for errors or failed event numbers.
+              To avoid crashes in the subsequent steps, you can reduce the number of events using <code>-n</code> or skip specific events with
+              <code>process.source.skipEvents</code>. To skip events that raise <code>ProductNotFound</code> errors automatically, add
+              <code>process.options = cms.untracked.PSet(SkipEvent = cms.untracked.vstring('ProductNotFound'))</code> to the config. Always validate the outputs
+              with <code>edmDumpEventContent</code> to ensure key branches are populated.
+            </div>
+
+            <hr />
+            <h3 id="validation-automation">Automation of the validation step</h3>
+            <p>
+              Once the LHE files are ready, the CMSSW configuration files for the subsequent steps can be automatically generated using the
+              <a href="/files/codes/mc-generation/generate_configs.py.txt" target="_blank"><code>generate_configs.py</code></a> file. This script is currently
+              configured to work with the 2018 and 2022-preEE MC campaigns. It generates all the configs described above, including the GENSIM, DIGIRAW, AOD,
+              MINIAOD, and NANOAOD steps. Usage:
+            </p>
+            <pre><code class="language-bash">
+python3 generate_configs.py --campaign Run3Summer22 
+              </code></pre>
+
+            <hr />
+            <h3 id="gridpack-links">Important links</h3>
+            <ul>
+              <li>
+                <a href="https://exo-mc-and-i.gitbook.io/exo-mc-and-interpretation" target="_blank">EXO gitbook</a>
+              </li>
+              <li>
+                <a href="https://nps-wiki.docs.cern.ch/" target="_blank">NPS internal documentation</a>
+              </li>
+              <li>
+                <a href="https://twiki.cern.ch/twiki/bin/view/CMS/SUSObjectExperts" target="_blank">NPS MC contacts</a>
+              </li>
+              <li>
+                <a href="https://gitlab.cern.ch/sus-pag/mc-and-interpretation/requests" target="_blank">NPS GitLab: MC requests [private access]</a>
+              </li>
+              <li>
+                <a href="https://github.com/cms-sw/genproductions" target="_blank">Generator fragments repository</a>
+              </li>
+            </ul>
+
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <br />
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- footer placeholder -->
+    <div id="footer"></div>
+
+    <!-- Add Mermaid before your main.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <!-- Your main JS -->
+    <script src="/js/main.js"></script>
+  </body>
+</html>

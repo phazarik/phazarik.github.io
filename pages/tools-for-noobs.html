@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tools for noobs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <link href="/css/style.css" rel="stylesheet" />
+
+    <!-- Highlight.js core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Highlight.js line-numbers plugin -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body>
+    <!-- header placeholder -->
+    <div id="header"></div>
+
+    <main class="container my-4">
+      <div class="row g-4">
+        <!-- Navigation (left side) -->
+        <aside class="col-md-3">
+          <section class="section">
+            <div class="d-grid gap-2">
+              <div class="nav-section"><a href="/pages/tools.html">Tools</a> &gt; <a href="#">ForNoobs</a></div>
+
+              <button class="nav-btn">Getting started</button>
+              <div class="sub-btns">
+                <a href="#setting-up-miniconda" class="nav-sub-btn"> Installing Miniconda </a>
+                <a href="#setting-up-root" class="nav-sub-btn"> Installing ROOT </a>
+                <a href="#setting-up-jupyter" class="nav-sub-btn"> Installing Jupyter Notebook </a>
+                <a href="#setting-up-bashrc" class="nav-sub-btn"> Customizing bashrc </a>
+              </div>
+              <button class="nav-btn">For Windows users</button>
+              <div class="sub-btns">
+                <a href="#wsl-activate" class="nav-sub-btn"> Activating WSL </a>
+                <a href="#wsl-terminal" class="nav-sub-btn"> Working with WSL terminal </a>
+                <a href="#wsl-tricks" class="nav-sub-btn"> Useful WSL tricks </a>
+              </div>
+              <button class="nav-btn">CERN Account Management</button>
+              <div class="sub-btns">
+                <a href="#cern-certificate" class="nav-sub-btn"> Grid Certificate </a>
+                <a href="#cern-links" class="nav-sub-btn"> Important links </a>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Main content -->
+        <div class="col-md-9">
+          <!-- Text -->
+          <section class="section">
+            <h1 class="page-title">Introduction to EHEP tools</h1>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Getting started</h2>
+            <p>
+              I am assuming that you have Linux installed on your system. Most of this tutorial will use <strong>Bash</strong> (not Zsh), so make yourself
+              familiar with some basic Bash commands before going ahead. For Windows users, if you want to stay in the field of EHEP, it is recommended that you
+              shift to a Unix based system (such as linux). If Windows is absolutely necessary for you (e.g., for Photoshop etc), then go for Windows Subsystem
+              in Linux (WSL). Setting up WSL is discussed <a href="#wsl">below</a>. Don't use dual-boot, because it causes frequent problems.
+            </p>
+
+            <ul>
+              <li>
+                <a href="https://ubuntu.com/tutorials/command-line-for-beginners" target="_blank">Official Ubuntu Bash Documentation</a> – Beginner-friendly
+                guide directly from Ubuntu, great for getting started with Bash commands.
+              </li>
+              <li>
+                <a href="https://linuxcommand.org/" target="_blank">LinuxCommand.org Beginner’s Guide</a> – Offers hands-on exercises and practical examples to
+                actually practice Bash commands.
+              </li>
+              <li>
+                <a href="https://www.codecademy.com/learn/learn-the-command-line" target="_blank">Codecademy Command Line Course</a> – Interactive,
+                browser-based learning with exercises and instant feedback.
+              </li>
+            </ul>
+
+            <hr />
+
+            <h3 id="setting-up-miniconda">Installing Miniconda</h3>
+            <p>
+              Miniconda is a tool that helps you install and manage software, especially Python packages, by creating isolated environments. This keeps your
+              main system clean and makes sure everything works smoothly. It’s particularly useful when setting up tools like ROOT because it handles all the
+              necessary dependencies and prevents conflicts with other software.
+            </p>
+            <ol>
+              <li>
+                <strong>Download Miniconda Installer:</strong><br />
+                For Linux, open the terminal and use the following command to download the installer:
+                <pre><code class="language-bash">curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh</code></pre>
+              </li>
+              <li>
+                <strong>Run the Installer:</strong><br />
+                After downloading, run the installer by navigating to the download directory and using:
+                <pre><code class="language-bash">bash Miniconda3-latest-Linux-x86_64.sh</code></pre>
+                Follow the prompts to complete the installation. When terms and conditions show up (which nobody reads!) press Q to skip. Keep the path as
+                default, and type 'yes' when it asks to load on startup. Once done, restart the terminal. If everything is done correctly, your terminal prompt
+                should say <code>(base)</code> in the beginning.
+              </li>
+            </ol>
+            <p>
+              More information on managing miniconda environments can be found
+              <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html" target="_blank">here</a>.
+            </p>
+
+            <hr />
+
+            <h3 id="setting-up-root">Installing ROOT</h3>
+            <p>
+              ROOT is a powerful data analysis framework commonly used in experimental particle physics. It provides essential tools for data processing,
+              statistical analysis, and visualization, making it ideal for handling large datasets from experiments such as those at the Large Hadron Collider.
+              ROOT enables physicists to manage complex data, create visual plots, fit models, and perform advanced statistical analyses, making it a crucial
+              tool in the field of particle physics.
+            </p>
+            <p>
+              To install ROOT, visit the official <a href="https://root.cern/install/#build-from-source" target="_blank">ROOT website</a> (build from source).
+              There, you will find detailed instructions on how to build and install for linux. Make sure that you have installed the
+              <a href="https://root.cern/install/dependencies/#ubuntu-and-other-debian-based-distributions">dependencies</a> first (including git). Or, you can
+              simply go through the following instructions.
+            </p>
+
+            <!-- ROOT installation tabs -->
+            <ul class="nav nav-tabs" id="rootTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="ubuntu-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#ubuntu"
+                  type="button"
+                  role="tab"
+                  aria-controls="ubuntu"
+                  aria-selected="true"
+                >
+                  Ubuntu
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="conda-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#conda"
+                  type="button"
+                  role="tab"
+                  aria-controls="conda"
+                  aria-selected="false"
+                >
+                  ROOT without sudo
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="macos-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#macos"
+                  type="button"
+                  role="tab"
+                  aria-controls="macos"
+                  aria-selected="false"
+                >
+                  MacOS
+                </button>
+              </li>
+            </ul>
+
+            <!--Ubuntu tab-->
+            <div class="tab-content mt-3">
+              <div class="tab-pane fade show active" id="ubuntu" role="tabpanel" aria-labelledby="ubuntu-tab">
+                <p>Follow these steps to install ROOT on Ubuntu:</p>
+                <pre><code class="language-bash">
+sudo apt update && sudo apt upgrade
+
+# required packages:
+sudo apt install \
+  git binutils cmake dpkg-dev g++ gcc libssl-dev git \
+  libx11-dev libxext-dev libxft-dev libxpm-dev python3 \
+  libtbb-dev libgif-dev coreutils
+
+# optional packages:
+sudo apt install \
+  gfortran libpcre3-dev libglu1-mesa-dev libglew-dev libftgl-dev \
+  libfftw3-dev libcfitsio-dev libgraphviz-dev libavahi-compat-libdnssd-dev \
+  libldap2-dev python3-dev python3-numpy libxml2-dev libkrb5-dev libgsl-dev \
+  qtwebengine5-dev nlohmann-json3-dev libmysqlclient-dev libgl2ps-dev \
+  liblzma-dev libxxhash-dev liblz4-dev libzstd-dev
+
+cd #make sure that you are in the home area
+git clone --branch latest-stable --depth=1 https://github.com/root-project/root.git root_src
+mkdir root_build root_install && cd root_build
+cmake -DCMAKE_INSTALL_PREFIX=../root_install ../root_src
+cmake --build . -- install -j8 #j8/j4 is the number of cores to be used
+realpath ../root_install/bin/thisroot.sh #copy this line
+    </code></pre>
+                <p>
+                  The output of the <code>realpath</code> command gives the full path to the installed ROOT binary. Copy this path and add it to your
+                  <code>~/.bashrc</code> file so that your terminal knows where to find ROOT automatically. For example, you can append a line like:
+                </p>
+                <pre><code class="language-bash">
+export PATH="/home/phazarik/root_install/bin/thisroot.sh"
+</code></pre>
+                <p>Then run <code>source ~/.bashrc</code>, or restart the terminal to apply the changes.</p>
+              </div>
+              <!--end Ubuntu tab-->
+
+              <!--conda tab-->
+              <div class="tab-pane fade" id="conda" role="tabpanel" aria-labelledby="conda-tab">
+                <p>
+                  In environments where <code>sudo</code> access is unavailable, ROOT can be installed and built entirely using <code>conda</code>. Most
+                  required system libraries are available through the <code>conda-forge</code> channel under alternate package names.
+                </p>
+                <div class="alert alert-warning">
+                  ⚠️ Warning: The tricky part here is to get all the required packages. In my case, the following solution wroked. If yours doesn't you may have
+                  to explore all the dependencies. Stick to the first tab if you have <code>sudo</code> access.
+                </div>
+
+                <b>Step 1: Required packages</b>
+                <p>
+                  If the standard dependencies listed on the ROOT website fail to install or are not sufficient, the following alternative packages from
+                  <code>conda-forge</code> can be used instead to provide compilers, build tools, and X11 development libraries:
+                </p>
+                <pre><code class="language-bash">
+conda install -c conda-forge \
+  gcc g++ cmake make expat \
+  xorg-libx11 xorg-libxext xorg-libxrender \
+  xorg-libxft xorg-libxpm xorg-xproto
+
+# Verify X11 headers
+ls $CONDA_PREFIX/include/X11/X.h
+ls $CONDA_PREFIX/include/X11/Xfuncproto.h
+                </code></pre>
+                <p>
+                  These packages provide the necessary headers and libraries for compiling ROOT with X11 (GUI) support. (In case these packages fail to install
+                  or the X11 headers are still not found, the <code>-DX11</code> option in CMake should be set to <code>OFF</code>. As a result, GUI features
+                  such as <code>TBrowser</code> will not be available in the built ROOT installation.) Presence of essential X11 headers can be verified as
+                  follows.
+                </p>
+                <pre><code class="language-bash">
+ls $CONDA_PREFIX/include/X11/X.h
+ls $CONDA_PREFIX/include/X11/Xfuncproto.h
+              </code>
+              </pre>
+
+                <b>Step 2: Environment variable configuration</b>
+                <p>
+                  The following variables should be appended to the <code>~/.bashrc</code> file to ensure proper usage of the conda-provided headers and
+                  libraries during the build.
+                </p>
+                <pre><code class="language-bash">
+# Only activate in interactive shell (otherwise SFTP may fail)
+if [[ $- == *i* ]]; then
+  export CPATH=$CONDA_PREFIX/include:$CPATH
+  export C_INCLUDE_PATH=$CONDA_PREFIX/include:$C_INCLUDE_PATH
+  export CPLUS_INCLUDE_PATH=$CONDA_PREFIX/include:$CPLUS_INCLUDE_PATH
+  export PKG_CONFIG_PATH=$CONDA_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+  export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+  source ~/root_install/bin/thisroot.sh
+fi
+              </code></pre>
+                <p>Make sure to source the <code>~/.bashrc</code> file after editing.</p>
+
+                <b>Step 3: Building and Installing ROOT</b>
+                <p>
+                  Assuming the source is extracted at <code>../root_src</code>, and the install directory is at <code>../root_install/</code>, the following
+                  commands should be executed in the <code>root_build</code> directory.
+                </p>
+                <pre><code class="language-bash">
+cmake -S ../root_src -B . \
+  -DCMAKE_INSTALL_PREFIX=../root_install \
+  -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
+  -Dx11=ON \
+  -Dgui=ON \
+  -Dasimage=ON \
+  -Deve=OFF \
+  -Dopengl=OFF \
+  -Dgl=OFF \
+  -Drgl=OFF \
+  -Dbuiltin_glew=OFF \
+  -DCMAKE_INCLUDE_PATH=$CONDA_PREFIX/include \
+  -DCMAKE_LIBRARY_PATH=$CONDA_PREFIX/lib \
+  -Wno-dev
+              </code></pre>
+                <pre><code class="language-bash">cmake --build . --target install -j8</code></pre>
+                <p>
+                  Hopefully this will compile ROOT using the compilers and libraries provided by the conda environment, and install it to
+                  <code>../root_install</code>. In case it fails, contact me.
+                </p>
+
+                <b>Explanations of the CMake Options</b>
+                <ul>
+                  <li><strong>-S ../root_src</strong>: Specifies the source directory (contains the ROOT source code).</li>
+                  <li><strong>-B .</strong>: Specifies the build directory (uses the current directory).</li>
+                  <li><strong>-DCMAKE_INSTALL_PREFIX=../root_install</strong>: Defines the directory where ROOT will be installed after building.</li>
+                  <li><strong>-DCMAKE_PREFIX_PATH=$CONDA_PREFIX</strong>: Instructs CMake to search for dependencies under the conda environment.</li>
+                  <li><strong>-Dx11=ON</strong>: Enables X11 support (required for GUI features like <code>TCanvas</code>, <code>TBrowser</code>).</li>
+                  <li><strong>-Dgui=ON</strong>: Enables ROOT's GUI components.</li>
+                  <li><strong>-Dasimage=ON</strong>: Enables image support via ASImage (for manipulating and displaying images).</li>
+                  <li><strong>-Deve=OFF</strong>: Disables EVE (Event Visualization Environment) to avoid extra dependencies.</li>
+                  <li><strong>-Dopengl=OFF, -Dgl=OFF, -Drgl=OFF</strong>: Disables all OpenGL-based rendering and 3D visualization modules.</li>
+                  <li><strong>-Dbuiltin_glew=OFF</strong>: Disables ROOT’s internal GLEW (since OpenGL is off anyway).</li>
+                  <li><strong>-DCMAKE_INCLUDE_PATH=$CONDA_PREFIX/include</strong>: Adds this path for header file lookup.</li>
+                  <li><strong>-DCMAKE_LIBRARY_PATH=$CONDA_PREFIX/lib</strong>: Adds this path for shared library (.so) lookup.</li>
+                  <li><strong>-Wno-dev</strong>: Suppresses non-critical developer warnings during configuration.</li>
+                </ul>
+              </div>
+              <!--end conda tab-->
+
+              <!--MacOS tab-->
+              <div class="tab-pane fade" id="macos" role="tabpanel" aria-labelledby="macos-tab">
+                <div class="alert alert-danger">⛔ I'll talk to a Mac expert and add it here later. 😅</div>
+              </div>
+            </div>
+            <!--end MacOS tab-->
+            <!-- end ROOT installation tabs -->
+
+            <hr />
+
+            <h3 id="setting-up-jupyter">Installing Jupyter Notebook [optional]</h3>
+            <p>
+              Jupyter Notebook is an interactive web application that lets you create and share documents with live code, visualizations, and text (just like
+              Google Colab, except it runs on your local machine).
+              <b> Make sure to install jupyter in the conda environment in which ROOT was installed</b> (base environment from the previous instructions) to
+              ensure its compatibility with ROOT. If it's not base environment, activate the same environment in which ROOT was built.
+            </p>
+            <pre><code class="language-bash">
+conda activate base # or any other environment in which ROOT was built 
+conda install jupyter
+              </code></pre>
+
+            <hr />
+
+            <h3 id="setting-up-bashrc">Customizing bashrc [optional]</h3>
+            <p>
+              The <code>.bashrc</code> file is a configuration script that runs each time you start a new terminal session in Linux or macOS. It helps set up
+              your shell environment by defining settings, functions, and shortcuts. Be careful while editing this. One useful feature in
+              <code>.bashrc</code> is creating aliases - shortcuts that replace long commands with simpler ones. The following are common aliases that I like.
+              Feel free to copy them and put them in your <code>.bashrc</code> (completely optional).
+            </p>
+            <pre><code class="language-bash">
+# Prompt asks for confirmation before running the following:
+alias mv='mv -i'
+alias cp='cp -i'
+alias rm="rm -i"
+                
+# Running ROOT without the web-browser (with TBrowser):
+alias root="root --web=off"
+                
+# Changing the text and the color displayed at the prompt (for WSL):
+PS1='\[\033[0;34m\]custom_name:\w\[\033[0m\]>>'
+</code></pre>
+
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <br />
+          </section>
+
+          <section class="section">
+            <h2 class="section-title" id="wsl">Windows Subsystem for Linux</h2>
+
+            <div class="alert alert-info">ℹ️ This section is for Windows users only.</div>
+
+            <p>
+              Windows Subsystem for Linux (WSL) is a feature in Windows that allows users to run a Linux environment directly on their Windows machine without
+              needing a virtual machine or dual-boot setup. WSL provides a compatibility layer that translates Linux system calls into Windows system calls,
+              with WSL 1 using this translation and WSL 2 running a real Linux kernel in a lightweight virtual machine for better performance and compatibility.
+              It integrates tightly with Windows, allowing access to the Windows file system, interoperability between Linux and Windows applications, and
+              shared networking. This makes it easy for developers and users to run Linux tools and commands alongside their Windows applications seamlessly,
+              without rebooting.
+            </p>
+
+            <hr />
+
+            <h3 id="wsl-activate">Activating WSL and updating the kernel</h3>
+            <p>To activate Windows Subsystem for Linux (WSL) and update the kernel using the Windows GUI, follow these steps:</p>
+            <ol>
+              <li>
+                <strong>Enable WSL and Virtual Machine Platform:</strong>
+                <ul>
+                  <li>
+                    Open <strong>"Control Panel"</strong>, navigate to <strong>"Programs"</strong> and then click on
+                    <strong>"Turn Windows features on or off"</strong>.
+                  </li>
+                  <li>
+                    In the Windows Features window, scroll down and check the boxes for
+                    <strong>"Windows Subsystem for Linux"</strong> and <strong>"Virtual Machine Platform"</strong>.
+                  </li>
+                  <li>
+                    Click <strong>"OK"</strong> to apply the changes. Windows will install the required components. You may be prompted to restart your
+                    computer.
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <strong>Install a Linux Distribution:</strong>
+                <ul>
+                  <li>Open the <strong>Microsoft Store</strong> and search for a Linux distribution of your choice (e.g., <strong>Ubuntu</strong>).</li>
+                  <li>Select your preferred distribution from the search results and click on <strong>"Install"</strong> to download and install it.</li>
+                </ul>
+              </li>
+
+              <li>
+                <strong>Update the WSL Kernel (in case the existing kernel is old):</strong>
+                <ul>
+                  <li>
+                    Visit the
+                    <a href="https://aka.ms/wsl2kernel" target="_blank">WSL2 Linux kernel update package</a>
+                    webpage.
+                  </li>
+                  <li>Download the latest WSL2 Linux kernel update package installer.</li>
+                  <li>Run the downloaded installer to update the WSL kernel to the latest version.</li>
+                </ul>
+                <div class="alert-box">
+                  <strong>Note:</strong> In case the kernel update is not available in the above link, or the link is down,
+                  <a href="/mypages/contactme.html">contact me</a>.
+                </div>
+              </li>
+
+              <li>
+                <strong>Set WSL 2 as the default version (for better performance and compatibility):</strong>
+                <ul>
+                  <li>
+                    Search for <strong>"Command Prompt"</strong> in the Start menu, right-click on it, and select <strong>"Run as administrator"</strong>.
+                  </li>
+                  <li>
+                    In the Command Prompt window, type:
+                    <pre><code class="language-bash">wsl --set-default-version 2</code></pre>
+                  </li>
+                  <li>Press <strong>Enter</strong> to execute the command, which sets WSL 2 as the default version for any new Linux installations.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Initialize the user and upgrade the existing packages:</strong> <br />
+                Once everything above is done, open a new linux terminal by finding the app in your start menu. For the first time, it will ask for a username
+                and password. Just to be safe, pick an username with all small caps and no weird symbols. The password can be as complicated as you want. Note
+                that the password does not appear on the screen while you type, so be careful. Once its done, update the existing packages by running the
+                following commands. It might take a while for the first time.
+                <pre><code class="language-bash">
+sudo apt-get update  # finds all the upgradable packages
+sudo apt-get upgrade # downloads and installs all the upgradable packages
+                </code></pre>
+              </li>
+            </ol>
+            <!--end instructions-->
+
+            <hr />
+
+            <h3 id="wsl-terminal">Working with Windows terminal</h3>
+
+            <p>To configure Windows Terminal to open a specific Linux distribution by default, follow these steps:</p>
+
+            <ol>
+              <li>
+                <strong>Access Settings in Windows Terminal:</strong>
+                <ul>
+                  <li>Search for <strong>"Windows Terminal"</strong> in the Start menu and click on it to open.</li>
+                  <li>Click on the down arrow (<strong>&#9660;</strong>) next to the tabs at the top of the window.</li>
+                  <li>Select <strong>"Settings"</strong> from the dropdown menu. This will open the settings UI.</li>
+                </ul>
+              </li>
+
+              <li>
+                <strong>Select Default Profile:</strong>
+                <ul>
+                  <li>In the left sidebar, click on <strong>"Startup"</strong>.</li>
+                  <li>Under the <strong>"Default profile"</strong> section, you will see a dropdown menu with a list of available profiles.</li>
+                  <li>
+                    Select the Linux distribution you want to set as the default from the dropdown menu. This will usually be listed as
+                    <strong>"Ubuntu-22.04"</strong>, or the name of your installed distribution.
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <strong>Save Changes:</strong>
+                <p>
+                  After selecting the default profile, the changes are automatically saved. You can close the settings tab. To verify, close and reopen Windows
+                  Terminal. It should now open directly to the selected Linux distribution by default.
+                </p>
+                <p>
+                  You can follow the rest of the instructions using the Windows terminal running linux. To set up your work environment, start with
+                  <a href="#setting-up-miniconda">installing Miniconda</a> and follow the rest of the instructions.
+                </p>
+              </li>
+            </ol>
+
+            <hr />
+
+            <h3 id="wsl-tricks">A few useful tricks with WSL</h3>
+            <p>Once you are familiar with basic linux commands, add the following useful lines to the <code>.bashrc</code> file.</p>
+            <pre><code class="language-bash">
+# Pointing jupyter notebook to the right browser:
+alias notebook="BROWSER=/mnt/c/Program\ Files\ \(x86\)/Microsoft/Edge/Application/msedge.exe jupyter notebook --NotebookApp.use_redirect_file=False"
+
+# Opening the present working directory using the Windows file manager:
+alias openpwd="/mnt/c/Windows/explorer.exe ."
+
+# Making sure that the duplicate tab opens in the same working directory:
+PROMPT_COMMAND=${PROMPT_COMMAND:+"$PROMPT_COMMAND; "}'printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"'
+            </code></pre>
+
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <br />
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">CERN Account Management</h2>
+
+            <div class="alert alert-info">ℹ️ This section is for CMS members only.</div>
+
+            <p>
+              Once you are registered in the CERN Human Resource database, your Primary CERN Account, CERN e-mail address & mailbox are created automatically.
+              Instructions about the next steps will be emailed there. The following list contains some useful links for account and services management.
+            </p>
+            <ul>
+              <li><a href="https://account.cern.ch/account/" target="_blank">CERN account management</a></li>
+              <li><a href="https://resources.web.cern.ch/resources/" target="_blank">Resources</a></li>
+              <li><a href="https://e-groups.cern.ch/e-groups/EgroupsSearchForm.do" target="_blank">Groups</a></li>
+              <li><a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBook" target="_blank">TWiki: WorkBook</a></li>
+            </ul>
+
+            <hr />
+
+            <h3 id="cern-certificate">CERN Grid Certificate</h3>
+            <p>
+              Once, your CERN account is active, you will have to generate a certificate. CERN Grid certificates are digital credentials used to authenticate
+              and securely access CERN's computing resources. You can generate the certificate
+              <a href="https://ca.cern.ch/ca/user/Request.aspx?template=EE2User">here</a>. Follow the on-screen instructions and give the certificate file a
+              passowrd. The certificate file is a <code>.p12</code> file, which expires in a year. It's important to keep this file safe and backed up, as it
+              serves as your digital identity for accessing CERN's grid services.
+            </p>
+
+            <p>I am listing the important links related to certificates below.</p>
+            <ul>
+              <li><a href=" https://ca.cern.ch/ca/" target="_blank"> CERN certification authority </a></li>
+              <li><a href="https://ca.cern.ch/ca/user/MyCertificates.aspx" target="_blank"> Currently available certificates</a></li>
+              <li>
+                <a href="https://lms.cern.ch/ekp/servlet/ekp?PX=N&TEACHREVIEW=N&PTX=&CID=EKP000040521&TX=FORMAT1&LANGUAGE_TAG=en&DECORATEPAGE=N" target="_blank"
+                  >CERN computer security course</a
+                >
+              </li>
+            </ul>
+
+            <div class="alert alert-info">ℹ️ Grid certificates have an expiry date of 1 year. This process has to be repeated every year.</div>
+
+            <hr />
+
+            <h3>Adding the certificate to a browser</h3>
+            <p>To integrate the certificate into a web browser, follow these steps:</p>
+            <ol>
+              <li>Download the <code>.p12</code> certificate file to your computer.</li>
+              <li>Go to <strong>Settings</strong> in your preferred web-browser and search for something like <strong>Manage Certificates</strong>.</li>
+              <li>Click on the <strong>Import</strong> button.</li>
+              <li>Select your <code>.p12</code> file and follow the prompts, including entering the password set during certificate generation.</li>
+            </ol>
+            <p>
+              After importing, the browser will use the certificate for authenticating with CERN services, allowing you to securely access required resources
+              such as <a href="https://cmsweb.cern.ch/das/" target="_blank">CMS-DAS</a> and other internal pages. If the browser says
+              <i>Your connection isn't private ..</i> for cmsweb pages, you can do <strong>Advanced </strong> &gt;
+              <strong> Continue to cmsweb.cern.ch (unsafe)</strong> for access. A browser-window will pop-up where you have to select the CERN certificate for
+              processing further.
+            </p>
+
+            <hr />
+
+            <h3>Adding the certificate to work area</h3>
+            <p>To setup the certificate on the user interface from where you have to work you should follow these steps.</p>
+
+            <ol>
+              <li>
+                Place the p12 certificate file in the <code>.globus</code> directory of your home area. If the directory doesn't exist, create it first. If any
+                old certificate files already exist, remove them.
+                <pre><code class="language-bash">
+cd ~
+mkdir .globus
+cd ~/.globus
+mv /path/to/mycert.p12 .
+
+# Remove existing certificates (if any)
+rm -f usercert.pem
+rm -f userkey.pem
+                </code></pre>
+              </li>
+              <li>
+                Use <code>openssl</code> to create the keys, and make them read-only using <code>chmod</code>. This step asks for the password to decrypt the
+                <code>.p12</code> file. Then, it asks the user to create a new PEMl password [important], which is required to use the certificate while working
+                with the grid.
+                <pre><code class="language-bash">
+openssl pkcs12 -in mycert.p12 -clcerts -nokeys -out usercert.pem
+openssl pkcs12 -in mycert.p12 -nocerts -out userkey.pem
+chmod 400 userkey.pem
+chmod 400 usercert.pem
+                </code></pre>
+              </li>
+              <li>
+                Verify if the certificate by running the following.
+                <pre><code class="language-bash">voms-proxy-init --rfc --voms cms -valid 192:00</code></pre>
+              </li>
+            </ol>
+
+            <hr />
+
+            <h3 id="cern-links">Important links accessible through the CERN account</h3>
+            <ul>
+              <li><a href="https://icms.cern.ch/epr/showMine" target="_blank">Managing EPR points</a></li>
+              <li><a href="https://cmssdt.cern.ch/lxr/" target="_blank">CMSSW cross-reference</a></li>
+              <li><a href="https://indico.cern.ch/category/1303/">All CMS meetings</a></li>
+              <li><a href="https://twiki.cern.ch/twiki/bin/viewauth/CMS/WebHome">All the POG/PAG TWiki pages</a></li>
+            </ul>
+
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <br />
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- footer placeholder -->
+    <div id="footer"></div>
+
+    <!-- Your main JS -->
+    <script src="/js/main.js"></script>
+  </body>
+</html>

@@ -1,210 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Homepage, portfolio." />
-    <meta name="keywords" content="GitHub Page, phazarik, IISER, Pune, CMS" />
-    <meta name="author" content="Prachurjya Pran Hazarika" />
-    <meta name="google-site-verification" content="VzzwscAKDtEY3IE5iakbExeudAlyfdjgT-OBWh_BV64" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prachurjya Hazarika - Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="/bootstrap-4.1.3-dist/css/bootstrap.css" />
-    <!-- SyntaxHighlighter CSS -->
-    <link rel="stylesheet" href="/syntax-highlighter/styles/shCoreEmacs.css" />
-    <link rel="stylesheet" href="/syntax-highlighter/styles/shThemeDefault.css" />
-    <!--Override styles here-->
-    <link rel="stylesheet" href="/mystyles/override.css" />
-    <link rel="stylesheet" href="/mystyles/phone-compatibility.css" />
-    <title>Home</title>
+    <!-- Highlight.js core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Highlight.js line-numbers plugin -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!--background image
+    <style>
+      body {
+        background-image: url("/images/bg_16x9.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          background-image: url("/images/bg_vertical.png");
+          background-attachment: scroll;
+        }
+      }
+    </style>-->
   </head>
-
   <body>
-    <div id="wrapper">
-      <div id="header"></div>
+    <div id="header"></div>
 
-      <div class="container">
-        <h1 style="text-align: center">About me</h1>
-
-        <div class="row">
-          <div class="col-md-3" style="padding-bottom: 3%">
-            <img src="/mypics/profile-pic-december-2023.jpg" alt="profile-pic" class="profile" />
+    <main class="container my-4">
+      <!-- Hero / About -->
+      <section class="card p-4 mb-4" style="border: 0">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-3 text-center">
+            <img src="images/profile-pic-december-2023.jpg" alt="Profile picture" class="rounded-circle img-fluid shadow-sm" style="max-width: 180px" />
           </div>
           <div class="col-md-9">
+            <h1 class="name">Prachurjya Hazarika</h1>
+            <p class="lead" style="font-size: large">Particle Physics | CMS Collaboration</p>
             <p>
-              I am a PhD student from IISER Pune. I completed MSc in Physics from Tezpur University in 2019. Currently I am working in the field of Experimental
-              High Energy Physics under the supervision of Dr Sourabh Dube. I am a member of the CMS collaboration at CERN, where we collide protons at
-              extremely high energies to see what matter is made up of. We are looking for more particles beyond the standard model which may explain some
-              unanswered/unexplained phenomena.
+              I am a PhD student at IISER Pune, working in Experimental High Energy Physics under Dr. Sourabh Dube. As a member of the CMS collaboration at
+              CERN, I study proton-proton collisions to search for physics beyond the Standard Model. I also like data visualization, graphic design, painting,
+              and video editing.
             </p>
-            <p style="text-align: right">
-              <a href="http://sites.iiserpune.ac.in/~sdube/" class="button" target="_blank"> Visit our research group </a>
-              <a href="https://www.instagram.com/hepxpune" class="button" target="_blank">
-                and Instagram! <img src="/mypics/logo/instagram.png" alt="instagram" class="logo" />
-              </a>
+
+            <!-- Social media links -->
+            <p>
+              <a href="mailto:prachurjyahazarika@gmail.com" target="_blank"
+                ><i class="bi bi-envelope-fill" style="color: var(--primary-color); font-size: 1.5rem; margin-right: 0.5rem"></i
+              ></a>
+              <a href="https://github.com/phazarik" target="_blank"
+                ><i class="bi bi-github" style="color: var(--primary-color); font-size: 1.5rem; margin-right: 0.5rem"></i
+              ></a>
+              <a href="https://linkedin.com/in/prachurjya-hazarika/" target="_blank"
+                ><i class="bi bi-linkedin" style="color: var(--primary-color); font-size: 1.5rem; margin-right: 0.5rem"></i
+              ></a>
+              <a href="https://instagram.com/obi_art_kenobi" target="_blank"
+                ><i class="bi bi-instagram" style="color: var(--primary-color); font-size: 1.5rem"></i
+              ></a>
             </p>
-            <!--
-                    <p style="text-align: right;"><a href="/mypages/files/cv.pdf" target="_blank" style="float: right;">Click here to view the CV</a></p>
-                    -->
           </div>
         </div>
+      </section>
 
-        <!--row, then col-md3 (side panel), then col-md9 (main panel)-->
-        <div class="row">
-          <div class="col-md-3">
-            <!--Name section-->
-            <h4 style="margin: 0px; padding: 0px; color: black">Prachurjya Pran Hazarika</h4>
-            <p style="font-weight: lighter; font-size: large">he/him | IISER-Pune</p>
-            <nav class="docs-sidebar" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
-              <ul class="nav">
-                <li class="collapsible-link">
-                  <a href="#work">PhD work at IISER-Pune</a>
-                  <ul class="nav collapse">
-                    <li><a href="#work-thesis">Search for BSM</a></li>
-                    <li><a href="#work-service">Service work for CMS</a></li>
-                  </ul>
-                </li>
-                <li class="collapsable-link">
-                  <a href="#others">Other activities</a>
-                  <ul class="nav collapse">
-                    <li><a href="#youtube">YouTube</a></li>
-                    <li><a href="#phy-conclave">Physics Conclave 2025</a></li>
-                  </ul>
-                </li>
-              </ul>
+      <div class="row g-4">
+        <!-- Left column -->
+        <aside class="col-md-3">
+          <section class="card shadow-sm p-3 mb-4">
+            <h2 class="section-title" style="margin-top: 0">Education</h2>
+            <ul class="list-unstyled mb-0">
+              <li><strong>PhD, Physics [ongoing]</strong><br />IISER, Pune, 2020 - Present</li>
+              <br />
+              <li><strong>MSc, Physics</strong><br />Gold Medalist <br />Tezpur University, 2017 - 2019 <br />Cumulative GPA: 8.92</li>
+              <br />
+              <li><strong>BSc, Physics</strong><br />Dibrugarh University, 2017 - 2019 <br />Percentage: 90.64</li>
+            </ul>
+          </section>
 
-              <div class="info-box" style="margin-left: -5%">Other links</div>
+          <section class="card shadow-sm p-3 mb-4">
+            <h2 class="section-title" style="margin-top: 0">Programming</h2>
 
-              <ul class="nav" style="font-size: small">
-                <li class="assamese"><a href="/mypages/assamese/kibakibi.html">কিবা-কিবি</a></li>
-                <li>
-                  <a href="https://bologobasa.blogspot.com/" target="_blank">
-                    A man has no name <img src="/mypics/logo/no one.png" alt="no one" class="logo" />
-                  </a>
-                </li>
-                <!--<li><a href="/mypages/template.html">template page</a></li>-->
-              </ul>
-            </nav>
-          </div>
-          <!--end side panel-->
+            <div class="skill">
+              <div class="skill-name">C++/ROOT</div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%">Advanced</div>
+              </div>
+            </div>
 
-          <div class="col-md-9">
-            <section id="work" class="section">
-              <h2>Things I've been working on ...</h2>
-              <hr />
+            <div class="skill">
+              <div class="skill-name">Python</div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%">Advanced</div>
+              </div>
+            </div>
 
-              <h3 id="work-thesis">Search for Physics Beyond the Standard Model in CMS Experiment</h3>
-              <p>
-                The Standard Model is currently the best-model for understanding the building blocks of nature. However, we still have to figure out a lot of
-                unexplained phenomena. In my PhD, my main task is to design and implement analysis strategies to search for the evidence of the new theories
-                beyond the Standard Model in the CMS experiment, CERN. A typical counting experiment is done by properly estimating the collision events
-                predicted by the Standard Model, and looking for excess events which may come from these new physics processes. Currently I am developing the
-                analysis tools to search for the vector-like lepton in the Run-2 and Run-3 dataset.
-              </p>
+            <div class="skill">
+              <div class="skill-name">HTML/CSS</div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 50%">Comfortable</div>
+              </div>
+            </div>
 
-              <h3 id="work-service">Service work for the CMS collaboration</h3>
-              <p>
-                I have been working with the EGamma group of CMS which is responsible for the reconstruction and identification of electrons and photons in the
-                Electromagnetic Calorimeter (ECAL) of CMS. In 2021, I helped them out with a Neural Network based photon identification algorithm, which is
-                currently being implemented in the Run-3 data taking period (2022 onwards). That is something I can brag about :D. I am also the contact person
-                between EGamma and pdmv (Physics Data and Monte-Carlo Validation group).
-              </p>
+            <div class="skill">
+              <div class="skill-name">JavaScript</div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 20%">New</div>
+              </div>
+            </div>
+          </section>
 
-              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
-            </section>
+          <section class="card shadow-sm p-3 mb-4">
+            <h2 class="section-title" style="margin-top: 0">Other skills</h2>
+            <div class="skill">
+              <div class="skill-name">Adobe Photoshop</div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 85%">Expert</div>
+              </div>
+            </div>
 
-            <section id="others" class="section">
-              <h2>Other activities</h2>
-              <hr />
+            <div class="skill">
+              <div class="skill-name">Adobe Premiere Pro</div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 70%">Advanced</div>
+              </div>
+            </div>
 
-              <h3 id="youtube">YouTube videos</h3>
-              <p>
-                I like to make/edit videos occasionally. We made a YouTube video on the International Day of Women in Science (2024). The video features my
-                colleagues - PhD student Riya Sharma, postgraduate student Chitrakshee Yede, and undergraduate students Shailee Khandekar, Uttsavi Rastogi, and
-                Vaidehi Tikhe. The video was conceptualized by my supervisor, Prof Sourabh Dube.
-              </p>
-              <!--Putting a youtube link in row/col setup-->
-              <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                  <div class="media">
+            <div class="skill">
+              <div class="skill-name">Adobe Illustrator</div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 50%">Comfortable</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card shadow-sm p-3 mb-4">
+            <h2 class="section-title" style="margin-top: 0">Languages</h2>
+            <ul class="list-unstyled mb-0">
+              <li>English (Fluent)</li>
+              <li>Hindi (Fluent)</li>
+              <li>Assamese (Native)</li>
+              <li>Bengali (Basic)</li>
+            </ul>
+          </section>
+
+          <section class="card shadow-sm p-3 mb-4">
+            <h2 class="section-title" style="margin-top: 0">Achievements</h2>
+            <ul class="list-unstyled mb-0">
+              <li>INSPIRE-DST Fellowship, 2020</li>
+              <li>JEST, 2020</li>
+              <li>CSIR-NTA NET lectureship, 2019</li>
+              <li>SLET lectureship, 2019</li>
+            </ul>
+          </section>
+        </aside>
+
+        <!-- Right column -->
+        <div class="col-md-9">
+          <section class="section">
+            <h2 class="section-title" style="margin-top: 0">Research & Work</h2>
+
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <h3>Search for Physics Beyond the Standard Model in CMS Experiment</h3>
+              <span>[2020–present]</span>
+            </div>
+            <p>
+              The Standard Model is currently the best-model for understanding the building blocks of nature. However, we still have to figure out a lot of
+              unexplained phenomena. In my PhD, I am developing the analysis tools to search for the 'vector-like leptons' in proton-proton collisions in the
+              CMS detector, in a final state containing exactly two standard model leptons with the same sign. This is part of a broad search for VLLs in the
+              multi-lepton final state, where I am focusing on the scenario where the new leptons couple to electrons and muons. I am exploring the full Run-2
+              and parts of the Run-3 datasets, corresponding to a total integrated luminosity of 200 fb\(^{-1}\).
+            </p>
+
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <h3>Development of DNN-based photon ID</h3>
+              <span>[2021-2022]</span>
+            </div>
+            <p>
+              I have been working with the EGamma group of CMS which is responsible for the reconstruction and identification of electrons and photons in the
+              Electromagnetic Calorimeter (ECAL) of CMS. In 2021, I helped them out with a Deep Neural Network based photon identification algorithm. This ID
+              ends up giving better efficiency for photons than the earlier cut-based ID, and is implemented in the Run-3 data taking period (2022 onwards).
+            </p>
+
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <h3>MC contact for EGM POG</h3>
+              <span>[2023–present]</span>
+            </div>
+            <p>
+              I am serving as the contact person between the EGamma POG (Physics Object Group) and PdmV (Physics Data and Monte-Carlo Validation) group at CMS,
+              where I handle specific MC requests by the EGamma group for electron and photon related studies.
+            </p>
+
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <h3>Phenomenological study of neutrino oscialltions</h3>
+              <span>[2019]</span>
+            </div>
+            <p>
+              As a part of my MSc thesis, I did a phenomenological study on the Non-Standard Interactions (NSI) in neutrinos and the consequences of NSI on
+              neutrino oscillations and neutrino detection experiments, by using Super- Kamiokande as an example.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Fun stuff</h2>
+            <h3>Data visualization</h3>
+
+            <p>
+              I like to make data visualization in my free time. Check out the following figures that show the demographic and manpower distribution of the CMS
+              collaboration. The data is taken from iCMS. Find more of these <a href="https://github.com/phazarik/cms-members-geodata" target="_blank">here</a>.
+            </p>
+
+            <div class="subfigure-container">
+              <div class="subfigure">
+                <img src="/images/home/infographics-cms-members-authors-nonauthors.png" alt="CMS Members Authors vs Non-Authors" />
+              </div>
+              <div class="subfigure">
+                <img src="/images/home/infographics-cms-members-manpower.png" alt="CMS Members Manpower" />
+              </div>
+              <div class="subfigure">
+                <img src="/images/home/infographics-cms-members-institutes.png" alt="CMS Members Institutes" />
+              </div>
+            </div>
+
+            <h3>Physics Conclave 2025</h3>
+            <p>
+              I was in charge of social media and outreach of the Physics Conclave event, held at IISER-Pune in March, 2025. I also designed the website. Check
+              it out <a href="https://iiserp-phy-conclave-2025.github.io/" target="_blank">here</a>.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Outreach</h2>
+
+            <h3>YouTube videos</h3>
+
+            <p>
+              I like to make/edit videos occasionally. We made a YouTube video on the International Day of Women in Science (2024). This video features my
+              colleagues - PhD student Riya Sharma, postgraduate student Chitrakshee Yede, and undergraduate students Shailee Khandekar, Uttsavi Rastogi, and
+              Vaidehi Tikhe. The video was conceptualized by my supervisor, Prof Sourabh Dube. I also made a campus-tour video at IISER Pune in February, 2024.
+              Hopefully I have covered most of the important information.
+            </p>
+
+            <div class="row g-3">
+              <!-- Card 1 -->
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="ratio ratio-16x9">
                     <iframe
-                      width="560"
-                      height="315"
-                      src="https://www.youtube.com/embed/Lb7-8iAoEVg?si=1uaGBYERecqnIC5P"
-                      title="YouTube video player"
-                      frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerpolicy="strict-origin-when-cross-origin"
+                      src="https://www.youtube.com/embed/Lb7-8iAoEVg"
+                      title="A not-so-serious conversation with HEP-EX women at IISER Pune"
                       allowfullscreen
                     ></iframe>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">EHEP Women at IISER Pune</h5>
+                    <p class="card-text">
+                      A fun conversation with women pursuing experimental particle physics at IISER Pune, featuring PhD and undergraduate students.
+                    </p>
+                    <a href="https://www.youtube.com/watch?v=Lb7-8iAoEVg" class="btn btn-primary btn-sm" target="_blank">Watch on YouTube</a>
                   </div>
                 </div>
               </div>
 
-              <p>I also made this campus-tour video at IISER Pune in February, 2024. Hopefully I have covered most of the important information.</p>
-              <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                  <div class="media">
-                    <iframe
-                      width="560"
-                      height="315"
-                      src="https://www.youtube.com/embed/qvNeTA7Y7I4?si=1ypXmLxsRJlJU17-"
-                      title="YouTube video player"
-                      frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerpolicy="strict-origin-when-cross-origin"
-                      allowfullscreen
-                    ></iframe>
+              <!-- Card 2 -->
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/qvNeTA7Y7I4" title="IISER Pune Campus Tour 2024" allowfullscreen></iframe>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">IISER Pune Campus Tour</h5>
+                    <p class="card-text">A campus tour of IISER Pune from my perspective in pre-monsoon 2024.</p>
+                    <a href="https://www.youtube.com/watch?v=qvNeTA7Y7I4" class="btn btn-primary btn-sm" target="_blank">Watch on YouTube</a>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <p>Feel free to like and subscribe! &#128513;</p>
-
-              <h3 id="phy-conclave">Physics Conclave 2025</h3>
-              <p>
-                I was in charge of social media and outreach of the Physics Conclave event, held at IISER-Pune in March, 2025. I also designed the website.
-                Check it out <a href="https://iiserp-phy-conclave-2025.github.io/" target="_blank">here</a>.
-              </p>
-
-              <p style="text-align: right"><a href="#header" class="button"> &uarr; back to top</a></p>
-            </section>
-          </div>
-          <!--end main panel-->
+            <h3>Talks</h3>
+            <ul>
+              <li>
+                <div style="display: flex; justify-content: space-between; align-items: center">
+                  <h5>“Machine learning meets particle physics”</h5>
+                  <span>January 27, 2025</span>
+                </div>
+                <p>Department of Physics, Jorhat Institute of Science and Technology.</p>
+              </li>
+              <li>
+                <div style="display: flex; justify-content: space-between; align-items: center">
+                  <h5>Introduction to EHEP for high school students</h5>
+                  <span>October 19, 2022</span>
+                </div>
+                <p>Assamese talk introducing the Standard Model and experimental particle physics, intended for high school students.</p>
+              </li>
+              <li>
+                <div style="display: flex; justify-content: space-between; align-items: center">
+                  <h5>Introduction to EHEP for BSc students</h5>
+                  <span>December 18, 2021</span>
+                </div>
+                <p>Online talk during covid lockdown period. Department of Physics, Jorhat Institute of Science and Technology.</p>
+              </li>
+            </ul>
+          </section>
+          <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
         </div>
-        <!--end row-->
       </div>
-      <!--end container-->
-    </div>
-    <!--end wrapper-->
+    </main>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
-      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-      crossorigin="anonymous"
-    ></script>
-    <script src="/bootstrap-4.1.3-dist/js/bootstrap.js"></script>
-    <script src="/mystyles/custom.js"></script>
-    <!-- SyntaxHighlighter JavaScript -->
-    <!-- SyntaxHighlighter JavaScript -->
-    <script src="/syntax-highlighter/scripts/shCore.js"></script>
-    <script src="/syntax-highlighter/scripts/shBrushBash.js"></script>
-    <script src="/syntax-highlighter/scripts/shBrushCpp.js"></script>
-    <script src="/syntax-highlighter/scripts/shBrushPython.js"></script>
-    <script>
-      SyntaxHighlighter.all();
-    </script>
-    <!-- Custom javascript -->
-    <script src="/mystyles/custom_scripts.js"></script>
+    <div id="footer"></div>
+
+    <script src="js/main.js"></script>
   </body>
-
-  <!-- Footer content -->
-  <footer id="footer"></footer>
 </html>

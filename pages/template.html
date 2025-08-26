@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <link href="/css/style.css" rel="stylesheet" />
+
+    <!-- Highlight.js core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <!-- Highlight.js line-numbers plugin -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body>
+    <!-- header placeholder -->
+    <div id="header"></div>
+
+    <main class="container my-4">
+      <div class="row g-4">
+        <!-- Navigation (left side) -->
+        <aside class="col-md-3">
+          <section class="section">
+            <div class="d-grid gap-2">
+              <div class="nav-section">This page</div>
+
+              <button class="nav-btn">Link 1</button>
+              <div class="sub-btns">
+                <a href="#" class="nav-sub-btn">Sub-link 1</a>
+                <a href="#" class="nav-sub-btn">Sub-link 2</a>
+              </div>
+
+              <button class="nav-btn">Link 2</button>
+              <div class="sub-btns">
+                <a href="#" class="nav-sub-btn">Sub-link 1</a>
+                <a href="#" class="nav-sub-btn">Sub-link 2</a>
+              </div>
+
+              <div class="nav-section">Other pages</div>
+              <button class="nav-btn" onclick="window.open('https://bologobasa.blogspot.com/', '_blank')">
+                <i class="bi bi-hourglass-bottom"></i> A long lost friend
+              </button>
+
+              <a href="/index.html" class="nav-btn">Home</a>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Main content -->
+        <div class="col-md-9">
+          <!-- Text -->
+          <section class="section">
+            <h1 class="page-title">Page Title</h1>
+            <p>This is the body content of the template. Use this area to introduce your page and provide a brief overview of the content below.</p>
+          </section>
+
+          <!-- Code block -->
+          <section class="section">
+            <h2 class="section-title">Code Examples with Line Numbers</h2>
+
+            <!-- Python -->
+            <h3>Python Example</h3>
+            <p>A simple function that prints a greeting to demonstrate Python syntax highlighting.</p>
+            <pre><code class="language-python">
+def greet(name):
+  print("Hello,", name)
+  greet("World")
+  </code></pre>
+
+            <!-- ROOT (C++) -->
+            <h3>ROOT (C++) Example</h3>
+            <p>A basic ROOT macro that creates a histogram and draws it on a canvas, useful for particle physics analysis.</p>
+            <pre><code class="language-cpp">
+void example() {
+  TCanvas *c = new TCanvas("c", "Canvas", 800, 600);
+  TH1F *h = new TH1F("h", "Example", 50, 0, 5);
+  h->FillRandom("gaus", 1000);
+  h->Draw();
+}
+  </code></pre>
+
+            <!-- Shell -->
+            <h3>Shell Example</h3>
+            <p>Listing files in the current directory with details to demonstrate basic shell commands.</p>
+            <pre><code class="language-bash">
+# List files in current directory
+ls -lh
+  </code></pre>
+
+            <!-- LaTeX -->
+            <h3>LaTeX Example</h3>
+            <p>A minimal LaTeX document with inline math rendering for academic or technical writing examples.</p>
+            <pre><code class="language-latex hljs hljs-ln">
+\documentclass{article}
+\begin{document}
+Hello, this is a simple $\LaTeX$ example.
+\end{document}
+  </code></pre>
+          </section>
+
+          <!-- LaTeX Questions Rendering -->
+          <section class="section">
+            <h2 class="section-title">LaTeX Questions</h2>
+            <p>These questions are rendered using LaTeX syntax:</p>
+            <ol>
+              <li>Solve for \(x\) in the equation \(2x + 5 = 13\).</li>
+              <li>Evaluate the integral: \(\int_0^1 x^2 \, dx\).</li>
+              <li>Find the derivative of \(f(x) = \sin(x^2)\).</li>
+              <li>Solve the quadratic equation: \(x^2 - 4x + 3 = 0\).</li>
+              <li>Express the sum \(\sum_{n=1}^{\infty} \frac{1}{n^2}\).</li>
+              <li>Simplify the fraction: \(\frac{2x^2 + 4x}{2x}\).</li>
+              <li>Expand \((x + 2)(x - 3)\).</li>
+              <li>Matrix multiplication example: \[ \begin{pmatrix}1 & 2\\3 & 4\end{pmatrix} \begin{pmatrix}0 & 1\\1 & 0\end{pmatrix} \]</li>
+              <li>Pythagoras theorem: \(a^2 + b^2 = c^2\).</li>
+              <li>Euler’s formula: \(e^{i\pi} + 1 = 0\).</li>
+              <li>Limit example: \(\lim_{x \to 0} \frac{\sin x}{x} = 1\).</li>
+              <li>Binomial expansion: \((a+b)^3 = a^3 + 3a^2b + 3ab^2 + b^3\).</li>
+            </ol>
+          </section>
+
+          <!-- Image with caption -->
+          <section class="section">
+            <h2 class="section-title">Image Example</h2>
+            <figure class="figure">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Standard_Model_of_Elementary_Particles.svg/800px-Standard_Model_of_Elementary_Particles.svg.png"
+                alt="Standard Model"
+                class="figure-img img-fluid rounded shadow-sm"
+                style="width: 75%; max-width: 800px"
+              />
+              <figcaption class="figure-caption text-center">
+                Figure 1: Illustration of the Standard Model of elementary particles, showing quarks, leptons, and force carriers.
+              </figcaption>
+            </figure>
+          </section>
+
+          <!-- Minipage -->
+          <section class="section">
+            <h2 class="section-title">Minipage Example</h2>
+            <div class="split">
+              <div>
+                <h3>Left Side</h3>
+                <p>This is some content in the left minipage-style block, allowing parallel content presentation.</p>
+              </div>
+              <div>
+                <h3>Right Side</h3>
+                <p>This is some content in the right minipage-style block, complementing the left block with related information.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Alerts -->
+          <section class="section">
+            <h2 class="section-title">Alert Examples</h2>
+            <p>Bootstrap alert components to show feedback messages with different importance levels.</p>
+            <div class="alert alert-success">✅ Success: Operation completed successfully.</div>
+            <div class="alert alert-info">ℹ️ Info: This is some helpful information.</div>
+            <div class="alert alert-warning">⚠️ Warning: Please double-check your configuration.</div>
+            <div class="alert alert-danger">⛔ Danger: Something went seriously wrong!</div>
+          </section>
+
+          <!-- Lists -->
+          <section class="section">
+            <h2 class="section-title">Lists</h2>
+            <p>Examples of ordered and unordered lists to structure information hierarchically.</p>
+            <h6>Unordered List</h6>
+            <ul>
+              <li>Item A</li>
+              <li>
+                Item B
+                <ul>
+                  <li>Sub-item B1</li>
+                  <li>Sub-item B2</li>
+                </ul>
+              </li>
+              <li>Item C</li>
+            </ul>
+
+            <h6>Ordered List</h6>
+            <ol>
+              <li>Step 1</li>
+              <li>Step 2</li>
+              <li>Step 3</li>
+            </ol>
+          </section>
+
+          <!-- Tables -->
+          <section class="section">
+            <h2 class="section-title">Table Example</h2>
+            <p>Example of a simple table with headers and striped rows for readability.</p>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Alice</td>
+                  <td>Active</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Bob</td>
+                  <td>Inactive</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- Blockquote -->
+          <section class="section">
+            <h2 class="section-title">Blockquote Example</h2>
+            <p>Example of a blockquote for emphasizing quotes or highlighted text.</p>
+            <blockquote class="blockquote">
+              <p>"The important thing is not to stop questioning. Curiosity has its own reason for existing."</p>
+              <footer class="blockquote-footer">Albert Einstein</footer>
+            </blockquote>
+          </section>
+
+          <!-- Form Elements -->
+          <section class="section">
+            <h2 class="section-title">Form Elements</h2>
+            <p>Demonstrates various input types and form controls available in Bootstrap.</p>
+            <form>
+              <div class="mb-3">
+                <label for="inputText" class="form-label">Text Input</label>
+                <input type="text" class="form-control" id="inputText" placeholder="Enter text" />
+              </div>
+              <div class="mb-3">
+                <label for="inputEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Enter email" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Select Option</label>
+                <select class="form-select">
+                  <option>Option 1</option>
+                  <option>Option 2</option>
+                </select>
+              </div>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="check1" />
+                <label class="form-check-label" for="check1">Check me</label>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </section>
+
+          <!-- Accordion Example -->
+          <section class="section">
+            <h2 class="section-title">Accordion Example</h2>
+            <p>An interactive accordion component to show collapsible content sections.</p>
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">Accordion Item #1</button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">Content for accordion item #1.</div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">Accordion Item #2</button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">Content for accordion item #2.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Cards Example -->
+          <section class="section">
+            <h2 class="section-title">Cards example</h2>
+            <p>Card components to display content with images, text, and links in a compact format.</p>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="card">
+                  <img src="https://timeline.web.cern.ch/sites/default/files/0008002_03-A5-at-72-dpi.jpg" class="card-img-top" alt="ATLAS Detector at CERN" />
+                  <div class="card-body">
+                    <h5 class="card-title">ATLAS Detector</h5>
+                    <p class="card-text">
+                      The ATLAS experiment at CERN is one of the largest particle detectors ever constructed, designed to explore a wide range of physics
+                      questions.
+                    </p>
+                    <a href="https://timeline.web.cern.ch/timeline-header/143" class="btn btn-primary btn-sm" target="_blank">Learn More</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card">
+                  <img
+                    src="https://cms.cern/sites/default/files/field/image/CMS_photo_3_courtesy_of_CERN.jpg"
+                    class="card-img-top"
+                    alt="CMS Detector at CERN"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">CMS Detector</h5>
+                    <p class="card-text">
+                      The CMS experiment is a general-purpose particle physics detector at the LHC, aiming to explore a wide range of physics phenomena.
+                    </p>
+                    <a href="https://cms.cern/detector/identifying-tracks" class="btn btn-primary btn-sm" target="_blank">Learn More</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card">
+                  <img src="https://cds.cern.ch/images/CERN-PHOTO-201802-030-10/file?size=large" class="card-img-top" alt="LHC Ring at CERN" />
+                  <div class="card-body">
+                    <h5 class="card-title">Large Hadron Collider (LHC)</h5>
+                    <p class="card-text">
+                      The LHC is the world's largest and most powerful particle accelerator, enabling scientists to explore the fundamental constituents of
+                      matter.
+                    </p>
+                    <a href="https://home.cern/news/news/accelerators/lhc-accelerates-its-first-atoms" class="btn btn-primary btn-sm" target="_blank"
+                      >Learn More</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Modal Example -->
+          <section class="section">
+            <h2 class="section-title">Modal Example</h2>
+            <p>A modal dialog component to display content in an overlay without navigating away from the page.</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Launch Demo Modal</button>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Modal Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">This is the content inside the modal.</div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Progress Bars Example -->
+          <section class="section">
+            <h2 class="section-title">Progress Bars Example</h2>
+            <p>Visual indicators of progress to represent completion status of tasks or processes.</p>
+            <div class="mb-3">Loading progress:</div>
+            <div class="progress mb-2"><div class="progress-bar" role="progressbar" style="width: 25%; background-color: #d0b4f8">25%</div></div>
+            <div class="progress mb-2"><div class="progress-bar" role="progressbar" style="width: 50%; background-color: #aa83e2">50%</div></div>
+            <div class="progress mb-2"><div class="progress-bar" role="progressbar" style="width: 75%; background-color: #7752aa">75%</div></div>
+          </section>
+
+          <!-- Tabs Example -->
+          <section class="section">
+            <h2 class="section-title">Tabs Example</h2>
+            <p>Tabbed interface to organize content in separate sections within the same page.</p>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="tab1-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#tab1"
+                  type="button"
+                  role="tab"
+                  aria-controls="tab1"
+                  aria-selected="true"
+                >
+                  Tab 1
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="tab2-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#tab2"
+                  type="button"
+                  role="tab"
+                  aria-controls="tab2"
+                  aria-selected="false"
+                >
+                  Tab 2
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="tab3-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#tab3"
+                  type="button"
+                  role="tab"
+                  aria-controls="tab3"
+                  aria-selected="false"
+                >
+                  Tab 3
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">Content for Tab 1.</div>
+              <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">Content for Tab 2.</div>
+              <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">Content for Tab 3.</div>
+            </div>
+          </section>
+
+          <!-- Go to Top Button -->
+          <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- footer placeholder -->
+    <div id="footer"></div>
+
+    <!-- Your main JS -->
+    <script src="/js/main.js"></script>
+  </body>
+</html>
