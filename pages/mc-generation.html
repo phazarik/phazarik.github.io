@@ -3,24 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MC generation</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
-    <link href="/css/style.css" rel="stylesheet" />
+    <meta
+      name="description"
+      content="Detailed guide on generating and validating CMS Monte Carlo samples, including gridpack production, LHE, GEN-SIM, DIGI-RAW, AOD, MINIAOD, and NANOAOD steps for VLL models."
+    />
+    <meta
+      name="keywords"
+      content="CMS, Monte Carlo, MC, gridpack, LHE, GEN-SIM, DIGI-RAW, AOD, MINIAOD, NANOAOD, VLL, MadGraph, Pythia, CMSSW, particle physics"
+    />
 
-    <!-- Highlight.js core -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <!-- Highlight.js line-numbers plugin -->
+    <title>Tools</title>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
-    <!-- MathJax for LaTeX rendering -->
+
+    <!-- Math Rendering -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Custom Styles -->
+    <link href="/css/style.css" rel="stylesheet" />
   </head>
   <body>
     <!-- header placeholder -->
@@ -72,18 +87,18 @@
         <div class="col-md-9">
           <!-- Text -->
           <section class="section">
-            <h1 class="page-title">Private MC sample generation</h1>
+            <h1 id="private-mc-generation" class="page-title">Private MC sample generation</h1>
           </section>
 
           <section class="section">
-            <h2 class="section-title">Setting up the tools locally</h2>
+            <h2 class="section-title" id="local-setup">Setting up the tools locally</h2>
 
             <p>
               In CMS, the SM processes are generated and simulated centrally, and we don't have to worry about them. But for a specific BSM search, a physicist
               has to take care of the BSM samples themselves, if they are not being handled already. For this section, I am using vector-like leptons as a
-              reference BSM signal [<a href="https://arxiv.org/abs/1510.03456" target="_blank">arXiv:1510.03556</a>]. First, we need to integrate this new
+              reference BSM signal [<a href="https://arxiv.org/abs/1510.03456" target="_blank">arXiv:1510.03456</a>]. First, we need to integrate this new
               physics model to the existing standard model in an event generator like MadGraph. Typically, theorists share their BSM model in the Universal
-              FeynRules Output (UFO) format, which contain automatized matrix-element generators. These files contain python modules which can be easily
+              FeynRules Output (UFO) format, which contains automatized matrix-element generators. These files contain python modules which can be easily
               included as an extension to MadGraph. This allows us to play with the new particles and the Feynman rules associated with them. I have taken the
               latest VLL UFO file from the repository:
               <a href="https://github.com/prudhvibhattiprolu/VLL-UFOs" target="_blank">github.com/prudhvibhattiprolu</a>.
@@ -304,7 +319,7 @@ conda install -c conda-forge hepmc3         # not important
               Delphes is a fast simulation framework for high-energy physics detectors. The Delphes outputs are equivalent to NanoAOD, but the information is
               structured differently in the ROOT files. It can be downloaded from the
               <a href="https://github.com/delphes/delphes" target="_blank">GitHub</a> repository. Installation instructions are available there as well.
-              Building delphes is pretty straight forward.
+              Building delphes is pretty straightforward.
             </p>
             <pre><code class="language-bash">
 git clone https://github.com/delphes/delphes.git
@@ -315,7 +330,7 @@ make             # This takes a couple of minutes
             <h3>Wrapping up ... [optional]</h3>
             <p>
               In some examples, PYTHIA, HEPMC3 etc. can be used from the MadGraph interface itself (I'm exploring it, not an expert yet). For this, paths to
-              PYTHIA and Delples should be included in MadGraph configuration. This has to be done once. I also added my fastjet setup, in case I need it later.
+              PYTHIA and Delphes should be included in MadGraph configuration. This has to be done once. I also added my fastjet setup, in case I need it later.
             </p>
             <pre><code class="language-bash">
 set pythia8_path /home/phazarik/mcgeneration/pythia8312
@@ -388,7 +403,7 @@ conda install -c conda-forge lhapdf
             <p>
               The flowchart below illustrates the event simulation workflow I am going to use. The process begins with generation using MadGraph, where
               parton-level events are generated in the LHE format. The output LHE file is then fed into PYTHIA for hadronization, where partons are converted
-              into physical hadrons, resulting in a DAT file. Finally, detector simulation is done using Delphes with a CMS card, which simulate how the CMS
+              into physical hadrons, resulting in a DAT file. Finally, detector simulation is done using Delphes with a CMS card, which simulates how the CMS
               would record these events, producing a ROOT file that can be used for further analysis.
             </p>
 
@@ -490,7 +505,7 @@ wget -O Makefile https://raw.githubusercontent.com/phazarik/phazarik.github.io/m
             <pre><code class="language-bash">
 # inside the examples directory
 make clean               # to get rid of any previous compiled files
-make hadlhe              # this looks fof hadlhe.cc, compiles it, and creates an executable
+make hadlhe              # this looks for hadlhe.cc, compiles it, and creates an executable
 ./hadlhe                 # execution
             </code></pre>
 
@@ -514,7 +529,7 @@ make hadlhe              # this looks fof hadlhe.cc, compiles it, and creates an
               The hadronization step produces large dat files, which needs to be handled by Delphes before being useful. It turns out that this extra step can
               be avoided by merging the work of Delphes and PYTHIA, which is illustrated in the flowchart below.
             </p>
-            <div class="mermaid" , style="font-size: small; align-items: center">
+            <div class="mermaid" style="font-size: small; align-items: center">
               graph LR; A[<strong>Generation</strong> in MadGraph <br />
               Input: Interaction parameters, Output: LHE] --> B[<strong>Hadronization and Simulation</strong> in Delphes <br />
               Input: LHE, PYTHIA config file, Output: ROOT file];
@@ -610,7 +625,7 @@ delphespythia ppToZToLL/pythia8_ppToZToLL.cfg test_output.root
             </div>
 
             <p>
-              For analyzing Delphes trees and writing histograms, I created a <code>MakeSelelector()</code> based setup with instructions available in this
+              For analyzing Delphes trees and writing histograms, I created a <code>MakeSelector()</code> based setup with instructions available in this
               <a href="https://github.com/phazarik/delphes_analyzer" target="_blank">GitHub repository</a>.
             </p>
 
@@ -619,7 +634,7 @@ delphespythia ppToZToLL/pythia8_ppToZToLL.cfg test_output.root
           </section>
 
           <section class="section">
-            <h2 class="section-title">Gridpack production in lxplus</h2>
+            <h2 class="section-title" id="gridpacks">Gridpack production in lxplus</h2>
 
             <p>
               Previous sections describe how to generate MC completely outside CMSSW framework, using delphes to approximate detector simulation. This section
@@ -643,7 +658,7 @@ delphespythia ppToZToLL/pythia8_ppToZToLL.cfg test_output.root
             <ul>
               <li>Access to CMS computing grid (lxplus).</li>
               <li>Access to CRAB client and gridpack tools.</li>
-              <li>CMS VOMS proxy, incase any external file used during production (such as pile-up profile).</li>
+              <li>CMS VOMS proxy, in case any external file used during production (such as pile-up profile).</li>
               <li>A BSM model UFO file (contact a theorist for this).</li>
               <li>Required cards/fragments in correct format (discuss this with the NPS MC contact).</li>
             </ul>
@@ -780,7 +795,7 @@ output VLLD_ele_M100 -nojpeg
               </code></pre>
             <p>
               However, there is an issue with these for the low mass-point. For M = 100 GeV, some of the decay chains (e.g., \( L \to H + \ell \) where \( m_H =
-              125 \) GeV) are not kinematically allowed (if the Higgs is on-shell). So MadGraph tries to include these subprocesses but fails midway. The same
+              125 \) GeV) are not kinematically allowed (if the Higgs is on-shell). So MadGraph tries to include these subprocesses but fails halfway. The same
               thing is true for the associated production. The gridpack generation tries to compile all 24 processes regardless of whether they are viable or
               not. If even one fails, the entire gridpack generation fails. MadGraph is designed to produce on-shell bosons with minimal instructions, and it is
               safe to skip this mass point if it's not too important.
@@ -831,7 +846,7 @@ python3 generate_one_gridpack.py --name VLLD_ele_M600
           </section>
 
           <section class="section">
-            <h2 class="section-title">Gridpack validation in lxplus</h2>
+            <h2 class="section-title" id="gridpack-validation">Gridpack validation in lxplus</h2>
 
             <p>
               This section describes the local validation of the gridpacks after they are successfully generated, i.e, the full production chain to produce

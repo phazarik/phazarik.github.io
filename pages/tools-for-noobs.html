@@ -3,24 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tools for noobs</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
-    <link href="/css/style.css" rel="stylesheet" />
+    <meta
+      name="description"
+      content="Comprehensive guide on installing and setting up EHEP tools for Linux and Windows users, including Miniconda, ROOT, Jupyter Notebook, and CERN account management."
+    />
+    <meta name="keywords" content="EHEP, ROOT, Miniconda, Jupyter Notebook, CMS, CERN, WSL, Linux, particle physics, tutorials" />
 
-    <!-- Highlight.js core -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <!-- Highlight.js line-numbers plugin -->
+    <title>Tools</title>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
-    <!-- MathJax for LaTeX rendering -->
+
+    <!-- Math Rendering -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Custom Styles -->
+    <link href="/css/style.css" rel="stylesheet" />
   </head>
   <body>
     <!-- header placeholder -->
@@ -64,7 +76,7 @@
           </section>
 
           <section class="section">
-            <h2 class="section-title">Getting started</h2>
+            <h2 class="section-title" id="setting-up-tools">Getting started</h2>
             <p>
               I am assuming that you have Linux installed on your system. Most of this tutorial will use <strong>Bash</strong> (not Zsh), so make yourself
               familiar with some basic Bash commands before going ahead. For Windows users, if you want to stay in the field of EHEP, it is recommended that you
@@ -198,7 +210,7 @@ sudo apt install \
   qtwebengine5-dev nlohmann-json3-dev libmysqlclient-dev libgl2ps-dev \
   liblzma-dev libxxhash-dev liblz4-dev libzstd-dev
 
-cd #make sure that you are in the home area
+cd # make sure that you are in the home area
 git clone --branch latest-stable --depth=1 https://github.com/root-project/root.git root_src
 mkdir root_build root_install && cd root_build
 cmake -DCMAKE_INSTALL_PREFIX=../root_install ../root_src
@@ -223,7 +235,7 @@ export PATH="/home/phazarik/root_install/bin/thisroot.sh"
                   required system libraries are available through the <code>conda-forge</code> channel under alternate package names.
                 </p>
                 <div class="alert alert-warning">
-                  ⚠️ Warning: The tricky part here is to get all the required packages. In my case, the following solution wroked. If yours doesn't you may have
+                  ⚠️ Warning: The tricky part here is to get all the required packages. In my case, the following solution worked. If yours doesn't you may have
                   to explore all the dependencies. Stick to the first tab if you have <code>sudo</code> access.
                 </div>
 
@@ -374,7 +386,7 @@ PS1='\[\033[0;34m\]custom_name:\w\[\033[0m\]>>'
             <p>
               Windows Subsystem for Linux (WSL) is a feature in Windows that allows users to run a Linux environment directly on their Windows machine without
               needing a virtual machine or dual-boot setup. WSL provides a compatibility layer that translates Linux system calls into Windows system calls,
-              with WSL 1 using this translation and WSL 2 running a real Linux kernel in a lightweight virtual machine for better performance and compatibility.
+              with WSL 1 using this translation and WSL-2 running a real Linux kernel in a lightweight virtual machine for better performance and compatibility.
               It integrates tightly with Windows, allowing access to the Windows file system, interoperability between Linux and Windows applications, and
               shared networking. This makes it easy for developers and users to run Linux tools and commands alongside their Windows applications seamlessly,
               without rebooting.
@@ -416,20 +428,20 @@ PS1='\[\033[0;34m\]custom_name:\w\[\033[0m\]>>'
                 <ul>
                   <li>
                     Visit the
-                    <a href="https://aka.ms/wsl2kernel" target="_blank">WSL2 Linux kernel update package</a>
+                    <a href="https://aka.ms/wsl2kernel" target="_blank">WSL-2 Linux kernel update package</a>
                     webpage.
                   </li>
-                  <li>Download the latest WSL2 Linux kernel update package installer.</li>
+                  <li>Download the latest WSL-2 Linux kernel update package installer.</li>
                   <li>Run the downloaded installer to update the WSL kernel to the latest version.</li>
                 </ul>
-                <div class="alert-box">
-                  <strong>Note:</strong> In case the kernel update is not available in the above link, or the link is down,
-                  <a href="/mypages/contactme.html">contact me</a>.
+                <div class="alert alert-info">
+                  ℹ️ I believe the default version with newer Windows OS is WSL-2 now. For older setup, in case the kernel update is not available in the above
+                  link, or the link is down, <a href="/mypages/contactme.html">contact me</a>.
                 </div>
               </li>
 
               <li>
-                <strong>Set WSL 2 as the default version (for better performance and compatibility):</strong>
+                <strong>Set WSL-2 as the default version (for better performance and compatibility):</strong>
                 <ul>
                   <li>
                     Search for <strong>"Command Prompt"</strong> in the Start menu, right-click on it, and select <strong>"Run as administrator"</strong>.
@@ -438,7 +450,7 @@ PS1='\[\033[0;34m\]custom_name:\w\[\033[0m\]>>'
                     In the Command Prompt window, type:
                     <pre><code class="language-bash">wsl --set-default-version 2</code></pre>
                   </li>
-                  <li>Press <strong>Enter</strong> to execute the command, which sets WSL 2 as the default version for any new Linux installations.</li>
+                  <li>Press <strong>Enter</strong> to execute the command, which sets WSL-2 as the default version for any new Linux installations.</li>
                 </ul>
               </li>
               <li>
@@ -516,7 +528,7 @@ PROMPT_COMMAND=${PROMPT_COMMAND:+"$PROMPT_COMMAND; "}'printf "\e]9;9;%s\e\\" "$(
           </section>
 
           <section class="section">
-            <h2 class="section-title">CERN Account Management</h2>
+            <h2 class="section-title" id="cern-account">CERN Account Management</h2>
 
             <div class="alert alert-info">ℹ️ This section is for CMS members only.</div>
 
@@ -538,7 +550,7 @@ PROMPT_COMMAND=${PROMPT_COMMAND:+"$PROMPT_COMMAND; "}'printf "\e]9;9;%s\e\\" "$(
               Once, your CERN account is active, you will have to generate a certificate. CERN Grid certificates are digital credentials used to authenticate
               and securely access CERN's computing resources. You can generate the certificate
               <a href="https://ca.cern.ch/ca/user/Request.aspx?template=EE2User">here</a>. Follow the on-screen instructions and give the certificate file a
-              passowrd. The certificate file is a <code>.p12</code> file, which expires in a year. It's important to keep this file safe and backed up, as it
+              password. The certificate file is a <code>.p12</code> file, which expires in a year. It's important to keep this file safe and backed up, as it
               serves as your digital identity for accessing CERN's grid services.
             </p>
 

@@ -3,24 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CMS analysis tools and scripts for UNIX and NanoAOD workflows" />
+    <meta name="keywords" content="CMS, NanoAOD, lxplus, T2, T3, analysis, ROOT, Python" />
     <title>Tools</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
-    <link href="/css/style.css" rel="stylesheet" />
 
-    <!-- Highlight.js core -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <!-- Highlight.js line-numbers plugin -->
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
-    <!-- MathJax for LaTeX rendering -->
+
+    <!-- Math Rendering -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Custom Styles -->
+    <link href="/css/style.css" rel="stylesheet" />
   </head>
   <body>
     <!-- header placeholder -->
@@ -81,7 +89,7 @@
           </section>
 
           <section class="section">
-            <h2 class="section-title">CMS UNIX (lxplus) tools</h2>
+            <h2 id="cms-unix-tools" class="section-title">CMS UNIX (lxplus) tools</h2>
 
             <h3 id="lxplus-das-cli">Finding files/Datasets using DAS CLI</h3>
             <p>
@@ -207,7 +215,7 @@ brilcalc lumi \
               The GenXSecAnalyzer is used to calculate or extract the cross-section of a simulated process from the LHE level. I made a wrapper script to run it
               for a list of samples. The detailed instructions are in this
               <a href="https://cms-generators.docs.cern.ch/useful-tools-and-links/HowToGenXSecAnalyzer/" target="_blank">documentation</a>. The tool described
-              in the official documentation requires MiniAOD files as inputs. My wrapper simples requires DAS names of the target NanoAOD samples, along with a
+              in the official documentation requires MiniAOD files as inputs. My wrapper simply requires DAS names of the target NanoAOD samples, along with a
               CMSSW release and CMS VOMS proxy.
             </p>
             <pre><code class="language-bash">
@@ -217,8 +225,8 @@ cmsenv
 voms-proxy-init -voms cms
             </code></pre>
             <p>
-              Aftering setting up, bring the <a href="/files/codes/lxplus/find_xsec_fromDAS.py.txt"><code>find_xsec_fromDAS.py</code></a> file here. It takes a
-              DAS name of the NanoAOD sample as input.
+              After setting up, bring the <a href="/files/codes/lxplus/find_xsec_fromDAS.py.txt"><code>find_xsec_fromDAS.py</code></a> file here. It takes a DAS
+              name of the NanoAOD sample as input.
             </p>
             <pre><code class="language-bash">python3 find_xsec_fromDAS.py --dataset [DAS name of the NanoAOD sample]</code></pre>
 
@@ -249,7 +257,7 @@ voms-proxy-init -voms cms
               monitors job status through a database, allowing users to track progress and retrieve output files and logs, ensuring integration with CMS data
               management for efficient data analysis. Detailed instructions can be found
               <a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideCrab" target="_blank">here</a>. I inherited the CRAB setup from
-              <a href="https://github.com/alaha999" target="_blank">Arnab</a>, and tweak it around a bit. The setup is currently avaiable in
+              <a href="https://github.com/alaha999" target="_blank">Arnab</a>, and tweak it around a bit. The setup is currently available in
               <a href="https://github.com/phazarik/MakeSelector-CRAB-setup" target="_blank">GitHub:phazarik/MakeSelector-CRAB-setup</a>. I use it to
               <strong>skim nanoAOD files using MakeSelector based codes</strong> and dump them in my EOS space before bringing them to a local device. Go to my
               setup and follow these steps.
@@ -305,7 +313,7 @@ crab submit crab_config.py \                                                    
           </section>
 
           <section class="section">
-            <h2 class="section-title">NanoAOD based tools</h2>
+            <h2 id="nanoaod-tools" class="section-title">NanoAOD based tools</h2>
 
             <h3 id="nano-structure">Investigating NanoAOD file structure</h3>
             <p>
@@ -319,7 +327,7 @@ crab submit crab_config.py \                                                    
 
             <h3 id="nano-analysis">Generating an analysis template</h3>
             <p>
-              For a given NanoAOD file, a <code>MakeSelector()</code> based template can be generated in th following way. Make sure to note down the NanoAOD
+              For a given NanoAOD file, a <code>MakeSelector()</code> based template can be generated in the following way. Make sure to note down the NanoAOD
               version, because this template may have some branch-mismatch issue with other versions. Read the ROOT file and do the following in the ROOT
               prompt.
             </p>
@@ -353,7 +361,7 @@ crab submit crab_config.py \                                                    
           </section>
 
           <section class="section">
-            <h2 class="section-title">TIFR T2/T3 tools</h2>
+            <h2 id="tifr-tools" class="section-title">TIFR T2/T3 tools</h2>
             <div class="alert alert-warning">
               ⚠️ The T2 facility is currently not-accessible to users. Some of these tools may change once it comes back online.
             </div>
@@ -416,8 +424,8 @@ crab submit crab_config.py \                                                    
             <div class="alert alert-danger">⛔ Temporary solution. Most likely deprecated.</div>
 
             <p>
-              As of August 2024, the cms-proxy fails to generate at the T3 area. That's why I am manually creating the proxy file in lxplus, and brining it to
-              ui.indiacms.res.in. Before brining the file to T3, the file has to be transferred to an accessible ares in lxplus.
+              As of August 2024, the cms-proxy fails to generate at the T3 area. That's why I am manually creating the proxy file in lxplus, and bringing it to
+              ui.indiacms.res.in. Before bringing the file to T3, the file has to be transferred to an accessible ares in lxplus.
             </p>
             <ol>
               <li>
@@ -443,15 +451,14 @@ export X509_USER_PROXY=/grid_mnt/t3home/phazarik/x509up_u139657   # Give the cop
           </section>
 
           <section class="section">
-            <h2 class="section-title">Miscellaneous tools</h2>
+            <h2 id="misc-tools" class="section-title">Miscellaneous tools</h2>
 
             <h3 id="misc-feynman">Making Feynman diagrams in LaTeX</h3>
 
             <p>
               When it comes to drawing Feynman diagrams in LaTeX using feynmf and TikZ-Feynman, the later is generally easier and more flexible to use. The
-              first one is older and requires a more complicated setup, while TikZ-Feynman works smoothly with modern LaTeX, producing high-quality diagrams
-              with more customization options. If you're just starting out, TikZ-Feynman is often the better choice because it’s simpler and integrates well
-              with other LaTeX features. A template for drawing Feynman diagrams using tikz-feynman package can be found
+              first one is older and requires a more complicated setup, while TikZ-Feynman works smoothly with modern LaTeX with more customization options. If
+              you're just starting out, TikZ-Feynman is the better choice. A template for drawing Feynman diagrams using tikz-feynman package can be found
               <a href="/mypages/files/codes/feynman-template.txt" target="_blank">here</a>. It already has some examples. It can be compiled using
               <code>pdflatex</code> as follows.
             </p>

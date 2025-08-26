@@ -3,23 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Portfolio of Prachurjya Hazarika - PhD student in Particle Physics, CMS Collaboration, IISER Pune. Research, outreach, and projects."
+    />
+    <meta
+      name="keywords"
+      content="Prachurjya Hazarika, Particle Physics, CMS Collaboration, IISER Pune, PhD, Experimental Physics, High Energy Physics, Outreach, Research, Programming"
+    />
     <title>Prachurjya Hazarika - Portfolio</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet" />
 
-    <!-- Highlight.js core -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <!-- Highlight.js line-numbers plugin -->
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
-    <!-- MathJax for LaTeX rendering -->
+
+    <!-- Math Rendering -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Custom Styles -->
+    <link href="/css/style.css" rel="stylesheet" />
+
     <!--background image
     <style>
       body {
@@ -177,7 +193,7 @@
               <span>[2020–present]</span>
             </div>
             <p>
-              The Standard Model is currently the best-model for understanding the building blocks of nature. However, we still have to figure out a lot of
+              The Standard Model is currently the best model for understanding the building blocks of nature. However, we still have to figure out a lot of
               unexplained phenomena. In my PhD, I am developing the analysis tools to search for the 'vector-like leptons' in proton-proton collisions in the
               CMS detector, in a final state containing exactly two standard model leptons with the same sign. This is part of a broad search for VLLs in the
               multi-lepton final state, where I am focusing on the scenario where the new leptons couple to electrons and muons. I am exploring the full Run-2
@@ -204,7 +220,7 @@
             </p>
 
             <div style="display: flex; justify-content: space-between; align-items: center">
-              <h3>Phenomenological study of neutrino oscialltions</h3>
+              <h3>Phenomenological study of neutrino oscillations</h3>
               <span>[2019]</span>
             </div>
             <p>
@@ -289,32 +305,36 @@
               </div>
             </div>
 
+            <!--Talks-->
             <h3>Talks</h3>
-            <ul>
-              <li>
-                <div style="display: flex; justify-content: space-between; align-items: center">
-                  <h5>“Machine learning meets particle physics”</h5>
-                  <span>January 27, 2025</span>
-                </div>
-                <p>Department of Physics, Jorhat Institute of Science and Technology.</p>
-              </li>
-              <li>
-                <div style="display: flex; justify-content: space-between; align-items: center">
-                  <h5>Introduction to EHEP for high school students</h5>
-                  <span>October 19, 2022</span>
-                </div>
-                <p>Assamese talk introducing the Standard Model and experimental particle physics, intended for high school students.</p>
-              </li>
-              <li>
-                <div style="display: flex; justify-content: space-between; align-items: center">
-                  <h5>Introduction to EHEP for BSc students</h5>
-                  <span>December 18, 2021</span>
-                </div>
-                <p>Online talk during covid lockdown period. Department of Physics, Jorhat Institute of Science and Technology.</p>
-              </li>
-            </ul>
+
+            <div class="talk mb-2" style="border-bottom: 1px solid var(--divider); padding-bottom: 0.5rem; margin-bottom: 0.5rem">
+              <b>
+                Machine learning meets particle physics
+                <span style="float: right; color: var(--text-muted); font-size: var(--font-size-small)">Jan 27, 2025</span>
+              </b>
+              <p>Department of Physics, Jorhat Institute of Science and Technology.</p>
+            </div>
+
+            <div class="talk mb-2" style="border-bottom: 1px solid var(--divider); padding-bottom: 0.5rem; margin-bottom: 0.5rem">
+              <b>
+                Introduction to EHEP for high school students
+                <span style="float: right; color: var(--text-muted); font-size: var(--font-size-small)">Oct 19, 2022</span>
+              </b>
+              <p>Assamese talk introducing the Standard Model and experimental particle physics, intended for high school students.</p>
+            </div>
+
+            <div class="talk mb-2">
+              <b>
+                Introduction to EHEP for BSc students
+                <span style="float: right; color: var(--text-muted); font-size: var(--font-size-small)">Dec 18, 2021</span>
+              </b>
+              <p>Online talk during COVID lockdown period. Department of Physics, Jorhat Institute of Science and Technology.</p>
+            </div>
+            <!--end Talks-->
           </section>
           <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+          <br />
         </div>
       </div>
     </main>
