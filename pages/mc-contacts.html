@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Guide for MC contacts" />
+    <meta name="keywords" content="EHEP, CMS, CERN, PdMV, MC contact, particle physics, tutorials" />
+
+    <title>For MC contacts</title>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap"
+      rel="stylesheet" />
+
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+    <!-- Math Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Custom Styles -->
+    <link href="/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- header placeholder -->
+    <div id="header"></div>
+
+    <main class="container my-4">
+      <div class="row g-4">
+        <!-- Navigation (left side) -->
+        <aside class="col-md-3">
+          <section class="section">
+            <div class="d-grid gap-2">
+              <div class="nav-section"><a href="/pages/tools.html">Tools</a> &gt; <a href="#">For MC contacts</a></div>
+
+              <button class="nav-btn">Getting started</button>
+              <div class="sub-btns">
+                <a href="#setting-up-register" class="nav-sub-btn"> Registering as an MC contact </a>
+                <a href="#setting-up-links" class="nav-sub-btn"> Important links </a>
+              </div>
+              <button class="nav-btn">Work description</button>
+              <div class="sub-btns">
+                <a href="#tool-search" class="nav-sub-btn"> Search using query </a>
+                <a href="#tool-req-clone" class="nav-sub-btn"> Cloning a request </a>
+                <a href="#tool-req-validation" class="nav-sub-btn"> Validating a request </a>
+                <a href="#tool-req-gitlab" class="nav-sub-btn"> Creating a GitLab issue </a>
+                <a href="#tool-req-ticket" class="nav-sub-btn">Creating a ticket </a>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Main content -->
+        <div class="col-md-9">
+          <!-- Text -->
+          <section class="section">
+            <h1 class="page-title">Instructions for MC contacts</h1>
+          </section>
+
+          <p>
+            Hi! I have been an MC contact for <a href="https://twiki.cern.ch/twiki/bin/view/CMS/EgammaPOG" target="_blank">EGM POG</a> since 2021. If you
+            recently started as a MC contact for EGM, you will find very useful tools and links in this webpage.
+          </p>
+          <div class="alert alert-info">ℹ️ This webpage is useful for CMS members only.</div>
+
+          <section class="section">
+            <h2 class="section-title" id="setting-up">Getting started</h2>
+
+            <h3 id="setting-up-register">Registering as an MC contact</h3>
+            <ol>
+              <li>
+                First, register as a "user" on the MccM website by visiting
+                <a href="https://cms-pdmv.cern.ch/mcm/users?page=0&shown=55" target="_blank"> this link</a>.
+              </li>
+              <li>
+                After registering, send an email to PdmV at
+                <a href="mailto:cmstalk+pnr@dovecotmta.cern.ch">cmstalk+pnr@dovecotmta.cern.ch</a>
+                requesting an increase in your role from "user" to "generator contact" on the development version of the MccM website (<a
+                  href="https://cms-pdmv-dev.web.cern.ch/mcm/"
+                  target="_blank"
+                  >mcm-dev</a
+                >).
+              </li>
+              <li>
+                Once your role is updated, you will gain access to the website. You will then receive a questionnaire that you need to fill out before starting
+                as an official MC contact.
+              </li>
+            </ol>
+
+            <hr />
+            <h3 id="setting-up-links">Important links and look-ups</h3>
+            <ul>
+              <li>
+                For details on placing requests, MC tools, naming conventions, and other aspects of MC production, visit the
+                <a href="https://cms-pdmv.gitbook.io/project/" target="_blank">MC production GitBook</a>.
+              </li>
+              <li>
+                Start with
+                <a href="https://cms-pdmv.gitbook.io/project/monte-carlo-management-mcm-introduction" target="_blank">this introduction page</a>.
+              </li>
+              <li>
+                When filling out the questionnaire, refer to the
+                <a href="https://cms-pdmv.gitbook.io/project/mccontact" target="_blank">MC contact section</a>.
+              </li>
+              <li>
+                An MC contact is required to attend the MC coordination meeting on Wednesday at 15:00 (CERN time). Links to past meetings and other useful
+                information can be found in the
+                <a href="https://twiki.cern.ch/twiki/bin/view/CMS/PdmVMonteCarloCoordinationMeeting" target="_blank">TWiki</a>, or in the
+                <a href="https://indico.cern.ch/category/17678/" target="_blank">Indico</a> link.
+              </li>
+              <li>
+                This <a href="https://gitlab.cern.ch/cms-gen/mccm/-/issues" target="_blank">GitLab issues</a> page is used to handle requests raised by MC
+                contacts.
+              </li>
+            </ul>
+
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <br />
+          </section>
+
+          <section class="section">
+            <h2 class="section-title" id="work">Work description</h2>
+            <p>
+              An MC contact in CMS serves as the main liaison for Monte Carlo production for the respective physics groups (like NPS, EGM, EXO ... etc.). The
+              responsibilities include creating and validating MC requests, ensuring proper use of naming conventions, coordinating with PdmV and other MC
+              contacts, attending weekly coordination meetings, reporting issues, and providing support to group members in accessing and using MC datasets
+              effectively.
+            </p>
+            <p>The following contains some useful information on what to do and how to proceed.</p>
+
+            <hr />
+            <h3 id="tool-search">Search using query parameters</h3>
+            <p>I find it convenient to search for different things using wildcards in html links. The following are a few examples.</p>
+            <ul>
+              <li>
+                Search for requests can be done by combining wildcards with the query parameters such as <code>prepid</code>, <code>dataset_name</code> etc. For
+                example,
+                <pre><code class="language-none">
+https://cms-pdmv-prod.web.cern.ch/mcm/requests?prepid=*Run3Winter24*GS*
+https://cms-pdmv-prod.web.cern.ch/mcm/requests?prepid=*Run3Winter24*GS*&dataset_name=DY*
+    </code></pre>
+              </li>
+              <li>
+                Search for tickets and chains is also done in a similar way.
+                <pre><code class="language-none">
+https://cms-pdmv-prod.web.cern.ch/mcm/mccms?prepid=EGM-2024*
+https://cms-pdmv-prod.web.cern.ch/mcm/chained_campaigns?prepid=chain_Run3Summer23wmLHEGS_*
+    </code></pre>
+              </li>
+            </ul>
+
+            <hr />
+            <h3 id="tool-req-clone">Cloning an old request for a new campaign</h3>
+            <p>
+              For EGM, new MC requests often use older requests as templates, since the gridpack and underlying physics are the same. Finding the appropriate
+              GEN-SIM request that starts with the correct gridpack allows it to be cloned for new campaigns, with an updated production chain that goes from
+              GEN-SIM, DIGI-RAW ... all the way to NanoAOD. More on the MC production workflow can be found in this
+              <a href="/pages/mc-generation.html#lhe-to-gensim" target="_blank">example</a> which demonstrates how to produce NanoAOD, starting with a gridpack
+              in lxplus.
+            </p>
+            <ul>
+              <li>
+                Find a GEN-SIM request of the following form: <code>POG-Campaign-*GS-xxxx</code>. Example:
+                <a href="https://cms-pdmv-prod.web.cern.ch/mcm/requests?prepid=EGM-RunIII2024Summer24wmLHEGS-00002" target="_blank"
+                  >EGM-RunIII2024Summer24wmLHEGS-00002</a
+                >
+              </li>
+              <li>Click the <strong>Clone</strong> button next to it, and choose the target campaign.</li>
+              <li>On the next page, you can modify parameters such as dataset name, total events required, etc.</li>
+              <li>Next step is validation.</li>
+            </ul>
+
+            <hr />
+
+            <h3 id="tool-req-validation">Validating a request</h3>
+            <ul>
+              <li>
+                For local validation on the lxplus master node, go to the request and click the <strong>Get setup command</strong> button to retrieve a shell
+                script.
+              </li>
+              <li>
+                This script sets up the working environment with the appropriate <code>SCRAM_ARCH</code> and <code>CMSSW</code>, and runs the LHE-to-GENSIM tool
+                for a subset of events. Ensure you have enough space in your work area and that the lxplus version is compatible with the
+                <code>SCRAM_ARCH</code>.
+              </li>
+              <li>
+                After producing a certain number of events (may take up to ~100 seconds per event), it will display time per event and size per event estimates.
+              </li>
+              <li>If local validation is successful, you can update the time/event and size/event in the request itself.</li>
+              <li>Run central validation by clicking the <strong>Next step</strong> button.</li>
+              <li>A successful validation report will be sent via CERN email. After this, a ticket can be assigned to the request.</li>
+            </ul>
+
+            <hr />
+            <h3 id="tool-req-gitlab">Creating a GitLab issue for follow-up</h3>
+            <ul>
+              <li>Before creating a ticket, consult with PdmV in the weekly MccM meetings.</li>
+              <li>
+                First, create a GitLab issue here:
+                <a href="https://gitlab.cern.ch/cms-gen/mccm/-/issues/?sort=created_date&state=opened&first_page_size=50" target="_blank">GitLab MccM issues</a
+                >, mentioning the requests and number of tickets.
+              </li>
+              <li>
+                Ask for the appropriate production chain, which flows from GENSIM all the way to NanoAOD. Note that some non-standard requests require specific
+                formats like EGMNano or ALCARECO. In those cases, the chain will be different and must be created for the specific purpose. This is handled by
+                PdmV.
+              </li>
+            </ul>
+
+            <hr />
+
+            <h3 id="tool-req-ticket">Creating a ticket for one or more requests</h3>
+            <ul>
+              <li>
+                After confirming with PdmV, create a new ticket here:
+                <a href="https://cms-pdmv-prod.web.cern.ch/mcm/mccms?page=0&shown=127" target="_blank">MccM tickets</a>.
+              </li>
+              <li>
+                Attach the production chain and the request(s) to the ticket. (Typically one ticket is recommended for one request, but sometimes one ticket can
+                be assigned to multiple requests that follow the same chain(s). Verify this before creating the tickets.)
+              </li>
+              <li>Update the GitLab issue, mentioning the ticket(s).</li>
+              <li>Wait for approval in the weekly MccM meeting.</li>
+            </ul>
+
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <br />
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- footer placeholder -->
+    <div id="footer"></div>
+
+    <!-- Your main JS -->
+    <script src="/js/main.js"></script>
+  </body>
+</html>

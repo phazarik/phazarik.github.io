@@ -1223,14 +1223,7 @@ mjx-container {
   .assamese a {
     font-size: inherit;
   }
-}
 
-pre code.hljs,
-pre code[class*="language-"] {
-  font-size: 0.65rem; /* smaller font for mobile */
-}
-
-@media (width <= 576px) {
   /* Figures */
   figure.figure {
     margin: 1rem auto;
@@ -1264,5 +1257,11 @@ pre code[class*="language-"] {
   .section {
     padding: 4px 6px;
     margin: 6px 0;
+  }
+
+  /*code*/
+  pre code.hljs,
+  pre code[class*="language-"] {
+    font-size: 0.65rem; /* smaller font for mobile */
   }
 }
