@@ -234,13 +234,17 @@ b {
 }
 
 /* cover image */
+.cover-container {
+  width: 100%;
+  text-align: center;
+  padding: 0;
+}
+
 .cover-container img {
   width: 100%;
   height: auto;
-  padding-top: 5%;
-  padding-bottom: 5%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+  object-fit: contain;
+  pointer-events: none; /* ensures clicks pass through if needed */
 }
 
 /* Blog Figures */
@@ -1235,13 +1239,6 @@ pre code[class*="language-"] {
 
   figure.figure figcaption {
     font-size: 0.75rem;
-  }
-
-  .cover-container img {
-    transform: scale(2.2);
-    object-position: center;
-    padding-top: 7%;
-    padding-bottom: 10%;
   }
 
   .media iframe {
