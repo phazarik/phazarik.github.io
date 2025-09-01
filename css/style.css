@@ -1221,6 +1221,11 @@ mjx-container {
   }
 }
 
+pre code.hljs,
+pre code[class*="language-"] {
+  font-size: 0.65rem; /* smaller font for mobile */
+}
+
 @media (width <= 576px) {
   /* Figures */
   figure.figure {
