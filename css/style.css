@@ -15,13 +15,13 @@
   --divider: #ddd;
 
   /* Global typography */
-  --font-family: "Nunito", sans-serif;
+  --font-family: 'Nunito', sans-serif;
   --font-size: normal;
   --font-size-small: small;
   --font-style: normal;
 
   /* Assamese-specific */
-  --assamese-font-family: "Noto Serif Bengali", serif;
+  --assamese-font-family: 'Noto Serif Bengali', serif;
   --assamese-font-size: 1.1rem;
   --assamese-font-size-small: 1rem;
 }
@@ -53,7 +53,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Calibri Light", "Segoe UI", sans-serif;
+  font-family: 'Calibri Light', 'Segoe UI', sans-serif;
   color: var(--primary-color);
   margin: 1.5rem 0 0.75rem;
   line-height: 1.3;
@@ -100,7 +100,7 @@ h6 {
 }
 
 h3::before {
-  content: "✦";
+  content: '✦';
   color: var(--primary-color);
   margin-right: 0.5rem;
   font-size: 1.2rem;
@@ -142,7 +142,7 @@ a:hover {
 /* Strong / Bold */
 strong,
 b {
-  font-family: "Segoe UI", Nunito, sans-serif;
+  font-family: 'Segoe UI', Nunito, sans-serif;
   font-weight: 600;
 }
 
@@ -310,7 +310,7 @@ b {
 
 /* Inline math */
 .inline-math {
-  font-family: "Times New Roman", serif;
+  font-family: 'Times New Roman', serif;
   font-style: italic;
 }
 
@@ -334,14 +334,14 @@ b {
 }
 
 .blockquote.assamese p::before {
-  content: "“";
+  content: '“';
   color: var(--primary-color);
   font-size: 1.2rem;
   margin-right: 0.2rem;
 }
 
 .blockquote.assamese p::after {
-  content: "”";
+  content: '”';
   color: var(--primary-color);
   font-size: 1.2rem;
   margin-left: 0.2rem;
@@ -380,7 +380,9 @@ b {
   padding: 4px 8px;
   border-radius: 6px;
   line-height: 1.2;
-  transition: background-color 0.2s, opacity 0.2s;
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
 }
 
 .navbar .nav-link:hover {
@@ -440,7 +442,7 @@ b {
 }
 
 .split::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   bottom: 0;
@@ -476,7 +478,10 @@ aside .d-grid .nav-btn {
   color: var(--primary-color);
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.1s;
   text-decoration: none;
   margin-bottom: 4px;
 }
@@ -497,7 +502,10 @@ aside .d-grid .sub-btns .nav-sub-btn {
   color: var(--primary-color);
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.1s;
   text-decoration: none;
   margin-bottom: 4px;
   position: relative;
@@ -505,7 +513,7 @@ aside .d-grid .sub-btns .nav-sub-btn {
 }
 
 aside .d-grid .sub-btns .nav-sub-btn::before {
-  content: "•";
+  content: '•';
   position: absolute;
   left: 6px;
   color: var(--primary-color);
@@ -689,7 +697,7 @@ section .card .card-text {
 
 .table thead th {
   background-color: var(--primary-lighter);
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
   font-weight: 700;
   color: var(--text-dark);
 }
@@ -717,7 +725,7 @@ pre {
 }
 
 pre code.hljs,
-pre code[class*="language-"] {
+pre code[class*='language-'] {
   display: block;
   margin: 0;
   padding: 0.4rem;
@@ -875,7 +883,9 @@ section form textarea {
   margin-right: 2px;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 
 .nav-tabs .nav-link:hover {
@@ -1054,6 +1064,44 @@ mjx-container {
   font-family: var(--assamese-font-family);
   font-size: var(--assamese-font-size-small);
   color: var(--text-dark);
+}
+
+/* =========================================================
+   Status badges and pulse dot
+   ========================================================= */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 50rem;
+  background-color: #f6f8fa;
+  border: 1px solid #d0d7de;
+  color: #57606a;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  cursor: default;
+  user-select: none;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #1f883d;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+  animation: flash 2s infinite;
+}
+
+@keyframes flash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 /* =========================================================
@@ -1261,7 +1309,7 @@ mjx-container {
 
   /*code*/
   pre code.hljs,
-  pre code[class*="language-"] {
+  pre code[class*='language-'] {
     font-size: 0.65rem; /* smaller font for mobile */
   }
 }
