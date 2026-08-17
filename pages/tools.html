@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -15,11 +15,15 @@
     <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap"
-      rel="stylesheet" />
+      rel="stylesheet"
+    />
 
     <!-- Syntax Highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
 
@@ -43,6 +47,7 @@
 
               <button class="nav-btn">CMS Unix (lxplus) tools</button>
               <div class="sub-btns">
+                <a href="#lxplus-ssh" class="nav-sub-btn">Set-up SSH with GitLab</a>
                 <a href="#lxplus-das-cli" class="nav-sub-btn">Finding files using DAS CLI</a>
                 <a href="#lxplus-xrdcp" class="nav-sub-btn">Downloading files from DAS</a>
                 <a href="#lxplus-lumi" class="nav-sub-btn">Luminosity calculation using brilcalc</a>
@@ -66,9 +71,18 @@
               </div>
 
               <div class="nav-section">Other pages</div>
-              <button class="nav-btn" onclick="location.href='/pages/tools-for-noobs.html'"><i class="bi bi-emoji-smile"></i> For noobs</button>
-              <button class="nav-btn" onclick="location.href='/pages/mc-contacts.html'"><i class="bi bi-wrench-adjustable"></i> For MC contacts</button>
-              <button class="nav-btn" onclick="location.href='/pages/mc-generation.html'"><i class="bi bi-cpu"></i> MC generation</button>
+              <button class="nav-btn" onclick="location.href = '/pages/tools-for-noobs.html'">
+                <i class="bi bi-emoji-smile"></i>
+                For noobs
+              </button>
+              <button class="nav-btn" onclick="location.href = '/pages/mc-contacts.html'">
+                <i class="bi bi-wrench-adjustable"></i>
+                For MC contacts
+              </button>
+              <button class="nav-btn" onclick="location.href = '/pages/mc-generation.html'">
+                <i class="bi bi-cpu"></i>
+                MC generation
+              </button>
             </div>
           </section>
         </aside>
@@ -79,22 +93,83 @@
           <section class="section">
             <h1 class="page-title">Tools/Suggestions</h1>
             <p>
-              This page provides a collection of useful tools, scripts, and suggestions for CMS analysis workflows. Here you can find guidance for data
-              handling, command-line utilities, and example scripts to streamline common tasks in a CMSSW or UNIX environment.
+              This page provides a collection of useful tools, scripts, and suggestions for CMS analysis workflows. Here
+              you can find guidance for data handling, command-line utilities, and example scripts to streamline common
+              tasks in a CMSSW or UNIX environment.
             </p>
             <div class="alert alert-info">
               ℹ️ If you are new to experimental particle physics, follow the basic tutorials for setting up the tools
-              <a href="/pages/tools-for-noobs.html">here</a>.
+              <a href="/pages/tools-for-noobs.html">here</a>
+              .
             </div>
           </section>
 
           <section class="section">
             <h2 id="cms-unix-tools" class="section-title">CMS UNIX (lxplus) tools</h2>
 
-            <h3 id="lxplus-das-cli">Finding files/Datasets using DAS CLI</h3>
+            <h3 id="lxplus-ssh-gitlab">Set-up SSH with GitLab</h3>
             <p>
-              The CMS DAS CLI lets users quickly find datasets and files within the CMS computing system. It works on any lxplus session with a valid VOMS
-              proxy. Instructions can be found in the <a href="https://cmsweb.cern.ch/das/cli" target="_blank">CMS DAS</a> web-page.
+              To set up SSH access to GitLab from lxplus, generate an SSH key pair and add the public key to the GitLab
+              account. It is useful to have a separate key specifically for CERN GitLab rather than reusing an existing
+              SSH key. The pair of keys can be generated using the following command in the lxplus terminal.
+            </p>
+            <pre><code class="language-bash">
+ssh-keygen -t ed25519 -C "username@cern.ch" -f ~/.ssh/id_ed25519_cern_gitlab
+            </code></pre>
+            <p>
+              Here,
+              <code>id_ed25519_cern_gitlab</code>
+              is the name of the private key file, and
+              <code>username@cern.ch</code>
+              is the email address associated with the key. The private key must be kept secure and should not be
+              shared. The public key will be generated in the same directory with a `.pub` extension. ED25519 is a
+              modern public-key signature algorithm supported by OpenSSH. It provides strong security with a compact key
+              and is generally preferred over generating a new RSA key. To sync this key with GitLab, the contents of
+              the public key file (e.g.,
+              <code>~/.ssh/id_ed25519_cern_gitlab.pub</code>
+              ) should be copied and added to the GitLab account under
+              <b>"Settings" -> "SSH Keys"</b>
+              . After adding the public key, start the SSH agent and add the private key to it using the following
+              commands.
+            </p>
+            <pre><code class="language-bash">
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519_cern_gitlab
+ssh-add -l
+            </code></pre>
+            <p>
+              Then, configure the SSH client to use this key for GitLab by editing the
+              <code>~/.ssh/config</code>
+              file and adding the following lines.
+            </p>
+            <pre><code class="language-text">
+Host gitlab.cern.ch
+    HostName gitlab.cern.ch
+    User git
+    Port 7999
+    IdentityFile ~/.ssh/id_ed25519_cern_gitlab
+    IdentitiesOnly yes
+            </code></pre>
+            <p>Then set appropriate permissions for the SSH config file.</p>
+            <pre><code class="language-bash">
+chmod 600 ~/.ssh/config
+            </code></pre>
+            <p>Finally, test the SSH connection to GitLab using the following command.</p>
+            <pre><code class="language-bash">
+ssh -T git@gitlab.cern.ch
+            </code></pre>
+            <p>
+              If everything is set up correctly, a message like
+              <code>Welcome to GitLab, @username!</code>
+              should be displayed, confirming that the SSH connection is successful.
+            </p>
+
+            <h3 id="lxplus-das-cli">Finding files/datasets using DAS CLI</h3>
+            <p>
+              The CMS DAS CLI lets users quickly find datasets and files within the CMS computing system. It works on
+              any lxplus session with a valid VOMS proxy. Instructions can be found in the
+              <a href="https://cmsweb.cern.ch/das/cli" target="_blank">CMS DAS</a>
+              web-page.
             </p>
             <ul>
               <li>Simple DAS query that displays all the available datasets using wildcards:</li>
@@ -115,7 +190,10 @@ dasgoclient --query="file dataset=/Muon0/Run2023C-22Sep2023_v1-v1/NANOAOD"
                 <pre><code class="language-bash">
 dasgoclient --query="file dataset=/Muon0/Run2023C-22Sep2023_v1-v1/NANOAOD" | wc -l
       </code></pre>
-                <p>It counts how many files are in the dataset, and outputs a single integer representing the number of files.</p>
+                <p>
+                  It counts how many files are in the dataset, and outputs a single integer representing the number of
+                  files.
+                </p>
               </li>
 
               <li>
@@ -132,15 +210,21 @@ dasgoclient --query="summary dataset=/Muon0/Run2023C-22Sep2023_v1-v1/NANOAOD"
 
             <p>
               Find the tutorial for the XRootD dilesystem
-              <a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookXrootdService" target="_blank">here</a>. Downloading one file is easy. Find the
-              full path of the file using DAS CLI commands and run <code>xrdcp</code> as follows.
+              <a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookXrootdService" target="_blank">here</a>
+              . Downloading one file is easy. Find the full path of the file using DAS CLI commands and run
+              <code>xrdcp</code>
+              as follows.
             </p>
 
             <pre><code class="language-bash">
 xrdcp root://cmsxrootd.fnal.gov//store/data/Run2023C/Muon0/NANOAOD/22Sep2023_v1-v1/2530000/030eead5-93f9-405c-863c-a62244712e91.root .
             </code></pre>
 
-            <p>I find it helpful to define the following function in my <code>~/.bashrc</code> file.</p>
+            <p>
+              I find it helpful to define the following function in my
+              <code>~/.bashrc</code>
+              file.
+            </p>
             <pre><code class="language-bash">
 get_from_das() {
   [ -z "$1" ] && echo "Usage: get_from_das &lt;filename&gt; [outputname]" && return 1
@@ -153,38 +237,40 @@ get_from_das() {
             <pre><code class="language-bash">get_from_das /store/data/Run2023C/Muon0/NANOAOD/22Sep2023_v1-v1/2530000/030eead5-93f9-405c-863c-a62244712e91.root</code></pre>
 
             <p>
-              Here I am using the redirector <code>cmsxrootd.fnal.gov</code> (server that acts as a middleman between client and the actual storage site) which
-              is based in Fermilab. The following alternative redirectors are also available.
+              Here I am using the redirector
+              <code>cmsxrootd.fnal.gov</code>
+              (server that acts as a middleman between client and the actual storage site) which is based in Fermilab.
+              The following alternative redirectors are also available.
             </p>
             <ul>
-              <li><code>cmsxrootd-global.cern.ch</code> (global CMS XRootD redirector at CERN)</li>
-              <li><code>xrootd-cms.infn.it</code> (INFN, Italy)</li>
+              <li>
+                <code>cmsxrootd-global.cern.ch</code>
+                (global CMS XRootD redirector at CERN)
+              </li>
+              <li>
+                <code>xrootd-cms.infn.it</code>
+                (INFN, Italy)
+              </li>
             </ul>
 
-            <p>For downloading files in bulk, I use the following two tools.</p>
-            <ol>
-              <li>
-                <a href="/files/codes/lxplus/makelist.py.txt" target="_blank"><code>makelist.py</code></a> : It runs DAS CLI to extract list of filtered files
-                for the datasets mentioned in the script. It writes the output to a text file. CMS VOMS proxy is needed for this step. The usage is as follows:
-                <pre><code class="language-bash">
-voms-proxy-init -voms cms
-python3 makelist.py -n 10 -min 100 -max 200 ## picks the first 10 files with sizes between 100 MB to 200 MB
-                </code></pre>
-              </li>
-              <li>
-                <a href="/files/codes/lxplus/xrdcp_files.py.txt" target="_blank"><code>xrdcp_files.py</code></a> : It runs xrdcp to download files listed in the
-                text file.
-                <pre><code class="language-bash">python3 xrdcp_files.py</code></pre>
-              </li>
-            </ol>
+            <p>
+              For downloading files in bulk, I made a setup which can be found in GitHub:
+              <a href="https://github.com/phazarik/xrdcp-DAS-to-EOS" target="_blank">xrdcp-DAS-to-EOS</a>
+              . This setup needs the DAS names as inputs, uses DAS CLI to find the files and xrdcp to download them. Be
+              careful before downloading large datasets, as it may take a long time and consume significant bandwidth.
+              This setup is helpful for downloading small MC samples quickly, avoiding any CRAB-job submission.
+            </p>
 
             <hr />
 
             <h3 id="lxplus-lumi">Luminosity calculation using run-number and luminosity-section (JSON)</h3>
 
             <p>
-              The <code>brilcalc</code> tool is available in lxplus at <code>~/.local/bin/brilcalc</code>. It takes a JSON file as input, which contains
-              run-number and lumisections in the following format.
+              The
+              <code>brilcalc</code>
+              tool is available in lxplus at
+              <code>~/.local/bin/brilcalc</code>
+              . It takes a JSON file as input, which contains run-number and lumisections in the following format.
             </p>
             <pre><code class="language-json">
 {
@@ -202,21 +288,42 @@ brilcalc lumi \
             </code></pre>
 
             <p>
-              While running brilcalc, it is recommended (by LUM POG) to use a physics approved normtag (in this case, normtag_PHYSICS.json). This normtag json
-              converts the numbers into physical units. More information can be found in the
-              <a href="https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM" target="_blank">LUM POG TWiki page</a>. The Golden JSONs corresponding to the
-              Run-2 and Run-3 data taking periods can be found <a href="https://cms-service-dqmdc.web.cern.ch/CAF/certification/" target="_blank">here</a>.
+              While running brilcalc, it is recommended (by LUM POG) to use a physics approved normtag (in this case,
+              normtag_PHYSICS.json). This normtag json converts the numbers into physical units.
             </p>
+            <ul>
+              <li>
+                More information on from LUM POG:
+                <a href="https://twiki.cern.ch/twiki/bin/viewauth/CMS/TWikiLUM" target="_blank">LUM POG TWiki page</a>
+              </li>
+              <li>
+                Golden JSONs:
+                <a href="https://cms-service-dqmdc.web.cern.ch/CAF/certification/" target="_blank">
+                  cms-service-dqmdc.web.cern.ch/CAF/certification/
+                </a>
+              </li>
+              <li>
+                GitHub repository with summary of luminosities and era-wise Golden JSONs:
+                <a href="https://github.com/phazarik/luminosity-calculation-per-era" target="_blank">
+                  luminosity-calculation-per-era
+                </a>
+              </li>
+            </ul>
 
             <hr />
 
             <h3 id="lxplus-xsec">Cross-section calculation using GenXSecAnalyzer</h3>
             <p>
-              The GenXSecAnalyzer is used to calculate or extract the cross-section of a simulated process from the LHE level. I made a wrapper script to run it
-              for a list of samples. The detailed instructions are in this
-              <a href="https://cms-generators.docs.cern.ch/useful-tools-and-links/HowToGenXSecAnalyzer/" target="_blank">documentation</a>. The tool described
-              in the official documentation requires MiniAOD files as inputs. My wrapper simply requires DAS names of the target NanoAOD samples, along with a
-              CMSSW release and CMS VOMS proxy.
+              The GenXSecAnalyzer is used to calculate or extract the cross-section of a simulated process from the LHE
+              level. I made a wrapper script to run it for a list of samples. The detailed instructions are in this
+              <a
+                href="https://cms-generators.docs.cern.ch/useful-tools-and-links/HowToGenXSecAnalyzer/"
+                target="_blank"
+              >
+                documentation
+              </a>
+              . The tool described in the official documentation requires MiniAOD files as inputs. My wrapper simply
+              requires DAS names of the target NanoAOD samples, along with a CMSSW release and CMS VOMS proxy.
             </p>
             <pre><code class="language-bash">
 cmsrel CMSSW_13_0_13
@@ -225,8 +332,9 @@ cmsenv
 voms-proxy-init -voms cms
             </code></pre>
             <p>
-              After setting up, bring the <a href="/files/codes/lxplus/find_xsec_fromDAS.py.txt"><code>find_xsec_fromDAS.py</code></a> file here. It takes a DAS
-              name of the NanoAOD sample as input.
+              After setting up, bring the
+              <a href="/files/codes/lxplus/find_xsec_fromDAS.py.txt"><code>find_xsec_fromDAS.py</code></a>
+              file here. It takes a DAS name of the NanoAOD sample as input.
             </p>
             <pre><code class="language-bash">python3 find_xsec_fromDAS.py --dataset [DAS name of the NanoAOD sample]</code></pre>
 
@@ -234,7 +342,9 @@ voms-proxy-init -voms cms
               <strong>ℹ️ Wrapper steps</strong>
               <ol>
                 <li>
-                  Brings <code>genXsec_cfg.py</code> into the work area (if not already present).
+                  Brings
+                  <code>genXsec_cfg.py</code>
+                  into the work area (if not already present).
                   <pre><code class="language-bash">curl https://raw.githubusercontent.com/cms-sw/genproductions/master/Utilities/calculateXSectionAndFilterEfficiency/genXsec_cfg.py</code></pre>
                 </li>
                 <li>Uses DAS CLI to locate the parent (MiniAOD) dataset.</li>
@@ -252,33 +362,48 @@ voms-proxy-init -voms cms
             <h3 id="lxplus-crab">Submitting CRAB jobs and bringing samples to EOS</h3>
 
             <p>
-              The CRAB framework manages distributed computing tasks by packaging user-defined analysis codes with configuration files that specify input
-              datasets and output locations. Upon submission, jobs are distributed across the WLCG using a scheduler for dynamic resource allocation. It
-              monitors job status through a database, allowing users to track progress and retrieve output files and logs, ensuring integration with CMS data
-              management for efficient data analysis. Detailed instructions can be found
-              <a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideCrab" target="_blank">here</a>. I inherited the CRAB setup from
-              <a href="https://github.com/alaha999" target="_blank">Arnab</a>, and tweak it around a bit. The setup is currently available in
-              <a href="https://github.com/phazarik/MakeSelector-CRAB-setup" target="_blank">GitHub:phazarik/MakeSelector-CRAB-setup</a>. I use it to
-              <strong>skim nanoAOD files using MakeSelector based codes</strong> and dump them in my EOS space before bringing them to a local device. Go to my
-              setup and follow these steps.
+              The CRAB framework manages distributed computing tasks by packaging user-defined analysis codes with
+              configuration files that specify input datasets and output locations. Upon submission, jobs are
+              distributed across the WLCG using a scheduler for dynamic resource allocation. It monitors job status
+              through a database, allowing users to track progress and retrieve output files and logs, ensuring
+              integration with CMS data management for efficient data analysis. Detailed instructions can be found
+              <a href="https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideCrab" target="_blank">here</a>
+              . I inherited the CRAB setup from
+              <a href="https://github.com/alaha999" target="_blank">Arnab</a>
+              , and tweak it around a bit. The setup is currently available in
+              <a href="https://github.com/phazarik/MakeSelector-CRAB-setup" target="_blank">
+                GitHub:phazarik/MakeSelector-CRAB-setup
+              </a>
+              . I use it to
+              <strong>skim nanoAOD files using MakeSelector based codes</strong>
+              and dump them in my EOS space before bringing them to a local device. Go to my setup and follow these
+              steps.
             </p>
             <ul>
               <li>Login to lxplus8.</li>
               <li>
-                Be in a CMSSW environment. In my case, its CMSSW_13_0_13, but the exact version is not crucial. This is just needed for loading some utilities
-                for submitting CRAB jobs.
+                Be in a CMSSW environment. In my case, its CMSSW_13_0_13, but the exact version is not crucial. This is
+                just needed for loading some utilities for submitting CRAB jobs.
               </li>
               <li>Generate voms-proxy for CMS to access the files from DAS.</li>
               <li>
                 Clone the following repository in your work area.
                 <pre><code class="language-bash">git clone https://github.com/phazarik/MakeSelector-CRAB-setup</code></pre>
               </li>
-              <li>Run <code>./compile_and_run.C</code> locally by feeding it some local NanoAOD file to test the MakeSelector based source code.</li>
               <li>
-                <strong>Submit one job: </strong> If previous step runs smoothly and produces an output file, you can test-submit one job by running
-                <code>crab_config.py</code>. This submits a crab-job for one dataset and manages how <code>crab_script.sh</code> should run remotely. The output
-                directory path have to be changed in the script as needed. Some parameters need to be changed externally. The following is an example of how to
-                run the setup for one job.
+                Run
+                <code>./compile_and_run.C</code>
+                locally by feeding it some local NanoAOD file to test the MakeSelector based source code.
+              </li>
+              <li>
+                <strong>Submit one job:</strong>
+                If previous step runs smoothly and produces an output file, you can test-submit one job by running
+                <code>crab_config.py</code>
+                . This submits a crab-job for one dataset and manages how
+                <code>crab_script.sh</code>
+                should run remotely. The output directory path have to be changed in the script as needed. Some
+                parameters need to be changed externally. The following is an example of how to run the setup for one
+                job.
                 <pre><code class="language-bash">
 export CRAB_CAMPAIGN=2016preVFP_UL
 export CRAB_SAMPLENAME=Muon_B1
@@ -289,9 +414,13 @@ crab submit crab_config.py \                                                    
                 </code></pre>
               </li>
               <li>
-                <strong>Bulk submission: </strong> I keep dataset names, FLAG and SAMPLENAME in external text files in <code>samplelists</code> directory.
-                parameters externally. Then I use the <code>bulkSubmitCrab.py</code> script to read those files and submit multiple jobs in one go. Edit this
-                script as needed to select the desired campaign and list of samples. The usage is as follows.
+                <strong>Bulk submission:</strong>
+                I keep dataset names, FLAG and SAMPLENAME in external text files in
+                <code>samplelists</code>
+                directory. parameters externally. Then I use the
+                <code>bulkSubmitCrab.py</code>
+                script to read those files and submit multiple jobs in one go. Edit this script as needed to select the
+                desired campaign and list of samples. The usage is as follows.
                 <pre><code class="language-bash">python3 bulkSubmitCrab.py --dryrun False</code></pre>
               </li>
             </ul>
@@ -299,16 +428,51 @@ crab submit crab_config.py \                                                    
             <div class="alert alert-info">
               <strong>ℹ️ Execution flow</strong>
               <ol>
-                <li><code>crab submit</code> sends <code>crab_config.py</code>, <code>crab_script.sh</code>, and analysis code to the grid.</li>
-                <li>On the worker node, <code>crab_script.sh</code> sets up CMSSW and prepares the environment.</li>
-                <li>Input file assignment is read from <code>PSet.py</code>.</li>
-                <li><code>crab_script.sh</code> invokes <code>shell_instructions.sh</code> with campaign, sample, and flag arguments.</li>
-                <li><code>shell_instructions.sh</code> runs <code>compile_and_run.C</code>, producing <code>skimFile.root</code>.</li>
-                <li>CRAB transfers <code>skimFile.root</code> and logs to the output location in <code>crab_config.py</code>.</li>
+                <li>
+                  <code>crab submit</code>
+                  sends
+                  <code>crab_config.py</code>
+                  ,
+                  <code>crab_script.sh</code>
+                  , and analysis code to the grid.
+                </li>
+                <li>
+                  On the worker node,
+                  <code>crab_script.sh</code>
+                  sets up CMSSW and prepares the environment.
+                </li>
+                <li>
+                  Input file assignment is read from
+                  <code>PSet.py</code>
+                  .
+                </li>
+                <li>
+                  <code>crab_script.sh</code>
+                  invokes
+                  <code>shell_instructions.sh</code>
+                  with campaign, sample, and flag arguments.
+                </li>
+                <li>
+                  <code>shell_instructions.sh</code>
+                  runs
+                  <code>compile_and_run.C</code>
+                  , producing
+                  <code>skimFile.root</code>
+                  .
+                </li>
+                <li>
+                  CRAB transfers
+                  <code>skimFile.root</code>
+                  and logs to the output location in
+                  <code>crab_config.py</code>
+                  .
+                </li>
               </ol>
             </div>
 
-            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+              Go to Top
+            </button>
             <br />
           </section>
 
@@ -317,9 +481,12 @@ crab submit crab_config.py \                                                    
 
             <h3 id="nano-structure">Investigating NanoAOD file structure</h3>
             <p>
-              I made this tool to checkout and compare the branch types of different NanoAOD formats. For a given input file of a particular NanoAOD structure,
-              it finds out the "Events" branch which is relevant to us. Then looping over each branch, it accesses the name and leaves associated with the
-              branch and prints out the type. The code can be found <a href="/files/codes/local/find_nanoAOD_structure.C.txt" target="_blank">here</a>. Usage:
+              I made this tool to checkout and compare the branch types of different NanoAOD formats. For a given input
+              file of a particular NanoAOD structure, it finds out the "Events" branch which is relevant to us. Then
+              looping over each branch, it accesses the name and leaves associated with the branch and prints out the
+              type. The code can be found
+              <a href="/files/codes/local/find_nanoAOD_structure.C.txt" target="_blank">here</a>
+              . Usage:
             </p>
             <pre><code class="language-cpp"> [root].x find_nanoAOD_structure("filename.root"); </code></pre>
 
@@ -327,9 +494,11 @@ crab submit crab_config.py \                                                    
 
             <h3 id="nano-analysis">Generating an analysis template</h3>
             <p>
-              For a given NanoAOD file, a <code>MakeSelector()</code> based template can be generated in the following way. Make sure to note down the NanoAOD
-              version, because this template may have some branch-mismatch issue with other versions. Read the ROOT file and do the following in the ROOT
-              prompt.
+              For a given NanoAOD file, a
+              <code>MakeSelector()</code>
+              based template can be generated in the following way. Make sure to note down the NanoAOD version, because
+              this template may have some branch-mismatch issue with other versions. Read the ROOT file and do the
+              following in the ROOT prompt.
             </p>
             <pre><code class="language-cpp">
 [root] TFile *f = new TFile("filename.root");
@@ -337,57 +506,74 @@ crab submit crab_config.py \                                                    
 [root] Events -> MakeSelector("anaName"); #Pick an analysis name
             </code></pre>
             <p>
-              This should produce a template analyzer class named <code>anaName</code>. The class is kept in a header file, and its functions including the
-              event loop is run in a C file. This same approach works for any custom TTree containing collision events.
+              This should produce a template analyzer class named
+              <code>anaName</code>
+              . The class is kept in a header file, and its functions including the event loop is run in a C file. This
+              same approach works for any custom TTree containing collision events.
             </p>
 
             <hr />
 
             <h3 id="nano-histmaker">Histogram-maker</h3>
             <p>
-              The following is a standalone analysis tool for processing nanoAOD files. The MakeSelector-based source code generates histograms for physics
-              variables, and the utility tools allow overlaying multiple histograms for comparison. This is tested on nanoAOD versions: v7, v9
-              (RunII-UltraLegacy) and v12 (Run3Summer22). The header files allow switching between different branch types, which accounts for the branch type
-              changes from NanoAODv11 to v12. The number of branches being read is kept minimal to avoid conflicts between different versions. Run-instructions
-              are available on the Git page.
+              The following is a standalone analysis tool for processing nanoAOD files. The MakeSelector-based source
+              code generates histograms for physics variables, and the utility tools allow overlaying multiple
+              histograms for comparison. This is tested on nanoAOD versions: v7, v9 (RunII-UltraLegacy) and v12
+              (Run3Summer22). The header files allow switching between different branch types, which accounts for the
+              branch type changes from NanoAODv11 to v12. The number of branches being read is kept minimal to avoid
+              conflicts between different versions. Run-instructions are available on the Git page.
             </p>
             <p>
               GitHub:
-              <a href="https://github.com/phazarik/nanoAOD_analyzer" target="_blank"> https://github.com/phazarik/nanoAOD_analyzer </a>
+              <a href="https://github.com/phazarik/nanoAOD_analyzer" target="_blank">
+                https://github.com/phazarik/nanoAOD_analyzer
+              </a>
             </p>
 
-            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+              Go to Top
+            </button>
             <br />
           </section>
 
           <section class="section">
             <h2 id="tifr-tools" class="section-title">TIFR T2/T3 tools</h2>
             <div class="alert alert-warning">
-              ⚠️ The T2 facility is currently not-accessible to users. Some of these tools may change once it comes back online.
+              ⚠️ The T2 facility is currently not-accessible to users. Some of these tools may change once it comes back
+              online.
             </div>
 
             <h3 id="tifr-cp">Accessing and copying files to T3 [in bulk] using xrdcp</h3>
 
             <p>
-              The T2 filesystem does not allow me to do <code>ls</code> easily and wildcards are not allowed. I also can't use python features like
-              <code>os.listdir()</code>. I use python scripts to run commands such as <code>xrdfs se01.indiacms.res.in ls</code> (or <code>xrdcp</code>)
-              iteratively from the T3 area and list/copy all the root files in a given directory.
+              The T2 filesystem does not allow me to do
+              <code>ls</code>
+              easily and wildcards are not allowed. I also can't use python features like
+              <code>os.listdir()</code>
+              . I use python scripts to run commands such as
+              <code>xrdfs se01.indiacms.res.in ls</code>
+              (or
+              <code>xrdcp</code>
+              ) iteratively from the T3 area and list/copy all the root files in a given directory.
             </p>
             <ul>
               <li>
-                <a href="/files/codes/tifr-t3/findPathsT2.py.txt" target="_blank"><code>findPathsT2.py</code></a> : Finds full paths to the root files in a
-                given directory. Usage:
+                <a href="/files/codes/tifr-t3/findPathsT2.py.txt" target="_blank"><code>findPathsT2.py</code></a>
+                : Finds full paths to the root files in a given directory. Usage:
                 <pre><code class="language-bash">python3 findPathsT2.py /store/user/alaha/nanoRDFjobs</code></pre>
               </li>
               <li>
-                <a href="/files/codes/tifr-t3/getFilesT2.py.txt" target="_blank"><code>getFilesT2.py</code></a> : Copies all the root files from a given T2
-                directory to the T3 area. Usage:
+                <a href="/files/codes/tifr-t3/getFilesT2.py.txt" target="_blank"><code>getFilesT2.py</code></a>
+                : Copies all the root files from a given T2 directory to the T3 area. Usage:
                 <pre><code class="language-bash">python3 getFilesT2.py base_directory_in_T2 output_directory_in_T3</code></pre>
               </li>
               <li>
-                <a href="/files/codes/tifr-t3/getIndividualFilesT2.py.txt" target="_blank"><code>getIndividualFilesT2.py.txt</code></a> : In case the above
-                method fails, or only some specific files are needed, this script brings them by reading a text file. It manually constructs the full path as
-                given in the text file instead of using xrdfs ls. Usage:
+                <a href="/files/codes/tifr-t3/getIndividualFilesT2.py.txt" target="_blank">
+                  <code>getIndividualFilesT2.py.txt</code>
+                </a>
+                : In case the above method fails, or only some specific files are needed, this script brings them by
+                reading a text file. It manually constructs the full path as given in the text file instead of using
+                xrdfs ls. Usage:
                 <pre><code class="language-bash">python3 getIndividualFilesT2.py.txt output_directory_in_T3</code></pre>
                 where, the text file has the following format.
                 <pre><code class="language-text">
@@ -404,8 +590,14 @@ crab submit crab_config.py \                                                    
 
             <h3 id="tifr-rm">Deleting files from T2</h3>
             <p>
-              Deleting stuff from T2 is tricky. <code>rm</code> only works for individual files. <code>rmdir</code> only works for empty directories. I came up
-              with the following method. The python file takes a list of directories in this format: <code>/store/user/username/directory</code>.
+              Deleting stuff from T2 is tricky.
+              <code>rm</code>
+              only works for individual files.
+              <code>rmdir</code>
+              only works for empty directories. I came up with the following method. The python file takes a list of
+              directories in this format:
+              <code>/store/user/username/directory</code>
+              .
             </p>
             <ol>
               <li>Listing all the folders, subfolders and files.</li>
@@ -414,8 +606,9 @@ crab submit crab_config.py \                                                    
               <li>Deleting the directories, starting from the deepest ones.</li>
             </ol>
             <p>
-              For this, use <a href="/files/codes/tifr-t3/cleanT2.py.txt" target="_blank">cleanT2.py</a> and mention the directories you want to remove in the
-              list inside.
+              For this, use
+              <a href="/files/codes/tifr-t3/cleanT2.py.txt" target="_blank">cleanT2.py</a>
+              and mention the directories you want to remove in the list inside.
             </p>
 
             <hr />
@@ -424,8 +617,9 @@ crab submit crab_config.py \                                                    
             <div class="alert alert-danger">⛔ Temporary solution. Most likely deprecated.</div>
 
             <p>
-              As of August 2024, the cms-proxy fails to generate at the T3 area. That's why I am manually creating the proxy file in lxplus, and bringing it to
-              ui.indiacms.res.in. Before bringing the file to T3, the file has to be transferred to an accessible ares in lxplus.
+              As of August 2024, the cms-proxy fails to generate at the T3 area. That's why I am manually creating the
+              proxy file in lxplus, and bringing it to ui.indiacms.res.in. Before bringing the file to T3, the file has
+              to be transferred to an accessible ares in lxplus.
             </p>
             <ol>
               <li>
@@ -446,7 +640,9 @@ export X509_USER_PROXY=/grid_mnt/t3home/phazarik/x509up_u139657   # Give the cop
               </li>
             </ol>
 
-            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+              Go to Top
+            </button>
             <br />
           </section>
 
@@ -456,16 +652,21 @@ export X509_USER_PROXY=/grid_mnt/t3home/phazarik/x509up_u139657   # Give the cop
             <h3 id="misc-feynman">Making Feynman diagrams in LaTeX</h3>
 
             <p>
-              When it comes to drawing Feynman diagrams in LaTeX using feynmf and TikZ-Feynman, the later is generally easier and more flexible to use. The
-              first one is older and requires a more complicated setup, while TikZ-Feynman works smoothly with modern LaTeX with more customization options. If
-              you're just starting out, TikZ-Feynman is the better choice. A template for drawing Feynman diagrams using tikz-feynman package can be found
-              <a href="/mypages/files/codes/feynman-template.txt" target="_blank">here</a>. It already has some examples. It can be compiled using
-              <code>pdflatex</code> as follows.
+              When it comes to drawing Feynman diagrams in LaTeX using feynmf and TikZ-Feynman, the later is generally
+              easier and more flexible to use. The first one is older and requires a more complicated setup, while
+              TikZ-Feynman works smoothly with modern LaTeX with more customization options. If you're just starting
+              out, TikZ-Feynman is the better choice. A template for drawing Feynman diagrams using tikz-feynman package
+              can be found
+              <a href="/mypages/files/codes/feynman-template.txt" target="_blank">here</a>
+              . It already has some examples. It can be compiled using
+              <code>pdflatex</code>
+              as follows.
             </p>
             <pre><code class="language-bash">pdflatex feynman-template.tex</code></pre>
             <p>
-              Just make sure that you have the necessary LaTeX packages installed beforehand. I prefer to produce individual pdf files for each Feynman diagram
-              and convert them into high quality png files. The following is an example of a VLL production diagram.
+              Just make sure that you have the necessary LaTeX packages installed beforehand. I prefer to produce
+              individual pdf files for each Feynman diagram and convert them into high quality png files. The following
+              is an example of a VLL production diagram.
             </p>
             <pre><code class="language-latex hljs hljs-ln">
 \documentclass[tikz,border=3mm]{standalone}
@@ -530,7 +731,9 @@ export X509_USER_PROXY=/grid_mnt/t3home/phazarik/x509up_u139657   # Give the cop
               <figcaption class="figure-caption text-center">Example Feynman diagram</figcaption>
             </figure>
 
-            <p>This example only requires the tikz-feynman package. The pdf output can be converted to png as follows.</p>
+            <p>
+              This example only requires the tikz-feynman package. The pdf output can be converted to png as follows.
+            </p>
             <pre><code class="language-bash">
 # Note: Don't use the -alpha remove option if you want transparent png files.
 convert -density 300 vll_production.pdf \
@@ -539,7 +742,9 @@ convert -density 300 vll_production.pdf \
 vll_production.png
             </code></pre>
 
-            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Go to Top</button>
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+              Go to Top
+            </button>
             <br />
           </section>
         </div>

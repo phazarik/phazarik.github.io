@@ -1091,7 +1091,7 @@ mjx-container {
   border-radius: 50%;
   display: inline-block;
   margin-right: 6px;
-  animation: flash 2s infinite;
+  animation: flash 1s infinite;
 }
 
 @keyframes flash {
@@ -1100,7 +1100,7 @@ mjx-container {
     opacity: 1;
   }
   50% {
-    opacity: 0.7;
+    opacity: 0.5;
   }
 }
 
