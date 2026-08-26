@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Comprehensive guide on installing and setting up EHEP tools for Linux and Windows users, including Miniconda, ROOT, Jupyter Notebook, and CERN account management."
+    />
+    <meta name="keywords" content="EHEP, ROOT, CMS, CERN, particle physics, analysis, tutorials" />
+
+    <title>Bugs and hacks</title>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+    <!-- Math Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Custom Styles -->
+    <link href="/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- header placeholder -->
+    <div id="header"></div>
+
+    <main class="container my-4">
+      <div class="row g-4">
+        <!-- Navigation (left side) -->
+        <aside class="col-md-3">
+          <section class="section">
+            <div class="d-grid gap-2">
+              <div class="nav-section">
+                <a href="/pages/tools.html">Tools</a>
+                &gt;
+                <a href="#">Bugs and hacks</a>
+              </div>
+
+              <button class="nav-btn">NanoAOD analysis framework</button>
+              <div class="sub-btns">
+                <a href="#nano-sortpt" class="nav-sub-btn">Missing &amp; bug</a>
+                <a href="#nano-overflow" class="nav-sub-btn">Handling overflow/underflow</a>
+                <a href="#nano-segmentation" class="nav-sub-btn">Avoiding segmentation fault</a>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Main content -->
+        <div class="col-md-9">
+          <!-- Text -->
+          <section class="section">
+            <h1 class="page-title">Bugs and Hacks</h1>
+          </section>
+          <p>
+            Over the years, I faced a lot of weird and interesting bugs, figured out neat workarounds, and picked up a
+            bunch of programming tricks. Instead of keeping them scattered or forgetting them entirely, I decided to put
+            them all in one place. This is basically my personal cheat sheet. I am sure I forgot to include a large part
+            of it here, but still this page might be useful for somebody.
+          </p>
+
+          <section class="section">
+            <h2 class="section-title">Regarding the NanoAOD analysis framework</h2>
+            <p>
+              Here are some issues I faced/fixed while working with the
+              <code>TSelector</code>
+              based NanoAOD analysis frameworks, histograms etc.
+            </p>
+
+            <h3 id="nano-sortpt">The missing pointer reference bug</h3>
+            <p>
+              This was one of those bugs where everything looked fine, but the code was quietly doing something
+              different from what I expected. I wanted to avoid sorting every physics object array separately, so I
+              wrote a function that takes the entire object and sorts it by decreasing \(p_T\) as follows.
+            </p>
+            <pre><code class="language-cpp">
+void nanoAna::SortPt(vector&lt;Particle&gt; &objarr){
+  // Sort an object array in the decreasing order of pT
+  for(int i=0; i&lt;(int)objarr.size()-1; i++){
+    for(int j=i+1; j&lt;(int)objarr.size(); j++){
+      if( objarr[i].v.Pt() &lt; objarr[j].v.Pt() ) swap(objarr.at(i),objarr.at(j));
+    }
+  }
+}
+            </code></pre>
+            <p>
+              The catch was the tiny
+              <code>&</code>
+              in the argument. I had forgotten it in the earlier version of the function. Without the reference,
+              <code>objarr</code>
+              was a copy of the original object. The sorting algorithm itself worked perfectly, but it was only
+              modifying this copy. Once the function finished, the copy went out of scope and was destroyed, while the
+              original object remained unchanged. The worst part was that there was no error. The code compiled and ran
+              normally, but the objects were simply not being sorted. It took me quite some time to figure out what was
+              happening.
+            </p>
+            <p>
+              The simple fix was to pass the object by reference with
+              <code>&amp;</code>
+              . Another option would be to change the function to return the modified copy as a
+              <code>vector&lt;Particle&gt;</code>
+              and assign the returned object back at the calling point.
+            </p>
+            <p>
+              <strong>Lesson learned:</strong>
+              Be careful when passing objects or values to
+              <code>void</code>
+              functions. Use a reference or pointer if the original needs to be modified.
+            </p>
+
+            <hr />
+            <h3 id="nano-overflow">Handling overflow and underflow bins in histograms</h3>
+            <p>
+              The standard
+              <code>TH1::Integral()</code>
+              function does not include the underflow and overflow bins by default. Therefore, before plotting, the
+              underflow and overflow should be added to the first and last visible bins, respectively. This keeps the
+              histogram integral consistent with the total number of selected events across the full variable range.
+            </p>
+            <p>
+              There is, however, one small thing to be careful about. Once the events are moved into the visible bins,
+              the underflow and overflow bins should be
+              <strong>reset to zero</strong>
+              . Otherwise, if the function is called again, the same events will be moved again and counted twice. I
+              learned this the hard way after accidentally calling the function twice and getting unexpectedly large
+              integrals in my plots.
+            </p>
+            <p>
+              The following function performs the migration and resets the two bins afterwards. Pay attention to the
+              last part.
+            </p>
+            <pre><code class="language-cpp">
+void fix_underflow_overflow(TH1* h)
+{
+  const int lastBin = h->GetNbinsX();
+
+  // --- overflow ---
+  const double content      = h->GetBinContent(lastBin);
+  const double error        = h->GetBinError(lastBin);
+  const double overflow     = h->GetBinContent(lastBin + 1);
+  const double overflow_err = h->GetBinError(lastBin + 1);
+  const double updated_content = content + overflow;
+  const double updated_error   = std::sqrt(error * error +
+  overflow_err * overflow_err);	
+  h->SetBinContent(lastBin, updated_content);
+  h->SetBinError(lastBin, updated_error);
+		
+  // --- underflow ---
+  const double content_first = h->GetBinContent(1);
+  const double error_first   = h->GetBinError(1);
+  const double underflow     = h->GetBinContent(0);
+  const double underflow_err = h->GetBinError(0);
+  const double updated_content_first = content_first + underflow;
+  const double updated_error_first   = std::sqrt(error_first * error_first +
+  underflow_err * underflow_err);
+  h->SetBinContent(1, updated_content_first);
+  h->SetBinError(1, updated_error_first);
+
+  // --- reset underflow/overflow bins ---
+  h->SetBinContent(lastBin + 1, 0.0);
+  h->SetBinError(lastBin + 1, 0.0);	
+  h->SetBinContent(0, 0.0);
+  h->SetBinError(0, 0.0);
+}
+            </code></pre>
+
+            <hr />
+            <h3 id="nano-segmentation">Avoiding segmentation fault while booking histograms</h3>
+            <p>
+              This is a common issue people typically face when the array of histogram is initialized with a fixed size
+              in the header file, but the actual number of histograms booked in the source file is larger than that. The
+              code compiles perfectly, but during runtime, it tries to access memory beyond the allocated array size,
+              leading to a segmentation fault, without any clear error message.
+            </p>
+            <p>
+              To avoid this, I prefer to declare a vector of pointers to histograms instead of a fixed-size array as
+              shown below.
+            </p>
+            <pre><code class="language-cpp">
+struct Hists {
+  //Histograms are declared here as a collection of vectors.
+  //These need to be dynamicaly expanded in BookHistograms() function.
+  vector&lt;TH1F *&gt; hist;
+  vector&lt;TH1F *&gt; dnn;
+};
+            </code></pre>
+            <p>
+              Then, in the
+              <code>BookHistograms()</code>
+              function, I can dynamically resize these vectors and add histograms to them as needed, without worrying
+              about exceeding a fixed size.
+            </p>
+
+            <pre><code class="language-cpp">
+h.hist.resize(3);
+//initiate 3 histograms here with index 0,1,2
+for(int i = 0; i &lt; (int)h.hist.size(); i++) h.hist[i]-&gt;Sumw2();
+              </code></pre>
+            <p>
+              This is a safer approach, as including a new histogram requires change in the
+              <code>BookHistograms()</code>
+              function only, without having to find and modify the corresponding array size in the header file. In
+              addition, I can call
+              <code>h.hist.size()</code>
+              instead of explicitly writing 3 in the loop condition, which is safer.
+            </p>
+
+            <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+              Go to Top
+            </button>
+            <br />
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- footer placeholder -->
+    <div id="footer"></div>
+
+    <!-- Your main JS -->
+    <script src="/js/main.js"></script>
+  </body>
+</html>
