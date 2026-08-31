@@ -1037,7 +1037,11 @@ mjx-container {
 .assamese h5,
 .assamese h6,
 .assamese p,
-.assamese a {
+.assamese a,
+.assamese strong,
+.assamese .table,
+.assamese .table th,
+.assamese .table td {
   font-family: var(--assamese-font-family);
 }
 
@@ -1054,16 +1058,24 @@ mjx-container {
 }
 
 .assamese strong {
-  font-family: var(--assamese-font-family);
   font-size: var(--assamese-font-size);
 }
 
 .assamese .table,
 .assamese .table th,
 .assamese .table td {
-  font-family: var(--assamese-font-family);
   font-size: var(--assamese-font-size-small);
   color: var(--text-dark);
+}
+
+/* Fix English text and code inside Assamese blocks to use regular font and size */
+.assamese *:not(:lang(as)):not(:lang(bn)) {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+}
+
+.assamese code {
+  font-size: 0.9em;
 }
 
 /* =========================================================
