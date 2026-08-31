@@ -1,7 +1,78 @@
-/* =========================================================
-   Color Palette
-   ========================================================= */
+/* ==========================================================================
+   0. Custom Scaled Fonts for Bi-Script Consistency
+   ==========================================================================
+   These rules pull the standard Nunito font files but scale them down natively 
+   using size-adjust. This ensures that inline English text matches the visual 
+   size of Kalpurush (Assamese) without requiring explicit HTML wrappers.
+   ========================================================================== */
+
+/* Nunito Scaled - Light (300) */
+@font-face {
+  font-family: 'Nunito Scaled';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaB.woff2') format('woff2');
+  size-adjust: 90%;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Nunito Scaled - Regular (400) */
+@font-face {
+  font-family: 'Nunito Scaled';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaB.woff2') format('woff2');
+  size-adjust: 90%;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Nunito Scaled - Semi-Bold (600) */
+@font-face {
+  font-family: 'Nunito Scaled';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaB.woff2') format('woff2');
+  size-adjust: 90%;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Nunito Scaled - Bold (700) - Catches <strong> and <b> tags */
+@font-face {
+  font-family: 'Nunito Scaled';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaB.woff2') format('woff2');
+  size-adjust: 90%;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ==========================================================================
+   1. Design Tokens & Typography Variables
+   ==========================================================================
+   All fundamental styling primitives are defined at the root scope.
+   - `--font-family`: Baseline typeface for Latin characters and UI elements.
+   - `--assamese-font-family`: Multi-script font stack. 'Nunito' is deliberately
+     placed FIRST before 'Kalpurush'. When rendering mixed text inside Assamese
+     blocks, the browser checks 'Nunito' for each glyph:
+       • Latin letters (A–Z, a–z, digits) exist in Nunito, so they render in Nunito.
+       • Indic/Assamese glyphs do NOT exist in Nunito, triggering an automatic
+         per-glyph fallback to 'Kalpurush' and 'Noto Serif Bengali'.
+     This ordering avoids manual tag wrapping around every inline English word.
+   ========================================================================== */
 :root {
+  /* Brand & Status Colors */
   --primary-color: #7752aa;
   --primary-light: #9276b9;
   --primary-lighter: #d8c9eb;
@@ -14,21 +85,88 @@
   --bg-light: #fff;
   --divider: #ddd;
 
-  /* Global typography */
+  /* English (Default) Typography */
   --font-family: 'Nunito', sans-serif;
-  --font-size: normal;
-  --font-size-small: small;
+  --font-size: 1rem;
+  --font-size-small: 0.875rem;
   --font-style: normal;
 
-  /* Assamese-specific */
-  --assamese-font-family: 'Noto Serif Bengali', serif;
+  /* Assamese Stack (uses the scaled Nunito for English fallback) */
+  --assamese-font-family: 'Nunito Scaled', 'Kalpurush', 'Noto Serif Bengali', serif;
   --assamese-font-size: 1.1rem;
   --assamese-font-size-small: 1rem;
 }
 
-/* =========================================================
-   Base Layout
-   ========================================================= */
+/* ==========================================================================
+   2. Script & Language Scoping
+   ==========================================================================
+   These rules establish typography boundaries for Assamese containers (.assamese
+   or [lang="as"]). Because child elements inherit font properties via universal
+   inheritance (Section 4), we only declare font-family and base font-size once 
+   at the container boundary.
+   ========================================================================== */
+
+/* Primary container selector for Assamese text */
+.assamese,
+[lang='as'] {
+  font-family: var(--assamese-font-family);
+  font-size: var(--assamese-font-size);
+}
+
+/* Headings inside Assamese containers: inherits sizing from the base heading
+   definitions (Section 4) while applying the dual-script fallback stack. */
+.assamese h1,
+.assamese h2,
+.assamese h3,
+.assamese h4,
+.assamese h5,
+.assamese h6,
+[lang='as'] h1,
+[lang='as'] h2,
+[lang='as'] h3,
+[lang='as'] h4,
+[lang='as'] h5,
+[lang='as'] h6 {
+  font-family: var(--assamese-font-family);
+}
+
+/* Inline links inherit typography from the parent container */
+.assamese a,
+[lang='as'] a {
+  text-decoration: none;
+}
+
+/* Paragraph spacing tuned for Assamese line-height requirements */
+.assamese p,
+[lang='as'] p {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+/* Tables nested within Assamese blocks: scaled down for data density */
+.assamese .table,
+.assamese .table th,
+.assamese .table td,
+[lang='as'] .table,
+[lang='as'] .table th,
+[lang='as'] .table td {
+  font-size: var(--assamese-font-size-small);
+  color: var(--text-dark);
+}
+
+/* Inline code sizing relative to surrounding text */
+.assamese code,
+[lang='as'] code {
+  font-size: 0.9em;
+}
+
+/* ==========================================================================
+   3. Base Document Layout
+   ==========================================================================
+   Page-level box sizing and viewport constraints. Default site-wide typography
+   is set here on <body>.
+   ========================================================================== */
 html,
 body {
   height: 100%;
@@ -44,9 +182,18 @@ body {
   line-height: 1.5;
 }
 
-/* =========================================================
-   Typography
-   ========================================================= */
+/* ==========================================================================
+   4. Typography & Universal Inheritance
+   ==========================================================================
+   ORDER MATTERS:
+   1. Headings (h1–h6) are defined with base visual sizes and weights.
+   2. Sub-headings (h3–h6) override the heading font-family to use the main font.
+   3. Universal inheritance (`font-family: inherit`, `font-size: inherit`) ensures
+      that inline elements (<strong>, <em>, <a>, etc.) inherit typography directly
+      from their immediate parent container without requiring explicit overrides.
+   ========================================================================== */
+
+/* Primary Display Headings */
 h1,
 h2,
 h3,
@@ -89,7 +236,7 @@ h6 {
   font-weight: 600;
 }
 
-/* Override for h3-h6 */
+/* Section Sub-headings: inherit primary brand typography */
 h3,
 h4,
 h5,
@@ -99,6 +246,7 @@ h6 {
   font-weight: 600;
 }
 
+/* Decorative visual accent for section markers */
 h3::before {
   content: '✦';
   color: var(--primary-color);
@@ -112,6 +260,10 @@ p {
   margin: 0.75rem 0;
 }
 
+/* Universal Typography Inheritance:
+   Forces all nested inline and structural tags to transparently inherit their
+   parent container's computed font-family and font-size. This ensures consistent
+   rendering inside both English and Assamese contexts. */
 p,
 ul,
 ol,
@@ -139,14 +291,13 @@ a:hover {
   color: inherit;
 }
 
-/* Strong / Bold */
+/* Font weight for bold text (family is resolved via inheritance) */
 strong,
 b {
-  font-family: 'Segoe UI', Nunito, sans-serif;
   font-weight: 600;
 }
 
-/* Alerts */
+/* Informational Callouts / Alerts */
 .alert {
   color: var(--text-dark);
   padding: 0.5rem;
@@ -163,7 +314,7 @@ b {
   margin-bottom: 0.25rem;
 }
 
-/* Page Titles */
+/* Page Titles and Lead Paragraphs */
 .name {
   font-size: 2.5rem;
   margin-bottom: 1rem;
@@ -179,7 +330,7 @@ b {
   margin: 1rem 0;
 }
 
-/* Sections */
+/* Content Sections */
 .section {
   padding: 8px 2px;
 }
@@ -205,7 +356,11 @@ b {
   margin: 1rem 0 2rem;
 }
 
-/* Figures */
+/* ==========================================================================
+   5. Media, Figures & Math
+   ========================================================================== */
+
+/* Multi-image Subfigure Layout */
 .subfigure-container {
   display: flex;
   justify-content: center;
@@ -233,7 +388,7 @@ b {
   text-align: center;
 }
 
-/* cover image */
+/* Hero / Cover Image Container */
 .cover-container {
   width: 100%;
   text-align: center;
@@ -244,10 +399,33 @@ b {
   width: 100%;
   height: auto;
   object-fit: contain;
-  pointer-events: none; /* ensures clicks pass through if needed */
+  pointer-events: none;
 }
 
-/* Blog Figures */
+/* Standard Figures with Captions */
+figure.figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem auto;
+  max-width: 800px;
+  padding: 0 1rem;
+}
+
+figure.figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+figure.figure figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #555;
+  text-align: center;
+}
+
+/* Floating Blog Figures */
 .blog-figure {
   float: right;
   width: 35%;
@@ -265,6 +443,7 @@ b {
   text-align: center;
 }
 
+/* Centered Blog Figures */
 .blog-figure-center {
   max-width: 35%;
   text-align: center;
@@ -283,7 +462,7 @@ b {
   overflow-wrap: break-word;
 }
 
-/* Info Boxes */
+/* Informational Callout Boxes */
 .info-box {
   background-color: var(--primary-lighter);
   border: 1px solid var(--divider);
@@ -308,13 +487,17 @@ b {
   display: inline;
 }
 
-/* Inline math */
+/* MathJax and LaTeX Inline Math */
 .inline-math {
   font-family: 'Times New Roman', serif;
   font-style: italic;
 }
 
-/* Blockquotes */
+mjx-container {
+  font-family: var(--font-family) !important;
+}
+
+/* Assamese Blockquotes */
 .blockquote.assamese {
   font-size: 0.95rem;
   font-style: italic;
@@ -355,9 +538,11 @@ b {
   margin-top: 0.5rem;
 }
 
-/* =========================================================
-   Navbar
-   ========================================================= */
+/* ==========================================================================
+   6. Navigation, Header & Footer
+   ========================================================================== */
+
+/* Top Navigation Bar */
 .navbar {
   background-color: var(--primary-color) !important;
   border-bottom: none;
@@ -406,55 +591,13 @@ b {
   font-family: var(--font-family) !important;
 }
 
+/* Specific override for navigation links rendered in Assamese */
 .navbar .nav-link.assamese-link {
   font-family: var(--assamese-font-family) !important;
   font-size: var(--assamese-font-size) !important;
 }
 
-/* =========================================================
-   Footer
-   ========================================================= */
-#footer {
-  margin-top: auto;
-  width: 100%;
-  background-color: var(--bg-light);
-  text-align: right;
-  padding: 6px 10px;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-/* =========================================================
-   Sections & Layout + Mini page
-   ========================================================= */
-.split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-  position: relative;
-}
-
-.split > div {
-  background: inherit;
-  padding: 0.5rem;
-  border-radius: 4px;
-}
-
-.split::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 3px;
-  background-color: var(--divider);
-  transform: translateX(-50%);
-}
-
-/* =========================================================
-   Navigation (Aside)
-   ========================================================= */
+/* Sticky Sidebar Navigation */
 aside {
   position: sticky;
   top: 0;
@@ -564,9 +707,48 @@ aside .nav-section a {
   text-decoration: none;
 }
 
-/* =========================================================
-   Logos
-   ========================================================= */
+/* Page Footer */
+#footer {
+  margin-top: auto;
+  width: 100%;
+  background-color: var(--bg-light);
+  text-align: right;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   7. UI Components & Widgets
+   ========================================================================== */
+
+/* Split 2-Column Container */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  position: relative;
+}
+
+.split > div {
+  background: inherit;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.split::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background-color: var(--divider);
+  transform: translateX(-50%);
+}
+
+/* Logos & Icons */
 img.logo {
   width: 18px;
   height: 18px;
@@ -574,9 +756,7 @@ img.logo {
   vertical-align: middle;
 }
 
-/* =========================================================
-   Google map
-   ========================================================= */
+/* Embedded Google Maps */
 .map-container {
   width: 80%;
   height: 25vh;
@@ -591,9 +771,7 @@ img.logo {
   overflow: hidden;
 }
 
-/* =========================================================
-   Skills / Progress Bars
-   ========================================================= */
+/* Progress & Skill Meters */
 .skill {
   margin: 8px 0;
 }
@@ -619,9 +797,7 @@ img.logo {
   font-weight: 600;
 }
 
-/* =========================================================
-   Cards
-   ========================================================= */
+/* Cards */
 section .card {
   background-color: #f5f5f5;
   border-radius: 6px;
@@ -670,9 +846,7 @@ section .card .card-text {
   text-align: left;
 }
 
-/* =========================================================
-   Tables
-   ========================================================= */
+/* Data Tables */
 .table,
 .table th,
 .table td {
@@ -714,9 +888,7 @@ section .card .card-text {
   font-family: inherit;
 }
 
-/* =========================================================
-   Code Blocks
-   ========================================================= */
+/* Code Blocks & Syntax Highlighting */
 pre {
   display: block;
   margin: 0;
@@ -739,6 +911,7 @@ pre code[class*='language-'] {
   white-space: pre;
 }
 
+/* Language accent borders */
 pre code.hljs.language-python {
   border-left: 5px solid #3572a5;
 }
@@ -790,34 +963,7 @@ pre code.hljs.language-latex {
   font-style: italic;
 }
 
-/* =========================================================
-   Figures & Images
-   ========================================================= */
-figure.figure {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 1.5rem auto;
-  max-width: 800px;
-  padding: 0 1rem;
-}
-
-figure.figure img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 6px;
-}
-
-figure.figure figcaption {
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
-  color: #555;
-  text-align: center;
-}
-
-/* =========================================================
-   Forms & Inputs
-   ========================================================= */
+/* Form Controls */
 section form input,
 section form select,
 section form textarea {
@@ -829,9 +975,7 @@ section form textarea {
   margin-bottom: 8px;
 }
 
-/* =========================================================
-   Accordion
-   ========================================================= */
+/* Accordions */
 .accordion-button {
   background-color: var(--primary-color);
   color: #fff;
@@ -847,9 +991,7 @@ section form textarea {
   background-color: #f9f9f9;
 }
 
-/* =========================================================
-   Modal
-   ========================================================= */
+/* Modals */
 .modal-content {
   border-radius: 6px;
   border: 1px solid var(--divider);
@@ -866,9 +1008,7 @@ section form textarea {
   justify-content: flex-end;
 }
 
-/* =========================================================
-   Tabs
-   ========================================================= */
+/* Nav Tabs */
 .nav-tabs {
   border-bottom: 2px solid var(--primary-light);
   margin-bottom: 1rem;
@@ -916,9 +1056,7 @@ section form textarea {
   display: block;
 }
 
-/* =========================================================
-   Buttons
-   ========================================================= */
+/* Action Buttons */
 button.btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
@@ -956,9 +1094,7 @@ button.btn-lg {
   font-size: 1.1rem;
 }
 
-/* =========================================================
-   Go Top Button
-   ========================================================= */
+/* Floating / Action Return-to-Top Button */
 #goTopBtn {
   float: right;
   margin: 20px 0;
@@ -976,29 +1112,19 @@ button.btn-lg {
   background-color: var(--primary-light);
 }
 
-/* =========================================================
-   LaTeX (MathJax)
-   ========================================================= */
-mjx-container {
-  font-family: var(--font-family) !important;
-}
-
-/* ===============================
-   Mermaid Diagrams
-   =============================== */
+/* Mermaid Diagrams */
 .mermaid {
   font-family: var(--font-family);
   font-size: var(--font-size-small);
   color: var(--text-dark);
 }
 
-/* Node styling */
 .mermaid .node rect,
 .mermaid .node polygon {
   fill: var(--primary-lighter);
   stroke: var(--primary-color);
   stroke-width: 1.5px;
-  rx: 6; /* rounded corners */
+  rx: 6;
   ry: 6;
 }
 
@@ -1008,7 +1134,6 @@ mjx-container {
   font-size: var(--font-size);
 }
 
-/* Edge styling */
 .mermaid .edgePath path {
   stroke: var(--primary-light);
   stroke-width: 1.5px;
@@ -1020,67 +1145,12 @@ mjx-container {
   background: #fff;
 }
 
-/* Strong text inside nodes */
 .mermaid strong {
   font-weight: bold;
   color: var(--text-dark);
 }
 
-/* =========================================================
-   Assamese text block
-   ========================================================= */
-.assamese,
-.assamese h1,
-.assamese h2,
-.assamese h3,
-.assamese h4,
-.assamese h5,
-.assamese h6,
-.assamese p,
-.assamese a,
-.assamese strong,
-.assamese .table,
-.assamese .table th,
-.assamese .table td {
-  font-family: var(--assamese-font-family);
-}
-
-.assamese a {
-  text-decoration: none;
-  color: red;
-}
-
-.assamese p {
-  font-size: var(--assamese-font-size);
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 1.5;
-}
-
-.assamese strong {
-  font-size: var(--assamese-font-size);
-}
-
-.assamese .table,
-.assamese .table th,
-.assamese .table td {
-  font-size: var(--assamese-font-size-small);
-  color: var(--text-dark);
-}
-
-/* Fix English text and code inside Assamese blocks to use regular font and size */
-.assamese *:not(:lang(as)):not(:lang(bn)) {
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-}
-
-.assamese code {
-  font-size: 0.9em;
-}
-
-/* =========================================================
-   Status badges and pulse dot
-   ========================================================= */
+/* Status Indicators & Animation */
 .status-indicator {
   display: inline-flex;
   align-items: center;
@@ -1116,11 +1186,15 @@ mjx-container {
   }
 }
 
-/* =========================================================
-   Responsive / Mobile
-   ========================================================= */
+/* ==========================================================================
+   8. Responsive Design & Mobile Breakpoints (<= 768px)
+   ==========================================================================
+   ORDER MATTERS:
+   Declared at the end of the stylesheet to ensure media query rules cleanly
+   override desktop layout metrics without needing high-specificity selectors.
+   ========================================================================== */
 @media (width <= 768px) {
-  /* headers */
+  /* Scale down display headings for narrower screens */
   h1 {
     font-size: 1.8rem;
   }
@@ -1161,7 +1235,7 @@ mjx-container {
     margin: 1rem 0;
   }
 
-  /* Sidebar */
+  /* Unpin sidebar from sticky position to flow naturally in document order */
   aside.col-md-3 {
     width: 100% !important;
     padding: 0;
@@ -1190,14 +1264,14 @@ mjx-container {
 
   aside .d-grid .sub-btns .nav-sub-btn {
     font-size: 0.95rem;
-    padding: 8px 12px 8px 22px; /* extra left padding for dot */
+    padding: 8px 12px 8px 22px;
   }
 
   aside .d-grid .sub-btns .nav-sub-btn::before {
     left: 8px;
   }
 
-  /* Grid and columns */
+  /* Compact grid spacing */
   .container {
     padding: 10px;
   }
@@ -1207,13 +1281,12 @@ mjx-container {
     margin-bottom: 15px;
   }
 
-  /* Sections */
   .section {
     padding: 6px 8px;
     margin: 8px 0;
   }
 
-  /* Figures */
+  /* Stack multi-image containers vertically */
   .subfigure-container {
     flex-direction: column;
     align-items: center;
@@ -1223,6 +1296,7 @@ mjx-container {
     width: 100%;
   }
 
+  /* Expand floated and centered blog figures to full width */
   .blog-figure {
     min-width: 50% !important;
     max-width: 100% !important;
@@ -1239,7 +1313,7 @@ mjx-container {
     font-size: 0.85rem;
   }
 
-  /* Text */
+  /* Standardize body text and link scale on mobile devices */
   p,
   b,
   strong,
@@ -1248,11 +1322,7 @@ mjx-container {
   sub,
   sup,
   blockquote,
-  blockquote p {
-    font-size: var(--font-size-small);
-  }
-
-  /* Links in normal text are small */
+  blockquote p,
   p a,
   li a,
   small a,
@@ -1263,7 +1333,7 @@ mjx-container {
     font-size: var(--font-size-small);
   }
 
-  /* Links inside headers or italics inherit parent size */
+  /* Preserve heading-relative link sizes */
   h1 a,
   h2 a,
   h3 a,
@@ -1275,16 +1345,12 @@ mjx-container {
     font-size: inherit;
   }
 
-  /* Assamese text */
-  .assamese p {
+  /* Scale down Assamese text on mobile */
+  .assamese,
+  [lang='as'] {
     font-size: var(--assamese-font-size-small);
   }
 
-  .assamese a {
-    font-size: inherit;
-  }
-
-  /* Figures */
   figure.figure {
     margin: 1rem auto;
     padding: 0 0.5rem;
@@ -1300,7 +1366,6 @@ mjx-container {
     aspect-ratio: 16 / 9;
   }
 
-  /* Progress bars */
   .progress {
     width: 100%;
     height: 20px;
@@ -1313,15 +1378,9 @@ mjx-container {
     padding: 0 4px;
   }
 
-  /* Sections */
-  .section {
-    padding: 4px 6px;
-    margin: 6px 0;
-  }
-
-  /*code*/
+  /* Code block font sizing for small viewports */
   pre code.hljs,
   pre code[class*='language-'] {
-    font-size: 0.65rem; /* smaller font for mobile */
+    font-size: 0.65rem;
   }
 }
