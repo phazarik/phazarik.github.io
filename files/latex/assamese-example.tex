@@ -1,0 +1,606 @@
+% ===========================================================
+% Assamese LaTeX tutorial and question paper template
+% Compile with XeLaTeX
+% Copyrights: Prachurjya Hazarika
+% ===========================================================
+
+\documentclass[12pt,a4paper]{article} % Primary document settings
+
+% -----------------
+% Page layout
+% -----------------
+\usepackage[
+	margin=2.4cm,  % set left and right margins
+	top=2.5cm,      % set top margin
+	bottom=2cm    % set bottom margin
+]{geometry}
+
+% --------------------------------
+% Assamese text and fonts
+% --------------------------------
+\usepackage{fontspec} % allows XeLaTeX to use system/OpenType fonts
+\usepackage[assamese]{babel} % loads Assamese language definitions from babel
+\setmainfont{Kalpurush}[
+	Script=Bengali,     % use Bengali-script shaping for Assamese
+	AutoFakeBold=3.0,   % create a synthetic bold font
+	AutoFakeSlant=0.2   % create a synthetic slanted font
+]
+
+% ---------------------------
+% Handling monospace
+% ----------------------------
+\newfontfamily\symbolfont{Noto Sans} % font for symbols not available in Kalpurush
+\usepackage{listings} % typesets source code
+\newfontfamily\assamesecode{Kalpurush}[Script=Bengali] % Assamese font for code blocks
+\lstset{
+	basicstyle=\ttfamily, % use monospaced text for code
+	escapechar=`,         % ` switches temporarily to LaTeX
+	breaklines=true       % allow long code lines to wrap
+}
+
+% ---------------------
+% Assamese digits
+% ---------------------
+\babelprovide[maparabic]{assamese} % maps generated numbers to Assamese digits
+
+% ----------------------
+% Assamese names
+% ----------------------
+\addto\captionsassamese{%
+	\renewcommand{\abstractname}{সাৰাংশ}% Abstract
+	\renewcommand{\tablename}{তালিকা}% Table
+	\renewcommand{\figurename}{চিত্ৰ}% Figure
+	\renewcommand{\refname}{তথ্যসূত্ৰ}% References
+}
+
+% -----------------------------------
+% Mathematics and graphics
+% -----------------------------------
+\usepackage{amsmath} % advanced mathematical environments and commands
+\usepackage{amssymb} % additional mathematical symbols
+\usepackage{graphicx} % includes and scales external images
+
+% ---------
+% Tables
+% ---------
+\usepackage{booktabs} % improved horizontal rules for tables
+\usepackage{tabularx} % tables with adjustable-width columns
+\usepackage{array} % additional column types and formatting
+
+% -------
+% Lists
+% -------
+\usepackage{enumitem} % customises itemized and enumerated lists
+
+% -------------------------
+% Paragraph spacing
+% -------------------------
+%\usepackage{parskip} % changes paragraph indentation and spacing
+\setlength{\parskip}{0.5em} % add vertical space between paragraphs
+
+% ---------------
+% Hyperlinks
+% ---------------
+\usepackage{hyperref} % makes references and URLs clickable
+\hypersetup{
+	colorlinks=true,  % use coloured text instead of boxes
+	linkcolor=black,  % colour of internal links
+	citecolor=red,     % colour of citation links
+	urlcolor=blue      % colour of URL links
+}
+
+% -----------------
+% Text justification
+% -----------------
+\setlength{\emergencystretch}{1em} % allow extra spacing for difficult line breaks
+\tolerance=1200 % allow moderately loose lines
+\pretolerance=1000 % tolerance before hyphenation
+\hyphenpenalty=200 % discourage normal word hyphenation
+\exhyphenpenalty=200 % discourage hyphenation at existing hyphens
+
+% -----------------
+% Itemized lists
+% -----------------
+\renewcommand{\labelitemi}{$\bullet$} % first level: •
+\renewcommand{\labelitemii}{$\circ$} % second level: ○
+\renewcommand{\labelitemiii}{\textbf{--}} % third level: --
+\renewcommand{\labelitemiv}{$\ast$} % fourth level: *
+
+% ----------------------
+% Enumerated lists
+% ----------------------
+\renewcommand{\theenumi}{\arabic{enumi}} % first-level counter
+\renewcommand{\theenumii}{\arabic{enumii}} % second-level counter
+\renewcommand{\theenumiii}{\arabic{enumiii}} % third-level counter
+\renewcommand{\theenumiv}{\arabic{enumiv}} % fourth-level counter
+
+\renewcommand{\labelenumi}{\theenumi.} % first level: 1.
+\renewcommand{\labelenumii}{\theenumii)} % second level: 1)
+\renewcommand{\labelenumiii}{\theenumiii.} % third level: 1.
+\renewcommand{\labelenumiv}{\theenumiv.} % fourth level: 1.
+
+% ---------------
+% Numbering
+% ---------------
+\renewcommand{\theequation}{\arabic{equation}} % 1, 2, 3, ...
+\renewcommand{\thefigure}{\arabic{figure}} % 1, 2, 3, ...
+\renewcommand{\thetable}{\arabic{table}} % 1, 2, 3, ...
+\renewcommand{\thefootnote}{\arabic{footnote}} % 1, 2, 3, ...
+
+% --------------
+% Footnotes
+% --------------
+\interfootnotelinepenalty=10000 % prevent footnotes from splitting across pages
+\renewcommand{\footnoterule}{%
+	\kern -3pt % move the rule upward
+	\hrule width \textwidth height 0.5pt % draw the footnote rule
+	\kern 3pt % add space below the rule
+}
+
+% ============================================================================
+% Document
+% ============================================================================
+
+\begin{document}
+	
+	\begin{center}
+		{\huge\bfseries অসমীয়া ভাষাত \LaTeX{} ব্যৱহাৰৰ আৰ্হি}\\
+		\vspace{0.2cm}
+		{\large লিখনী, তালিকা, চিত্ৰ, গণিত আৰু প্ৰশ্নকাকতৰ নমুনা}\\
+		\vspace{0.15cm}
+		{\normalsize প্ৰাচুৰ্য প্ৰাণ হাজৰিকা, ২০২৬}\\
+		{\small prachurjyahazarika@gmail.com}
+		
+	\end{center}
+	
+	\begin{abstract}
+		অসমীয়া ভাষাত \LaTeX{} ব্যৱহাৰ কৰাৰ এটা সৰল আৰ্হি। ইয়াত সাধাৰণ লিখনী, তালিকা, লিংক, চিত্ৰ, গণিতৰ সমীকৰণ, তালিকা আৰু প্ৰশ্নকাকত সাজিবলৈ প্ৰয়োজন হোৱা মূল সঁজুলিবোৰ দেখুওৱা হৈছে। PDF-টো XeLaTeX-ৰ জৰিয়তে কম্পাইল কৰা হৈছে, যাতে অসমীয়া Unicode আখৰ আৰু সংখ্যা পোনপটীয়াকৈ লিখিব পাৰি।
+	\end{abstract}
+	
+	% ============================================================================
+	\section{লিখনী}
+	% ============================================================================
+	
+	\LaTeX{}-ত লিখনীৰ গুৰুত্ব অনুসৰি আখৰবোৰ বিভিন্ন ধৰণে সজাব পাৰি। প্ৰয়োজন অনুসৰি আখৰবিলাকৰ ৰূপ, অৱস্থান আৰু অনুচ্ছেদৰ গাঁথনি সলনি কৰিবলৈ তলত দিয়া নিৰ্দেশসমূহ ব্যৱহাৰ কৰা হয়।
+	
+	% ----------------------------------------------------------------------------------------------------------
+	\subsection{আখৰৰ সজ্জা আৰু ফুটনোট}
+	% ----------------------------------------------------------------------------------------------------------
+	
+	কোনো শব্দ বা বাক্য ডাঠ কৰিবলৈ \texttt{\textbackslash textbf\{...\}}, হেলনীয়া কৰিবলৈ \texttt{\textbackslash textit\{...\}} আৰু তলত আঁচ টানিবলৈ \texttt{\textbackslash underline\{...\}} কমাণ্ড ব্যৱহাৰ কৰা হয়। একেটা বাক্যতে এইবোৰ একেলগেও ব্যৱহাৰ কৰিব পাৰি। যেনে: এই আখৰকেইটা \textbf{ডাঠ}, \textit{হেলনীয়া} কৰা হৈছে আৰু \underline{তলত আঁচ দিয়া} হৈছে।
+	
+	\LaTeX{}-ত আখৰৰ আকাৰ সলনি কৰিবলৈ কিছুমান নিৰ্দিষ্ট কমাণ্ড ব্যৱহাৰ কৰা হয়। এই কমাণ্ডবোৰে মূল আখৰৰ আকাৰৰ (যেনে \texttt{documentclass}-ত নিৰ্ধাৰণ কৰা \texttt{12pt}) ওপৰত ভিত্তি কৰি আখৰসমূহ ক্ৰমান্বয়ে সৰু বা ডাঙৰ কৰে। কোনো এটা নিৰ্দিষ্ট অংশৰ আকাৰ সলনি কৰিবলৈ কমাণ্ডটো আৰু আখৰখিনি দ্বিতীয় ব্ৰেকেটৰ \texttt{\{\}} ভিতৰত আৱদ্ধ কৰি ৰখা হয়, যেনে: \texttt{\{\textbackslash large \textnormal{ডাঙৰ আখৰ}\}}। তলত ক্ৰমান্বয়ে সৰুৰ পৰা ডাঙৰলৈ কমাণ্ডসমূহ আৰু তাৰ ফলাফল দেখুওৱা হৈছে।
+	
+	\begin{itemize}[noitemsep]
+		\item {\tiny \texttt{\textbackslash tiny} ব্যৱহাৰ কৰিলে আখৰ একেবাৰে সৰু হয়।}
+		\item {\scriptsize \texttt{\textbackslash scriptsize} ব্যৱহাৰ কৰিলে আখৰ যথেষ্ট সৰু হয়।}
+		\item {\footnotesize \texttt{\textbackslash footnotesize} সাধাৰণতে ফুটনোটৰ বাবে ব্যৱহাৰ হয়।}
+		\item {\small \texttt{\textbackslash small} সাধাৰণ আকাৰতকৈ অলপ সৰু।}
+		\item {\normalsize \texttt{\textbackslash normalsize} হৈছে প্ৰামাণিক বা সাধাৰণ আকাৰ।}
+		\item {\large \texttt{\textbackslash large} সাধাৰণ আকাৰতকৈ অলপ ডাঙৰ।}
+		\item {\Large \texttt{\textbackslash Large} আৰু অলপ ডাঙৰ আকাৰৰ বাবে।}
+		\item {\LARGE \texttt{\textbackslash LARGE} যথেষ্ট ডাঙৰ আখৰ।}
+		\item {\huge \texttt{\textbackslash huge} শিৰোনাম আদিৰ বাবে ব্যৱহাৰ কৰা হয়।}
+		\item {\Huge \texttt{\textbackslash Huge} হৈছে আটাইতকৈ ডাঙৰ আকাৰ।}
+	\end{itemize}
+	
+	মূল লেখাৰ কোনো শব্দ বা বাক্যৰ বিষয়ে অতিৰিক্ত তথ্য পৃষ্ঠাটোৰ একেবাৰে তলত দেখুৱাবলৈ ফুটনোট ব্যৱহাৰ কৰা হয়। ইয়াৰ বাবে নিৰ্দিষ্ট শব্দটোৰ ঠিক পাছতে \texttt{\textbackslash footnote\{...\}} কমাণ্ডটো লিখিব লাগে\footnote{এইটো এটা সাধাৰণ ফুটনোটৰ উদাহৰণ। \texttt{\textbackslash footnote} ব্যৱহাৰ কৰিলে \LaTeX{}-এ নিজে নিজে ক্ৰমিক নম্বৰ বহুৱাই লয় আৰু তথ্যখিনি মূল লেখাৰ পৰা পৃথককৈ দেখুৱায়।}।
+	
+	% ----------------------------------------------------------------------------------------------------------
+	\subsection{লিখনীৰ অৱস্থান}
+	% ----------------------------------------------------------------------------------------------------------
+	
+	\LaTeX{}-ৰ লিখনী সাধাৰণতে পৃষ্ঠাৰ দুয়োকাষে সমান হৈ থাকে (justified)। কিন্তু প্ৰয়োজন অনুসৰি নিৰ্দিষ্ট পৰিৱেশ (environment) ব্যৱহাৰ কৰি আখৰখিনি বাওঁফালে, মাজত বা সোঁফালেও সজাব পাৰি। \texttt{flushleft} পৰিৱেশ ব্যৱহাৰ কৰিলে লিখনীখিনি বাওঁফালে মিলি থাকে, \texttt{center} ব্যৱহাৰ কৰিলে লিখনীখিনি পৃষ্ঠাৰ ঠিক মাজভাগত অৱস্থান কৰে, আৰু \texttt{flushright} ব্যৱহাৰ কৰিলে লিখনীখিনি সোঁফালে মিলি থাকে।
+	
+	\begin{flushleft}
+		এই লেখাখিনি পৃষ্ঠাৰ \textbf{বাওঁফালে} সজোৱা হৈছে।\\
+		প্ৰথম শাৰী বাওঁফালৰ পৰা আৰম্ভ হৈছে।\\
+		দ্বিতীয় শাৰীও একেটা বাওঁ সীমাৰ পৰা আৰম্ভ হৈছে।
+	\end{flushleft}
+
+	\begin{center}
+		এই লেখাখিনি পৃষ্ঠাৰ \textbf{সোঁমাজত} সজোৱা হৈছে।\\
+		প্ৰথম শাৰী মাজত অৱস্থিত।\\
+		একাধিক শাৰীৰ প্ৰতিটো অংশ পৃষ্ঠাৰ মাজত সজোৱা হৈছে।
+	\end{center}
+	
+	\begin{flushright}
+		এই লেখাখিনি পৃষ্ঠাৰ \textbf{সোঁফালে} সজোৱা হৈছে।\\
+		প্ৰথম শাৰী সোঁফালৰ সীমাৰ সৈতে সংলগ্ন।\\
+		এইদৰে একাধিক শাৰী সোঁফালে সজাব পাৰি।
+	\end{flushright}
+	
+	% ----------------------------------------------------------------------------------------------------------
+	\subsection{অনুচ্ছেদ আৰু খালী ঠাই}
+	% ----------------------------------------------------------------------------------------------------------
+	
+	\LaTeX{}-ত নতুন অনুচ্ছেদ এটা আৰম্ভ কৰিবলৈ ক'ডত এটা সম্পূৰ্ণ খালী শাৰী এৰিব লাগে। সাধাৰণতে নতুন অনুচ্ছেদ আৰম্ভ কৰিলে প্ৰথম শাৰীৰ আৰম্ভণিতে অলপ খালী ঠাই (indent) থাকে (নতুন খণ্ডৰ একেবাৰে প্ৰথম অনুচ্ছেদটোৰ বাহিৰে)। 
+	
+	এই খালী ঠাই আঁতৰাই অনুচ্ছেদটো একেবাৰে বাওঁফালৰ সীমাৰ পৰা আৰম্ভ কৰিবলৈ অনুচ্ছেদটোৰ আৰম্ভণিতে \texttt{\textbackslash noindent} কমাণ্ড ব্যৱহাৰ কৰিব পাৰি। যেনে,
+	
+	\noindent \texttt{\textbackslash noindent} ব্যৱহাৰ কৰাৰ ফলত এই আখৰখিনি কোনো খালী ঠাই নোহোৱাকৈ একেবাৰে বাওঁফালৰ সীমাৰ পৰা আৰম্ভ হৈছে।
+	
+	\LaTeX{}-ত সাধাৰণতে নতুন অনুচ্ছেদ আৰম্ভ হ'লে দুটা অনুচ্ছেদৰ মাজত কোনো উলম্ব ব্যৱধান নাথাকে। দুটা অনুচ্ছেদৰ মাজৰ এই উলম্ব ব্যৱধান বঢ়াবলৈ \texttt{\textbackslash begin\{document\}}-ৰ আগৰ অংশত \texttt{\textbackslash setlength\{\textbackslash parskip\}\{...\}} কমাণ্ডটো ব্যৱহাৰ কৰা হয়।
+	
+	% ----------------------------------------------------------------------------------------------------------
+	\subsection{বিন্দু অনুসৰি লিখা}
+	% ----------------------------------------------------------------------------------------------------------
+	
+	তথ্য বা বিষয়সমূহ ক্ৰম অনুসৰি সজাই দেখুৱাবলৈ বিন্দুৰ ব্যৱহাৰ কৰিব পাৰি। \LaTeX{}-ত সাধাৰণতে দুটা প্ৰধান ধৰণৰ তালিকা ব্যৱহাৰ কৰা হয়। বিন্দু বা নিজে নিৰ্বাচন কৰা চিহ্নৰ সৈতে তালিকা লিখিবলৈ \texttt{itemize} ব্যৱহাৰ কৰা হয়। 
+	\begin{itemize}
+		\item এইটো প্ৰথম বিষয়।
+		\item এইটো দ্বিতীয় বিষয়।
+		\item এইটো তৃতীয় বিষয়।
+	\end{itemize}
+	এইধৰণৰ তালিকাৰ এটা বিষয়ৰ ভিতৰত আন এখন তালিকাও ৰাখিব পাৰি। সংখ্যাযুক্ত তালিকাৰ ভিতৰত আন এখন সংখ্যাযুক্ত তালিকাও ৰাখিব পাৰি। উপযুক্ত নিৰ্দেশ ব্যৱহাৰ কৰি তালিকাখন নিজৰ পছন্দমতে সজাব পাৰি। উদাহৰণস্বৰূপে, তালিকাৰ বিষয়সমূহৰ মাজৰ ব্যৱধান কমাই গাতে গা-লগাই ৰাখিবলৈ \texttt{[noitemsep]} নিৰ্দেশটো ব্যৱহাৰ কৰিব পাৰি।
+	\begin{itemize}[noitemsep]
+		\item গণিত
+		\begin{itemize}[noitemsep]
+			\item বীজগণিত
+			\item জ্যামিতি
+			\item ত্ৰিকোণমিতি
+		\end{itemize}
+		\item বিজ্ঞান
+		\item কম্পিউটাৰ
+	\end{itemize}
+	ক্ৰমাগত সংখ্যা ব্যৱহাৰ কৰা তালিকা লিখিবলৈ \texttt{enumerate} ব্যৱহাৰ কৰিব পাৰি।
+	\begin{enumerate}[noitemsep]
+		\item প্ৰথম বিষয়।
+		\item দ্বিতীয় বিষয়।
+		\item তৃতীয় বিষয়।
+	\end{enumerate}
+	\texttt{itemize} বা \texttt{enumerate} তালিকাত \texttt{\textbackslash item} কমাণ্ডৰ পিছত নিজৰ পছন্দৰ চিহ্ন দিব পাৰি। তলৰ উদাহৰণটোত এই সকলোবোৰ বৈশিষ্ট্য একেলগে ব্যৱহাৰ কৰা হৈছে।
+	\begin{enumerate}[noitemsep]
+		\item[$\diamond$] গণিতৰ অধ্যায়সমূহ
+		\begin{itemize}[noitemsep]
+			\item[(ক)] বীজগণিত
+			\item[(খ)] জ্যামিতি
+			\item[(গ)] ত্ৰিকোণমিতি
+		\end{itemize}
+		\item[$\diamond$] বিজ্ঞানৰ অধ্যায়সমূহ
+		\begin{enumerate}[noitemsep]
+			\item পদাৰ্থ বিজ্ঞান
+			\item ৰসায়ন বিজ্ঞান
+		\end{enumerate}
+	\end{enumerate}
+	
+	% ----------------------------------------------------------------------------------------------------------
+	\subsection{টেবুলৰ ব্যৱহাৰ}
+	% ----------------------------------------------------------------------------------------------------------
+	
+	তথ্য বা সংখ্যাবোৰ শাৰী আৰু স্তম্ভত (rows and columns) সজাই দেখুৱাবলৈ \LaTeX{}-ত \texttt{table} আৰু \texttt{tabular} পৰিৱেশ (environment) ব্যৱহাৰ কৰা হয়। ইয়াত \texttt{table} পৰিৱেশে তালিকাখন পৃষ্ঠাটোৰ সঠিক স্থানত বহুৱায় আৰু ইয়াৰ সৈতে নাম (\texttt{\textbackslash caption}) আৰু প্ৰসংগ বা ৰেফাৰেন্স (\texttt{\textbackslash label}) যোগ কৰাত সহায় কৰে। মূল তালিকাখন বনাবলৈ \texttt{tabular} পৰিৱেশ ব্যৱহাৰ কৰা হয়। 
+	
+	এই উদাহৰণটোত \texttt{booktabs} পেকেজৰ সুবিধা লৈ \texttt{\textbackslash toprule}, \texttt{\textbackslash midrule}, আৰু \texttt{\textbackslash bottomrule} কমাণ্ডৰ জৰিয়তে তালিকাখনৰ ওপৰত, মাজত আৰু তলত ধুনীয়া আৰু স্পষ্ট আঁচ টনা হৈছে। তালিকা \ref{tab:squares}-ত ইয়াৰ এটা সহজ উদাহৰণ দেখুওৱা হৈছে।
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{ccc}
+			\toprule
+			সংখ্যা & বৰ্গ & ঘনফল \\
+			\midrule
+			১ & ১ & ১ \\
+			২ & ৪ & ৮ \\
+			৩ & ৯ & ২৭ \\
+			\bottomrule
+		\end{tabular}
+		\caption{কিছুমান সংখ্যাৰ বৰ্গ আৰু ঘনফল।}
+		\label{tab:squares}
+	\end{table}
+	
+	তালিকা \ref{tab:tabularex}-ত \texttt{tabularx}-ৰ এটা সহজ উদাহৰণ দেখুওৱা হৈছে। এই উদাহৰণটোৰ নিৰ্দেশখিনি এইধৰণৰ:
+	
+	\begin{lstlisting}
+\begin{table}[htbp]
+	\centering
+	\caption{`\normalfont প্ৰশ্নকাকতৰ প্ৰথম অংশ।`}
+	\label{tab:tabularex}
+	\begin{tabularx}{0.8\textwidth}{@{}Xr@{}}
+		\textbf{`\normalfont শ্ৰেণী: দশম`} & \textbf{`\normalfont সময়: ৩ ঘণ্টা`} \\[2pt]
+		\textbf{`\normalfont মুঠ নম্বৰ: ৩০`} & \textbf{`\normalfont মুঠ প্ৰশ্ন: ১০`}
+	\end{tabularx}
+\end{table}
+	\end{lstlisting}
+	
+	\begin{table}[htbp]
+		\centering
+		\begin{tabularx}{0.8\textwidth}{@{}Xr@{}}
+			\textbf{শ্ৰেণী: দশম} & \textbf{সময়: ৩ ঘণ্টা} \\[2pt]
+			\textbf{মুঠ নম্বৰ: ৩০} & \textbf{মুঠ প্ৰশ্ন: ১০}
+		\end{tabularx}
+		\caption{প্ৰশ্নকাকতৰ প্ৰথম অংশ।}
+		\label{tab:tabularex}
+	\end{table}
+	
+	সাধাৰণ \texttt{tabular} পৰিৱেশতকৈ \texttt{tabularx} ব্যৱহাৰ কৰাৰ এটা ভাল সুবিধা হ'লে যে, ইয়াত তালিকাখন কিমান বহল হ'ব সেয়া আগতেই ঠিক কৰি ল'ব পাৰি। \texttt{tabularx} ব্যৱহাৰ কৰিলে ইয়াৰ প্ৰথম অংশত (argument) প্ৰস্থৰ মান লিখিব লাগে। উদাহৰণস্বৰূপে, \texttt{10cm} দিলে তালিকাখন ১০ চেণ্টিমিটাৰ বহল হ'ব। আকৌ \texttt{0.8\textbackslash textwidth} দিলে ই পৃষ্ঠাটোৰ লিখিব পৰা ঠাইখিনিৰ ঠিক ৮০\% ঠাই আগুৰি ল'ব। প্ৰস্থ নিৰ্ধাৰণ কৰাৰ পাছত দ্বিতীয় অংশত স্তম্ভবোৰ (columns) কেনেকৈ সজাব সেয়া ঠিক কৰা হয়। তালিকা \ref{tab:tabularex} উদাহৰণটোত \texttt{0.8\textbackslash textwidth} প্ৰস্থ লৈ স্তম্ভসমূহ সজাবলৈ \texttt{@\{\}Xr@\{\}} ব্যৱহাৰ কৰা হৈছে। 
+	
+	\begin{itemize}[noitemsep]
+		\item \texttt{X} : ই তালিকাখনৰ নিৰ্ধাৰিত প্ৰস্থৰ ভিতৰত বাকী থকা সকলো খালী ঠাই নিজে নিজে পূৰণ কৰি লয়।
+		\item \texttt{r}, \texttt{l}, \texttt{c} : এইবোৰে আখৰবোৰ কোনফালে ৰাখিব সেয়া বুজায়। \texttt{r} মানে সোঁফালে (right), \texttt{l} মানে বাওঁফালে (left) আৰু \texttt{c} মানে মাজত (center)। ইয়াত \texttt{r} ব্যৱহাৰ কৰাৰ বাবে দ্বিতীয় স্তম্ভৰ আখৰখিনি সোঁফালে থাকিব।
+		\item \texttt{@\{\}} : \LaTeX{}-এ সাধাৰণতে তালিকাৰ দুয়োকাষে অলপ অতিৰিক্ত ঠাই এৰি দিয়ে। আৰম্ভণিতে আৰু শেষত \texttt{@\{\}} ব্যৱহাৰ কৰিলে সেই অতিৰিক্ত খালী ঠাইখিনি আঁতৰি যায় আৰু তালিকাখন একেবাৰে কাষলৈকে বিস্তৃত হয়।
+	\end{itemize}
+	
+	\texttt{table} পৰিৱেশ ব্যৱহাৰ নকৰাকৈ পোনে পোনে \texttt{center} পৰিৱেশৰ ভিতৰতো \texttt{tabular} বা \texttt{tabularx} ব্যৱহাৰ কৰিব পাৰি। এনে কৰিলেও তালিকাখন পৃষ্ঠাটোৰ মাজভাগত সুন্দৰকৈ স্থাপন হয়। কিন্তু এনেদৰে ব্যৱহাৰ কৰিলে তালিকাখনত কোনো শিৰোনাম (\texttt{\textbackslash caption}) আৰু ৰেফাৰেন্স (\texttt{\textbackslash label}) যোগ কৰিব পৰা নাযায়। সেয়েহে, তালিকাখনৰ নাম বা নম্বৰ প্ৰদান কৰিবলগীয়া থাকিলে ইয়াক সদায় \texttt{table} পৰিৱেশৰ ভিতৰত ৰখাটো আৱশ্যক।
+	
+	% ----------------------------------------------------------------------------------------------------------
+	\subsection{উদ্ধৃতি}
+	% ----------------------------------------------------------------------------------------------------------
+	
+	লিখনীৰ মাজত কোনো বিখ্যাত ব্যক্তিৰ উক্তি বা আন কিতাপৰ পৰা লোৱা বিশেষ অংশ এটা সুকীয়াকৈ দেখুৱাবলৈ \texttt{quote} বা \texttt{quotation} পৰিৱেশ ব্যৱহাৰ কৰা হয়। সাধাৰণতে চমু উক্তিৰ বাবে \texttt{quote} আৰু একাধিক অনুচ্ছেদ থকা দীঘল উদ্ধৃতিৰ বাবে \texttt{quotation} ব্যৱহাৰ কৰা হয়। সাধাৰণতে \texttt{quote} পৰিৱেশে আখৰৰ শৈলী সলনি নকৰে। সেয়েহে উক্তিটো সুকীয়াকৈ দেখুৱাবলৈ ইয়াক \texttt{\textbackslash textit\{\}} কমাণ্ডৰ জৰিয়তে হেলনীয়া (italics) কৰি দিব পাৰি।
+	\begin{quote}
+		\textit{``দেশতকৈ মোমাই ডাঙৰ নহয়।"}\\
+		--- লাচিত বৰফুকন
+	\end{quote}
+	
+	% ----------------------------------------------------------------------------------------------------------
+	\subsection{মিনিপেজ}
+	% ----------------------------------------------------------------------------------------------------------
+	
+	পৃষ্ঠা এটাৰ ভিতৰতে এখন সৰু পৃষ্ঠা বা নিৰ্দিষ্ট জোখৰ এটা বাকচ বনাবলৈ \texttt{minipage} পৰিৱেশ ব্যৱহাৰ কৰা হয়। দুটা বেলেগ বেলেগ লিখনী বা লিখনী আৰু চিত্ৰ সমান্তৰালভাৱে দেখুৱাবলৈ ই অতি উপযোগী। একাধিক মিনিপেজ একে শাৰীতে ৰাখিবলৈ হ'লে ইহঁতৰ প্ৰস্থৰ মুঠ যোগফল সদায় \texttt{1.0\textbackslash textwidth}-তকৈ কম হ'ব লাগে, অন্যথা বাকচকেইটা একে শাৰীত নধৰি তললৈ খহি পৰে।	মিনিপেজ কেইটা সমান্তৰালভাৱে সজাবলৈ \texttt{[t]} (ওপৰত), \texttt{[b]} (তলত), বা \texttt{[c]} (মাজত) নিৰ্দেশকেইটা  ব্যৱহাৰ কৰিব পাৰি।
+	
+	\vspace{0.3cm}
+	\noindent
+	\begin{minipage}[t]{0.48\textwidth}
+		\textbf{প্ৰথম অংশ:}\\
+		এইটো মিনিপেজৰ প্ৰথম অংশ। ইয়াত পৃষ্ঠাৰ মুঠ বহলৰ ৪৮\% ঠাই লোৱা হৈছে (\texttt{0.48\textbackslash textwidth})। এই অংশটো বাওঁফালে অৱস্থান কৰিব।
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t]{0.48\textwidth}
+		\textbf{দ্বিতীয় অংশ:}\\
+		এইটো মিনিপেজৰ দ্বিতীয় অংশ (৪৮\%)। ই সমান্তৰালভাৱে সোঁফালে অৱস্থান কৰে। \texttt{\textbackslash hfill} ব্যৱহাৰ কৰাৰ বাবে দুয়োটা অংশৰ মাজত স্বয়ংক্ৰিয়ভাৱে খালী ঠাই থাকে আৰু দেখিবলৈ সুন্দৰ হয়।
+	\end{minipage}
+	\vspace{0.3cm}
+	
+
+	% ----------------------------------------------------------------------------------------------------------
+	\subsection{লিংক আৰু চিত্ৰৰ ব্যৱহাৰ}
+	% ----------------------------------------------------------------------------------------------------------
+	
+	কোনো ৱেবছাইটৰ লিংক দিবলৈ \texttt{hyperref} পেকেজৰ সুবিধা লৈ \texttt{\textbackslash href} কমাণ্ড ব্যৱহাৰ কৰিব পাৰি। ইয়াৰ ফলত লিখনীটোৰ নিৰ্দিষ্ট অংশটোত ক্লিক কৰিলে পোনে পোনে ৱেবছাইটটো খোল খায়। উদাহৰণস্বৰূপে, \href{https://as.wikipedia.org/}{অসমীয়া ৱিকিপিডিয়া}লৈ এইদৰে লিংক সংযোগ কৰিব পাৰি।
+	
+	লিখনীত চিত্ৰ বা ফটো সংযোগ কৰিবলৈ \texttt{graphicx} পেকেজ আৰু \texttt{\textbackslash includegraphics} কমাণ্ড ব্যৱহাৰ কৰা হয়। তালিকাৰ দৰেই চিত্ৰসমূহকো এটা নিৰ্দিষ্ট গাঁথনি দিবলৈ \texttt{figure} পৰিৱেশৰ ভিতৰত ৰখা হয়, যাতে ইয়াত শিৰোনাম (\texttt{\textbackslash caption}) আৰু ৰেফাৰেন্স (\texttt{\textbackslash label}) দিব পাৰি। চিত্ৰ \ref{fig:example}-ত ইয়াৰ এটা উদাহৰণ দেখুওৱা হৈছে।
+	
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=0.45\textwidth]{figures/einstein.jpg}
+		\caption{উদাহৰণ চিত্ৰ}
+		\label{fig:example}
+	\end{figure}
+	
+	\textbf{চিত্ৰৰ সঠিক স্থান:} 
+	\texttt{\textbackslash includegraphics}-ৰ ভিতৰত ফটোখনৰ নামৰ লগতে তাৰ সঠিক স্থান বা ফোল্ডাৰৰ নাম (path) দিয়াটো অতি প্ৰয়োজনীয়। ওপৰৰ উদাহৰণত \texttt{figures/einstein.jpg} দিয়া হৈছে। ইয়াৰ অৰ্থ হ'ল মূল \LaTeX{} ফাইলটো থকা ঠাইৰ পৰা \texttt{figures} নামৰ ফোল্ডাৰটোৰ ভিতৰত \texttt{einstein.jpg} নামৰ চিত্ৰখন আছে। path ভুল হ'লে চিত্ৰখন লিখনীত প্ৰকাশ নাপায়।
+	
+	\textbf{চিত্ৰ আৰু তালিকাৰ অৱস্থান:}
+	\texttt{figure} বা \texttt{table} পৰিৱেশ আৰম্ভ কৰোঁতে ব্যৱহাৰ কৰা \texttt{[htbp]} অংশটোৱে চিত্ৰ বা তালিকাখন পৃষ্ঠাটোৰ ঠিক ক'ত অৱস্থান কৰিব সেয়া নিৰ্ধাৰণ কৰে। \LaTeX{}-এ সদায় নিজৰ সুবিধা আৰু খালী ঠাই অনুসৰি চিত্ৰবোৰ বহুৱায় (যাক floating বুলি কোৱা হয়)। সেয়েহে নিৰ্দেশনাসমূহ যি স্থানত লিখা হয়, ফলাফলত চিত্ৰখন ঠিক সেইখিনিতে নোলাবও পাৰে। \texttt{[htbp]}-ৰ আখৰকেইটাই তলত দিয়া ধৰণৰ অৱস্থান বুজায়:
+	\begin{itemize}[noitemsep]
+		\item \texttt{h} (here) - য'ত ক'ড লিখা হৈছে ঠিক তাতেই।
+		\item \texttt{t} (top) - পৃষ্ঠাৰ একেবাৰে ওপৰত।
+		\item \texttt{b} (bottom) - পৃষ্ঠাৰ একেবাৰে তলত।
+		\item \texttt{p} (page) - কেৱল চিত্ৰ বা তালিকা থকা এখন সুকীয়া পৃষ্ঠাত।
+	\end{itemize}
+	একেলগে \texttt{[htbp]} বুলি লিখাৰ অৰ্থ হ'ল \LaTeX{}-ক অৱস্থান নিৰ্বাচন কৰিবলৈ ক্ৰম অনুসৰি অগ্ৰাধিকাৰ দিয়া। অৰ্থাৎ, ই প্ৰথমে চিত্ৰখন নিৰ্দিষ্ট স্থানতে বহুৱাবলৈ চেষ্টা কৰিব। যদি তাত পৰ্যাপ্ত ঠাই নাথাকে, তেন্তে ক্ৰমান্বয়ে পৃষ্ঠাৰ ওপৰত, তলত আৰু একেবাৰে শেষ বিকল্প হিচাপে এখন সুকীয়া পৃষ্ঠাত বহুৱাব।
+	
+	কেতিয়াবা \LaTeX{}-এ \texttt{h} দিলেও চিত্ৰখন অন্য পৃষ্ঠালৈ লৈ যায়। এনে অৱস্থাত চিত্ৰ বা তালিকাখনক ক'ড লিখা ঠাইখিনিতেই জোৰকৈ বহুৱাবলৈ হ'লে প্ৰথমতে \texttt{float} পেকেজটো (\texttt{\textbackslash usepackage\{float\}}) সংযোগ কৰি ল'ব লাগে। তাৰ পাছত \texttt{[htbp]}-ৰ সলনি ডাঙৰ হাতৰ \texttt{[H]} ব্যৱহাৰ কৰিলে চিত্ৰখন নিৰ্দিষ্ট স্থানতে অৱস্থান কৰে।
+	
+	% ============================================================================
+	\section{গাণিতিক চিহ্ন আৰু সমীকৰণ}
+	% ============================================================================
+	
+	\LaTeX{}-ত গাণিতিক সমীকৰণ আৰু চিহ্নসমূহ অতি সুন্দৰভাৱে প্ৰকাশ কৰিব পাৰি। সাধাৰণ লিখনীৰ মাজত (inline math) গাণিতিক ৰাশি লিখিবলৈ \texttt{\$} চিহ্নৰ ব্যৱহাৰ কৰা হয়। যেনে, এটা দ্বিঘাত সমীকৰণৰ সাধাৰণ ৰূপ হৈছে $ax^2+bx+c=0$।
+	
+	ডাঙৰ বা গুৰুত্বপূৰ্ণ সমীকৰণসমূহ সুকীয়াকৈ এটা শাৰীত দেখুৱাবলৈ \texttt{equation} বা \texttt{align} পৰিৱেশ ব্যৱহাৰ কৰা হয়। এই পৰিৱেশবোৰৰ নামৰ পিছত \texttt{*} ব্যৱহাৰ কৰিলে সমীকৰণবোৰত ক্ৰমিক নম্বৰ যোগ নহয়। উদাহৰণস্বৰূপে, সমীকৰণ \ref{eq:quadratic-general}-ত দ্বিঘাত সমীকৰণৰ সাধাৰণ ৰূপ দেখুওৱা হৈছে।
+	
+	\begin{equation}
+		ax^2+bx+c=0
+		\label{eq:quadratic-general}
+	\end{equation}
+	ইয়াৰ মূল উলিওৱাৰ সূত্ৰটো হ'ল,
+	\begin{equation*}
+		x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}.
+	\end{equation*}
+	
+	সমীকৰণত একাধিক শাৰী থাকিলে সমান চিহ্নবোৰ ($=$) একেডাল সৰলৰেখাত ৰাখিবলৈ \texttt{align} পৰিৱেশ ব্যৱহাৰ কৰা হয়। অসমীয়া সংখ্যা ব্যৱহাৰ কৰি $x^2-৫x+৬=০$ সমীকৰণটোৰ বাবে $a=১$, $b=-৫$ আৰু $c=৬$ বহুৱাই তলত দিয়াৰ দৰে সমাধান কৰিব পাৰি:
+	\begin{align*}
+		x &= \frac{৫\pm\sqrt{২৫-২৪}}{২}\\
+		&= \frac{৫\pm১}{২}\\
+		\implies x &= ৩ \quad \text{অথবা} \quad x=২.
+	\end{align*}
+	
+	গণিত আৰু পদাৰ্থ বিজ্ঞানৰ বিভিন্ন চিহ্ন আৰু সমীকৰণসমূহ প্ৰকাশ কৰিবলৈ \LaTeX{}-ত থকা কিছুমান গুৰুত্বপূৰ্ণ কমাণ্ড তলত উল্লেখ কৰা হ'ল:
+	
+	\begin{itemize}
+		\item \textbf{সাধাৰণ গাণিতিক চিহ্ন:} ডাঙৰ, সৰু বা সমান বুজাবলৈ তলত দিয়া চিহ্নসমূহ ব্যৱহাৰ কৰিব পাৰি:
+		\begin{equation*}
+			a > b,\qquad a < b,\qquad a \geq b,\qquad a \leq b,\qquad a \approx b.
+		\end{equation*}
+		
+		\item \textbf{ভগ্নাংশ আৰু ছাবস্ক্ৰিপ্ট:} \texttt{\textbackslash frac} আৰু \texttt{\_} ব্যৱহাৰ কৰি নিউটনৰ মহাকৰ্ষণ সূত্ৰটো এনেদৰে প্ৰকাশ কৰিব পাৰি:
+		\begin{equation*}
+			F = G \frac{m_1 m_2}{r^2}
+		\end{equation*}
+		
+		\item \textbf{ত্ৰিকোণমিতি আৰু লিখনী সংযোগ:} গাণিতিক পৰিৱেশৰ ভিতৰতে \texttt{\textbackslash text\{\}} ব্যৱহাৰ কৰি অসমীয়া শব্দ সংযোগ কৰিব পাৰি। সমকোণী ত্ৰিভুজৰ ক্ষেত্ৰত:
+		\begin{equation*}
+			\sin\theta = \frac{\text{লম্ব}}{\text{অতিভুজ}}, \qquad
+			\cos\theta = \frac{\text{ভূমি}}{\text{অতিভুজ}}, \qquad
+			\tan\theta = \frac{\text{লম্ব}}{\text{ভূমি}}.
+		\end{equation*}
+		
+		\item \textbf{ভেক্টৰ:} ভেক্টৰ বুজাবলৈ \texttt{\textbackslash vec} কমাণ্ড ব্যৱহাৰ কৰা হয়। যেনে, নিউটনৰ দ্বিতীয় গতিসূত্ৰটো হ'ল $\vec{F} = m\vec{a}$। ত্ৰিমাত্ৰিক স্থানত এটা ভেক্টৰ আৰু তাৰ মান এইদৰে উলিয়াব পাৰি:
+		\begin{equation*}
+			\vec{v} = ৩\hat{i} + ৪\hat{j} \quad \implies \quad |\vec{v}| = \sqrt{৩^2 + ৪^2} = \sqrt{২৫} = ৫
+		\end{equation*}
+		
+		\item \textbf{কলনগণিত:} আংশিক অৱকলজৰ বাবে \texttt{\textbackslash partial} আৰু অনুকলনৰ বাবে \texttt{\textbackslash int} ব্যৱহাৰ কৰা হয়। একমাত্ৰিক তৰংগ সমীকৰণ আৰু এটা সাধাৰণ অনুকলনৰ ৰূপ এনেধৰণৰ:
+		\begin{equation*}
+			\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}, \qquad \int_{০}^{\infty} e^{-x^2} dx = \frac{\sqrt{\pi}}{২}
+		\end{equation*}
+	\end{itemize}
+	
+	% ============================================================================
+	\section{তথ্যসূত্ৰৰ ব্যৱহাৰ}
+	% ============================================================================
+	
+	সুকীয়া \texttt{.bib} ফাইল ব্যৱহাৰ নকৰাকৈ মূল ক'ডৰ ভিতৰতে তথ্যসূত্ৰসমূহ সংযোগ কৰিবলৈ \texttt{thebibliography} পৰিৱেশ ব্যৱহাৰ কৰা হয়। লিখনীৰ মাজত \texttt{\textbackslash cite\{...\}} কমাণ্ডৰ জৰিয়তে এই তথ্যসূত্ৰসমূহ উল্লেখ কৰিব পাৰি। 	যেনে, ষ্টেণ্ডাৰ্ড মডেলৰ বিষয়ে পঢ়িবলৈ গ্ৰিফিথছৰ কিতাপখন \cite{griffiths2008} পঢ়ক। লগতে, হিগছ ব'ছনৰ আৱিষ্কাৰৰ বিষয়ে CMS-ৰ গৱেষণা পত্ৰখনত \cite{cms2012} বিতংভাৱে উল্লেখ আছে।
+	
+	\begin{thebibliography}{৯}
+		\bibitem[১]{griffiths2008} 
+		David J. Griffiths, 
+		\textit{Introduction to Elementary Particles}. 
+		John Wiley \& Sons, 2nd Edition, 2008.
+		
+		\bibitem[২]{cms2012} 
+		CMS Collaboration, 
+		``Observation of a new boson at a mass of 125 GeV with the CMS experiment at the LHC''. 
+		\textit{Physics Letters B}, 716(1):30--61, 2012.
+	\end{thebibliography}
+	
+	\noindent
+	\textit{\small \textbf{টোকা: }
+		\begin{itemize}
+			\item  গৱেষণা পত্ৰৰ দৰে ডাঙৰ লিখনীৰ বাবে ওপৰত দিয়া পদ্ধতিটোৰ সলনি এটা সুকীয়া \texttt{.bib} ফাইল ব্যৱহাৰ কৰাটো বেছি সুবিধাজনক। ইয়াৰ বাবে সাধাৰণতে \texttt{bibtex} বা \texttt{biblatex} পেকেজ ব্যৱহাৰ কৰা হয়। 
+			\item \LaTeX{}-ৰ বিষয়ে অধিক শিকিবলৈ Overleaf-ৰ এই লিংকটোলৈ গৈ পঢ়িব পাৰে। \\
+			\url{https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes}
+		\end{itemize}
+	}
+	
+	% ============================================================================
+	% QUESTION PAPER
+	% ============================================================================
+	
+	\newpage
+	
+	\begin{center}
+		{\Large\bfseries প্ৰশ্নকাকতৰ আৰ্হি}\\ [0.1cm]
+		{\large\bfseries বিদ্যালয়ৰ নাম}\\ [0.1cm]
+		\vspace{0.1cm}
+		{\bfseries বাৰ্ষিক পৰীক্ষা, ২০২৬}
+		\vspace{0.1cm}
+		
+		{\large\bfseries বিষয়: গণিত}
+	\end{center}
+	
+	\vspace{0.2cm}
+	
+	\noindent
+	\begin{tabularx}{\textwidth}{@{}Xr@{}}
+		\textbf{শ্ৰেণী: দ্বাদশ} &
+		\textbf{সময়: ৩ ঘণ্টা} \\[2pt]
+		\textbf{মুঠ নম্বৰ: ৫০} &
+		\textbf{মুঠ প্ৰশ্ন: ১২}
+	\end{tabularx}
+	
+	\par\noindent\rule{\textwidth}{0.5pt}
+	{\small
+		\noindent
+		\textbf{নিৰ্দেশনা:}
+		\begin{itemize}[noitemsep]
+			\item সকলো প্ৰশ্নৰ উত্তৰ কৰা বাধ্যতামূলক।
+			\item প্ৰয়োজন অনুসৰি গণনাৰ প্ৰতিটো খোজ স্পষ্টকৈ দেখুওৱা।
+			\item প্ৰয়োজনীয় ক্ষেত্ৰত উপযুক্ত সূত্ৰ প্ৰয়োগ কৰা।
+			\item মেট্ৰিক্স, ভেক্টৰ আদিৰ ক্ষেত্ৰত প্ৰতিটো গাণিতিক খোজ পৰিষ্কাৰকৈ লিখা।
+			\item উত্তৰসমূহ যুক্তিসংগত আৰু ক্ৰমবদ্ধ হোৱা উচিত।
+	\end{itemize}}
+	\par\noindent\rule{\textwidth}{0.5pt}
+	
+	\noindent
+	{\large\bfseries অতি চমু উত্তৰৰ প্ৰশ্ন}\\
+	
+	\noindent
+	\begin{tabularx}{\textwidth}{@{}lXr@{}}
+		১. & যদি $f(x)=x^২-৩x+২$ হয়, তেন্তে $f(২)$-ৰ মান নিৰ্ণয় কৰা। & ১ \\[8pt]
+		২. & মান নিৰ্ণয় কৰা: $\displaystyle \lim_{x\to ০}\frac{\sin x}{x}$ & ১ \\[8pt]
+		৩. & যদি $\vec{a}=২\hat{i}-৩\hat{j}+\hat{k}$ আৰু $\vec{b}=\hat{i}+\hat{j}-২\hat{k}$ হয়, তেন্তে $\vec{a}\cdot\vec{b}$ নিৰ্ণয় কৰা। & ১ \\
+		৪. & $A=
+		\begin{pmatrix}
+			২ & ১\\
+			৩ & ৪
+		\end{pmatrix}$
+		হ'লে $\det(A)$-ৰ মান উলিওৱা। & ১
+	\end{tabularx}
+	
+	\vspace{0.5cm}
+	\noindent
+	{\large\bfseries চমু উত্তৰৰ প্ৰশ্ন}\\
+
+	\noindent
+	\begin{tabularx}{\textwidth}{@{}lXr@{}}
+		৫. & তলত দিয়া মেট্ৰিক্স দুটাৰ পৰা $AB$ আৰু $BA$-ৰ মান নিৰ্ণয় কৰা:
+		\[
+		A=
+		\begin{pmatrix}
+			১ & ২\\
+			৩ & ৪
+		\end{pmatrix},
+		\qquad
+		B=
+		\begin{pmatrix}
+			২ & ০\\
+			১ & ৩
+		\end{pmatrix}.
+		\]
+		& ৩ \\
+		
+		৬. & যদি $\vec{a}=২\hat{i}+\hat{j}-২\hat{k}$ আৰু $\vec{b}=\hat{i}-২\hat{j}+\hat{k}$ হয়, তেন্তে $\vec{a}\cdot\vec{b}$ আৰু $\lvert\vec{a}\rvert$ নিৰ্ণয় কৰা। & ৩ \\ [4pt]
+		
+		৭. & $y=x^৩-৫x^২+৭x-৪$ হ'লে $\dfrac{dy}{dx}$ নিৰ্ণয় কৰা আৰু $x=২$ বিন্দুত ইয়াৰ মান উলিওৱা। & ৩
+	\end{tabularx}
+	
+	\newpage
+	\noindent
+	{\large\bfseries দীঘল উত্তৰৰ প্ৰশ্ন}\\
+	
+	\noindent
+	\begin{tabularx}{\textwidth}{@{}lXr@{}}
+		৮. & তলত দিয়া মেট্ৰিক্স $A$-ৰ বাবে:
+			\begin{itemize}[noitemsep]
+				\item[(ক)] $\det(A)$ নিৰ্ণয় কৰা।
+				\item[(খ)] $A$-ৰ প্ৰতিলোম (inverse) $A^{-1}$ নিৰ্ণয় কৰা।
+				\item[(গ)] প্ৰমাণ কৰি দেখুওৱা যে $AA^{-1}=A^{-1}A=I$।
+			\end{itemize}
+		\[A=
+		\begin{pmatrix}
+			১ & ২ & ৩\\
+			০ & ১ & ৪\\
+			৫ & ৬ & ০
+		\end{pmatrix}\]
+		& ১+২+২ \\[20pt]
+		
+		৯. & ধৰা হ'ল তিনিটা বিন্দু ক্ৰমে $A(১,২,৩)$, $B(৩,-১,২)$ আৰু $C(২,১,-২)$।
+			\begin{itemize}[noitemsep]
+				\item[(ক)] $\overrightarrow{AB}$ আৰু $\overrightarrow{AC}$ ভেক্টৰ দুটা নিৰ্ণয় কৰা।
+				\item[(খ)] $\overrightarrow{AB}\times\overrightarrow{AC}$ নিৰ্ণয় কৰা।
+				\item[(গ)] $A$, $B$ আৰু $C$ শীৰ্ষবিন্দুৰে গঠিত ত্ৰিভুজটোৰ ক্ষেত্ৰফল নিৰ্ণয় কৰা।
+			\end{itemize} & ১+২+২\\
+
+		১০. & $f(x)=x^৩-৬x^২+৯x+১$ ফাংচনটোৰ বাবে:
+			\begin{itemize}[noitemsep]
+				\item[(ক)] $f'(x)$ নিৰ্ণয় কৰা।
+				\item[(খ)] $f'(x)=০$ সমীকৰণটো সমাধান কৰি স্থিৰ বিন্দুসমূহৰ (stationary points) $x$-স্থানাংক নিৰ্ণয় কৰা।
+				\item[(গ)] দ্বিতীয় ক্ৰমৰ অন্তৰকলন (second derivative) ব্যৱহাৰ কৰি এই বিন্দুসমূহৰ প্ৰকৃতি নিৰ্ণয় কৰা।
+				\item[(ঘ)] বিন্দুসমূহৰ স্থানাংক উলিওৱা আৰু গ্ৰাফটোৰ প্ৰকৃতিৰ বিষয়ে আলোচনা কৰা।
+			\end{itemize}
+		& ৫\\
+		
+		১১. & মান নিৰ্ণয় কৰা:
+			\[
+			I= \int \frac{x^২+১}{x^২-১}\,dx
+			\]
+			\textit{(ইংগিত: পৰিমেয় ফলনটোক $\frac{x^২+১}{x^২-১} = ১+\frac{২}{x^২-১}$ ৰূপত প্ৰকাশ কৰি ল'ব পাৰা।)} & ৫ \\ 
+
+		১২. & এটা যাদৃচ্ছিক পৰীক্ষাত তিনিটা স্বতন্ত্ৰ ঘটনা $A$, $B$ আৰু $C$-ৰ সম্ভাৱিতা ক্ৰমে
+			\[
+			P(A)=\frac{১}{২}, \qquad P(B)=\frac{২}{৩}, \qquad P(C)=\frac{৩}{৪}
+			\]
+			\begin{itemize}[noitemsep]
+				\item[(ক)] $P(A\cap B)$ নিৰ্ণয় কৰা।
+				\item[(খ)] $P(A\cup B)$ নিৰ্ণয় কৰা।
+				\item[(গ)] $P(A\cap B\cap C)$ নিৰ্ণয় কৰা।
+				\item[(ঘ)] অন্ততঃ এটা ঘটনা সংঘটিত হোৱাৰ সম্ভাৱিতা নিৰ্ণয় কৰা।
+			\end{itemize} & ৬		
+	\end{tabularx}
+	
+	\vfill
+	\begin{center}
+		\textbf{--- সমাপ্ত ---}
+	\end{center}
+	
+	\end{document}

@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A tutorial on using Indic languages in LaTeX" />
+    <meta name="keywords" content="LaTeX, Indic languages, Assamese, Bengali" />
+
+    <title>Tools</title>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&family=Roboto&family=Roboto+Condensed&family=Noto+Serif+Bengali&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/styles/default.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+
+    <!-- Math Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Custom Styles -->
+    <link href="/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- header placeholder -->
+    <div id="header"></div>
+
+    <main class="container my-4">
+      <div class="row g-4">
+        <!-- Navigation (left side) -->
+        <aside class="col-md-3">
+          <section class="section">
+            <div class="d-grid gap-2">
+              <div class="nav-section">
+                <a href="/pages/tools.html">Tools</a>
+                &gt;
+                <a href="#">\( \LaTeX \) tutorial</a>
+              </div>
+
+              <button class="nav-btn">Installation</button>
+              <div class="sub-btns">
+                <a href="#install-miktex" class="nav-sub-btn">MikTeX</a>
+                <a href="#install-texstudio" class="nav-sub-btn">TeXStudio</a>
+                <a href="#install-fonts" class="nav-sub-btn">Fonts</a>
+              </div>
+
+              <button class="nav-btn">Compilation</button>
+              <div class="sub-btns">
+                <a href="#config" class="nav-sub-btn">Configure TeXStudio</a>
+                <a href="#example-assamese" class="nav-sub-btn">Example Assamese document</a>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Main content -->
+        <div class="col-md-9">
+          <!-- Text -->
+          <section class="section">
+            <h1 class="page-title">Writing Indic Languages in \( \LaTeX \)</h1>
+            <p>
+              \( \LaTeX \) is an open-source typesetting system widely used for academic and scientific documents. It
+              provides excellent support for complex mathematical equations, bibliographies, and formatting. This
+              tutorial focuses on how to write Indic languages, using Assamese as an example. I will stick to the
+              Windows operating system for this tutorial. Same steps can be followed for Linux and MacOS, but the
+              installation steps will differ.
+            </p>
+            <p class="assamese">
+              \( \LaTeX \) হৈছে শৈক্ষিক আৰু বৈজ্ঞানিক নথিপত্ৰৰ বাবে বহুলভাৱে ব্যৱহৃত এটা মুক্ত উৎসৰ টাইপছেটিং ছফ্টৱেৰ।
+              ইয়াৰ সহায়ত জটিল গাণিতিক সমীকৰণৰ লগতে উৎকৃষ্ট মানৰ লিপি সহজে লিখি PDF প্ৰস্তুত কৰিব পাৰি। এই উদাহৰণটোত
+              অসমীয়া লিপিত বৈজ্ঞানিক নথিপত্ৰ কিদৰে লিখিব পাৰি সেয়া শিকোৱা হৈছে।
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title" id="reference">Software installation</h2>
+
+            <p>
+              To write documents in LaTeX, two things are required: a LaTeX distribution and a text editor. The
+              distribution contains the core LaTeX system, while the text editor provides a user-friendly interface for
+              writing and compiling documents as PDFs, with error highlighting and other helpful features. For Windows,
+              MikTeX is a popular distribution, and TeXStudio is a widely used editor.
+            </p>
+            <p class="assamese">
+              LaTeX-ত ডকুমেণ্ট লিখিবলৈ, দুটা বস্তুৰ প্ৰয়োজন: এটা LaTeX-ৰ পেকেজ বিতৰণ ব্যৱস্থা, আৰু এটি সম্পাদক ছফ্টৱেৰ
+              (এডিটৰ)। LaTeX-ৰ মূল নিৰ্দেশনাসমূহ পেকেজ বিতৰণ ব্যৱস্থাটোৱে যোগান ধৰে, আৰু এডিটৰটোৰ জৰিয়তে ডকুমেণ্টসমূহ
+              লিখা আৰু PDF হিচাপে কম্পাইল কৰা হয়। এডিটৰটোৱে ভুল চিনাক্ত কৰাৰ লগতে লিখাৰ ক্ষেত্ৰত বিভিন্ন সুবিধা প্ৰদান
+              কৰে। Windows ব্যৱহাৰকাৰীসকলৰ বাবে MikTeX এটা জনপ্ৰিয় বিতৰণ ব্যৱস্থা আৰু TeXStudio অতি জনপ্ৰিয় এটা এডিটৰ।
+            </p>
+
+            <hr />
+            <h3 id="install-miktex">Install MikTeX</h3>
+            <p>
+              Link:
+              <a href="https://miktex.org/howto/install-miktex" target="_blank">
+                https://miktex.org/howto/install-miktex
+              </a>
+            </p>
+            <p>
+              For the LaTeX distribution, I picked MikTeX because it has the ability to install missing packages
+              automatically, i.e., this installer is suitable for computers connected to the Internet. The above website
+              provides detailed instructions for installing MikTeX on Windows, Linux, and macOS. For Windows, the
+              installation is straightforward: download the installer, run it, and follow the on-screen instructions.
+              Verify the installation by searching for "MikTeX Console" in the start menu and opening it. If it opens
+              without any errors, the installation is successful. No need to open the console during document writing;
+              as the editor will handle package installations automatically.
+            </p>
+            <p class="assamese">
+              এই উদাহৰণটোত LaTeX-ৰ পেকেজ বিতৰণ ব্যৱস্থা হিচাপে MikTeX ছফ্টৱেৰটো বাছি লৈছো, কিয়নো ডকুমেণ্টসমূহত ব্যৱহৃত
+              সকলো পেকেজ একেলগে কম্পিউটাৰত ইনষ্টল কৰাৰ প্ৰয়োজন নাই। (সকলোবোৰ মিলাই মুঠ পেকেজবোৰ ৪/৫ GB মান হয়।) কেৱল
+              প্ৰয়োজনীয় অথচ কম্পিউটাৰটোত নথকা পেকেজবোৰ MikTeX Console-এ ইণ্টাৰনেটৰ পৰা স্বয়ংক্ৰিয়ভাৱে ইনষ্টল কৰি
+              লয়। ইয়াৰ বাবে কেৱল সক্ৰিয় ইণ্টাৰনেট সংযোগৰ প্ৰয়োজন। ৱেবছাইটটোত Windows, Linux, আৰু macOS-ত MikTeX
+              ইনষ্টল কৰাৰ সহজ নিৰ্দেশনা দিয়া আছে। Windows-ৰ বাবে ইনষ্টলাৰটো ডাউনলোড কৰি চলাওক আৰু স্ক্ৰিনত অহা
+              নিৰ্দেশনাসমূহ অনুসৰণ কৰক। ইনষ্টল হোৱাৰ পাছত start মেনুত "MikTeX Console" বিচাৰি এই ছফ্টৱেৰটো চলাব পাৰিব।
+              অৱশ্যে ডকুমেণ্ট লিখাৰ সময়ত এই ছফ্টৱেৰটো খোলাৰ কোনো প্ৰয়োজন নাই, কাৰণ এডিটৰটোৱে নিজেই MikTeX-ৰ জৰিয়তে
+              প্ৰয়োজনীয় পেকেজসমূহ ডাউনলোড কৰি ল'ব পাৰে।
+            </p>
+
+            <hr />
+            <h3 id="install-texstudio">Install TeXStudio</h3>
+            <p>
+              Link:
+              <a href="https://www.texstudio.org" target="_blank">https://www.texstudio.org</a>
+            </p>
+            <p>
+              TeXStudio is a free, open-source LaTeX editor for Windows, Linux, and macOS. It can be downloaded from the
+              link provided above. I prefer TeXStudio for its user-friendly interface for writing and compiling LaTeX
+              documents, with error highlighting and other helpful features.
+            </p>
+            <p class="assamese">
+              TeXStudio হ'ল Windows, Linux, আৰু macOS-ৰ বাবে একেবাৰে বিনামূলীয়া আৰু মুক্ত উৎসৰ এটা LaTeX এডিটৰ। ইয়াক
+              ওপৰৰ লিংকটোৰ পৰা ডাউনলোড কৰিব পাৰি। LaTeX ডকুমেণ্ট লিখা আৰু কম্পাইল কৰাৰ বাবে ইয়াৰ সহজে ব্যৱহাৰযোগ্য
+              ইনটাৰফেচ, ভুল চিনাক্তকৰণ আৰু অন্যান্য সহায়ক বৈশিষ্ট্যসমূহ অতি সুবিধাজনক।
+            </p>
+
+            <hr />
+            <h3 id="install-fonts">Install fonts</h3>
+            <p>
+              To write in Indic languages, the appropriate fonts must be installed on the system. For Assamese and
+              Bengali, the "Kalpurush" font is used an an example here. Some commonly used Indic fonts can be downloaded
+              from the following links.
+            </p>
+            <p class="assamese">
+              ভাৰতীয় ভাষাত লিখিবলৈ হ'লে কম্পিউটাৰটোত উপযুক্ত ফণ্টসমূহ ইনষ্টল থকাটো প্ৰয়োজনীয়। অসমীয়া আৰু বঙালী ভাষাৰ
+              বাবে ইয়াত "কালপুৰুষ" ফণ্টটো ব্যৱহাৰ কৰা হৈছে। সাধাৰণতে ব্যৱহৃত কিছুমান ভাৰতীয় ফণ্ট তলৰ লিংকবোৰৰ পৰা
+              ডাউনলোড কৰিব পাৰি।
+            </p>
+            <ul>
+              <li>
+                <a href="https://okkhor52.com/download.html?id=_001" target="_blank">Kalpurush</a>
+              </li>
+              <li>
+                <a href="https://salrc.uchicago.edu/resources/fonts/available/bengali/" target="_blank">
+                  South Asia Language Resource Center
+                </a>
+              </li>
+              <li>
+                <a href="https://publicationboardassam.com/download/" target="_blank">Publication Board Assam</a>
+              </li>
+            </ul>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title" id="reference">Running the software</h2>
+
+            <p>
+              After installing the software, open TeXStudio. Create a new file and save it with a
+              <code>.tex</code>
+              extension. This is the LaTeX source file. TexStudio takes this source file and uses the packages provided
+              by MikTex to compile it into a PDF. An example LaTeX document is provided in the following link.
+            </p>
+            <p class="assamese">
+              ছফ্টৱেৰটো ইনষ্টল কৰাৰ পিছত TeXStudio খোলক। এটা নতুন ফাইল তৈয়াৰ কৰি ইয়াক
+              <code>.tex</code>
+              এক্সটেনশ্বন দি ছেভ কৰক। এইটোৱেই হ'ল LaTeX source ফাইল। TeXStudio-ৱে এই source ফাইলটো লৈ MikTeX-ৰ দ্বাৰা
+              প্ৰদান কৰা পেকেজসমূহ ব্যৱহাৰ কৰি ইয়াক এটা PDF লৈ কম্পাইল কৰে। LaTeX-ডকুমেন্টৰ এটা আৰ্হি তলৰ লিংকটোত দিয়া
+              হৈছে।
+            </p>
+
+            <p>
+              <a href="/files/latex/assamese-example.tex" target="_blank">
+                Sample LaTeX document (
+                <code>.tex</code>
+                )
+              </a>
+            </p>
+
+            <hr />
+            <h3 id="config">Configure TexStudio</h3>
+            <p>
+              TexStudio supports multiple compiler options, including
+              <code>pdfLaTeX</code>
+              ,
+              <code>XeLaTeX</code>
+              , and
+              <code>LuaLaTeX</code>
+              . Here
+              <code>pdfLaTeX</code>
+              is the default and the oldest option. For Indic language support,
+              <code>XeLaTeX</code>
+              is recommended as it provides better font handling and Unicode support. For compiling the document,
+              configure the TeXStudio settings to use
+              <code>XeLaTeX</code>
+              as the compiler. This can be done by navigating to
+              <strong>Options &gt; Configure TeXStudio &gt; Build</strong>
+              and selecting "XeLaTeX" from the drop-down menu. After configuring, click on the "Build & View" button (or
+              press F5) to compile the document and generate a PDF.
+            </p>
+            <p class="assamese">
+              TeXStudio-ত
+              <code>pdfLaTeX</code>
+              ,
+              <code>XeLaTeX</code>
+              , আৰু
+              <code>LuaLaTeX</code>
+              আদি কেইবাটাও কম্পাইলাৰৰ বিকল্প আছে। ইয়াৰ ভিতৰত
+              <code>pdfLaTeX</code>
+              হৈছে আটাইতকৈ পুৰণি আৰু পূৰ্বনিৰ্ধাৰিত বিকল্প। কিন্তু অসমীয়া বা অন্যান্য আঞ্চলিক লিপিৰ বাবে
+              <code>XeLaTeX</code>
+              ব্যৱহাৰ কৰাটো অধিক উপযোগী, কিয়নো ইয়াৰ দ্বাৰা ফণ্ট আৰু ইউনিক’ড সুন্দৰকৈ নিয়ন্ত্ৰণ কৰিব পাৰি। ডকুমেণ্ট
+              কম্পাইল কৰিবলৈ TeXStudio-ৰ ছেটিংছ সলনি কৰি
+              <code>XeLaTeX</code>
+              কম্পাইলাৰ হিচাপে বাছি লওক। ইয়াৰ বাবে ওপৰৰ মেনুৰ পৰা
+              <strong>Options &gt; Configure TeXStudio &gt; Build</strong>
+              লৈ গৈ ড্ৰপ-ডাউন মেনুৰ পৰা "XeLaTeX" নিৰ্বাচন কৰক। এইখিনি কৰাৰ পিছত "Build &amp; View" বুটামটোত ক্লিক কৰক
+              (বা F5 প্ৰেছ কৰক) যাতে ডকুমেণ্টটো কম্পাইল হৈ এটা PDF তৈয়াৰ হয়।
+            </p>
+            <figure class="blog-figure-center" style="max-width: 75%">
+              <img src="/images/tools/latex-config.png" alt="XeLaTeX Configuration" />
+              <figcaption class="figure-caption text-center">XeLaTeX Configuration</figcaption>
+            </figure>
+            <p>
+              Additionally, to make the source code appear properly in the editor, set the encoding to UTF-8, and pick
+              the right font for the editor. This can be done by navigating to
+              <strong>Options &gt; Configure TeXStudio &gt; Editor</strong>
+              and selecting "UTF-8" as the encoding and a suitable font that supports Indic scripts, such as "Noto Serif
+              Bengali" or "Kalpurush".
+            </p>
+            <p class="assamese">
+              ইয়াৰোপৰি, এডিটৰত source ক’ডবোৰ সঠিকভাৱে দেখা পাবলৈ এনক’ডিং UTF-8 লৈ ছেট কৰক আৰু এডিটৰৰ বাবে সঠিক ফণ্ট
+              বাছি লওক। ইয়াৰ বাবে
+              <strong>Options &gt; Configure TeXStudio &gt; Editor</strong>
+              লৈ গৈ এনক’ডিং হিচাপে "UTF-8" আৰু ভাৰতীয় লিপি সমৰ্থন কৰা এটা উপযুক্ত ফণ্ট যেনে "Noto Serif Bengali" বা
+              "Kalpurush" নিৰ্বাচন কৰক।
+            </p>
+            <figure class="blog-figure-center" style="max-width: 75%">
+              <img src="/images/tools/latex-display-font.png" alt="Display Font Configuration" />
+              <figcaption class="figure-caption text-center">Display Font Configuration</figcaption>
+            </figure>
+
+            <hr />
+            <h3 id="example-assamese">Example Assamese document</h3>
+
+            <p>
+              When compiled correctly, the example document shared above will produce a PDF as follows (except for the
+              figure, which is not included in the example).
+            </p>
+            <p class="assamese">
+              উপৰোক্ত উদাহৰণ ডকুমেণ্টটো সঠিকভাৱে কম্পাইল কৰিলে তলৰ দৰে এটা PDF তৈয়াৰ হ’ব (অৱশ্যে উদাহৰণটোত ছবিখন
+              অন্তৰ্ভুক্ত কৰা হোৱা নাই)।
+            </p>
+
+            <p>
+              <a href="/files/latex/assamese-example.pdf" target="_blank">
+                Compiled LaTeX document (
+                <code>.pdf</code>
+                )
+              </a>
+              .
+            </p>
+
+            <p>
+              For any issues, please contact me at
+              <code>prachurjyahazarika@gmail.com</code>
+              and share the error message and the source code.
+            </p>
+            <p class="assamese">
+              যিকোনো সমস্যাৰ বাবে অনুগ্ৰহ কৰি মোৰ সৈতে
+              <code>prachurjyahazarika@gmail.com</code>
+              ঠিকনাত যোগাযোগ কৰক আৰু ভুলৰ বাৰ্তা তথা source code শেয়াৰ কৰক।
+            </p>
+          </section>
+
+          <!-- Go to Top Button -->
+          <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+            Go to Top
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- footer placeholder -->
+    <div id="footer"></div>
+
+    <!-- Your main JS -->
+    <script src="/js/main.js"></script>
+  </body>
+</html>

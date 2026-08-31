@@ -55,9 +55,9 @@
 
               <button class="nav-btn">NanoAOD analysis framework</button>
               <div class="sub-btns">
-                <a href="#nano-sortpt" class="nav-sub-btn">Missing &amp; bug</a>
                 <a href="#nano-overflow" class="nav-sub-btn">Handling overflow/underflow</a>
                 <a href="#nano-segmentation" class="nav-sub-btn">Avoiding segmentation fault</a>
+                <a href="#nano-sortpt" class="nav-sub-btn">Missing &amp; bug</a>
               </div>
             </div>
           </section>
@@ -84,49 +84,47 @@
               based NanoAOD analysis frameworks, histograms etc.
             </p>
 
-            <h3 id="nano-sortpt">The missing pointer reference bug</h3>
+            <h3 id="nano-segmentation">Avoiding segmentation fault while booking histograms</h3>
             <p>
-              This was one of those bugs where everything looked fine, but the code was quietly doing something
-              different from what I expected. I wanted to avoid sorting every physics object array separately, so I
-              wrote a function that takes the entire object and sorts it by decreasing \(p_T\) as follows.
+              This is a common issue people typically face when the array of histogram is initialized with a fixed size
+              in the header file, but the actual number of histograms booked in the source file is larger than that. The
+              code compiles perfectly, but during runtime, it tries to access memory beyond the allocated array size,
+              leading to a segmentation fault, without any clear error message.
+            </p>
+            <p>
+              To avoid this, I prefer to declare a vector of pointers to histograms instead of a fixed-size array as
+              shown below.
             </p>
             <pre><code class="language-cpp">
-void nanoAna::SortPt(vector&lt;Particle&gt; &objarr){
-  // Sort an object array in the decreasing order of pT
-  for(int i=0; i&lt;(int)objarr.size()-1; i++){
-    for(int j=i+1; j&lt;(int)objarr.size(); j++){
-      if( objarr[i].v.Pt() &lt; objarr[j].v.Pt() ) swap(objarr.at(i),objarr.at(j));
-    }
-  }
-}
+struct Hists {
+  //Histograms are declared here as a collection of vectors.
+  //These need to be dynamicaly expanded in BookHistograms() function.
+  vector&lt;TH1F *&gt; hist;
+  vector&lt;TH1F *&gt; dnn;
+};
             </code></pre>
             <p>
-              The catch was the tiny
-              <code>&</code>
-              in the argument. I had forgotten it in the earlier version of the function. Without the reference,
-              <code>objarr</code>
-              was a copy of the original object. The sorting algorithm itself worked perfectly, but it was only
-              modifying this copy. Once the function finished, the copy went out of scope and was destroyed, while the
-              original object remained unchanged. The worst part was that there was no error. The code compiled and ran
-              normally, but the objects were simply not being sorted. It took me quite some time to figure out what was
-              happening.
+              Then, in the
+              <code>BookHistograms()</code>
+              function, I can dynamically resize these vectors and add histograms to them as needed, without worrying
+              about exceeding a fixed size.
             </p>
+
+            <pre><code class="language-cpp">
+h.hist.resize(3);
+//initiate 3 histograms here with index 0,1,2
+for(int i = 0; i &lt; (int)h.hist.size(); i++) h.hist[i]-&gt;Sumw2();
+              </code></pre>
             <p>
-              The simple fix was to pass the object by reference with
-              <code>&amp;</code>
-              . Another option would be to change the function to return the modified copy as a
-              <code>vector&lt;Particle&gt;</code>
-              and assign the returned object back at the calling point.
-            </p>
-            <p>
-              <strong>Lesson learned:</strong>
-              Be careful when passing objects or values to
-              <code>void</code>
-              functions. Use a reference or pointer if the original needs to be modified.
+              This is a safer approach, since adding a new histogram only requires a change in the
+              <code>BookHistograms()</code>
+              function. There is no need to find and update the array size in the header file. The loop can also use
+              <code>h.hist.size()</code>
+              instead of a fixed value like 3, so it updates automatically when new histograms are added.
             </p>
 
             <hr />
-            <h3 id="nano-overflow">Handling overflow and underflow bins in histograms</h3>
+            <h3 id="nano-overflow">Handling overflow and underflow bins</h3>
             <p>
               The standard
               <code>TH1::Integral()</code>
@@ -182,44 +180,45 @@ void fix_underflow_overflow(TH1* h)
             </code></pre>
 
             <hr />
-            <h3 id="nano-segmentation">Avoiding segmentation fault while booking histograms</h3>
+            <h3 id="nano-sortpt">The missing pointer reference bug</h3>
             <p>
-              This is a common issue people typically face when the array of histogram is initialized with a fixed size
-              in the header file, but the actual number of histograms booked in the source file is larger than that. The
-              code compiles perfectly, but during runtime, it tries to access memory beyond the allocated array size,
-              leading to a segmentation fault, without any clear error message.
-            </p>
-            <p>
-              To avoid this, I prefer to declare a vector of pointers to histograms instead of a fixed-size array as
-              shown below.
+              This was one of those bugs where everything looked fine, but the code was quietly doing something
+              different from what I expected. I wanted to avoid sorting every physics object array separately, so I
+              wrote a function that takes the entire object and sorts it by decreasing \(p_T\) as follows.
             </p>
             <pre><code class="language-cpp">
-struct Hists {
-  //Histograms are declared here as a collection of vectors.
-  //These need to be dynamicaly expanded in BookHistograms() function.
-  vector&lt;TH1F *&gt; hist;
-  vector&lt;TH1F *&gt; dnn;
-};
+void nanoAna::SortPt(vector&lt;Particle&gt; &objarr){
+  // Sort an object array in the decreasing order of pT
+  for(int i=0; i&lt;(int)objarr.size()-1; i++){
+    for(int j=i+1; j&lt;(int)objarr.size(); j++){
+      if( objarr[i].v.Pt() &lt; objarr[j].v.Pt() ) swap(objarr.at(i),objarr.at(j));
+    }
+  }
+}
             </code></pre>
             <p>
-              Then, in the
-              <code>BookHistograms()</code>
-              function, I can dynamically resize these vectors and add histograms to them as needed, without worrying
-              about exceeding a fixed size.
+              The catch was the tiny
+              <code>&</code>
+              in the argument. I had forgotten it in the earlier version of the function. Without the reference,
+              <code>objarr</code>
+              was a copy of the original object. The sorting algorithm itself worked perfectly, but it was only
+              modifying this copy. Once the function finished, the copy went out of scope and was destroyed, while the
+              original object remained unchanged. The worst part was that there was no error. The code compiled and ran
+              normally, but the objects were simply not being sorted. It took me quite some time to figure out what was
+              happening.
             </p>
-
-            <pre><code class="language-cpp">
-h.hist.resize(3);
-//initiate 3 histograms here with index 0,1,2
-for(int i = 0; i &lt; (int)h.hist.size(); i++) h.hist[i]-&gt;Sumw2();
-              </code></pre>
             <p>
-              This is a safer approach, as including a new histogram requires change in the
-              <code>BookHistograms()</code>
-              function only, without having to find and modify the corresponding array size in the header file. In
-              addition, I can call
-              <code>h.hist.size()</code>
-              instead of explicitly writing 3 in the loop condition, which is safer.
+              The simple fix was to pass the object by reference with
+              <code>&amp;</code>
+              . Another option would be to change the function to return the modified copy as a
+              <code>vector&lt;Particle&gt;</code>
+              and assign the returned object back at the calling point.
+            </p>
+            <p>
+              <strong>Lesson learned:</strong>
+              Be careful when passing objects or values to
+              <code>void</code>
+              functions. Use a reference or pointer if the original needs to be modified.
             </p>
 
             <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
