@@ -107,8 +107,7 @@
    ========================================================================== */
 
 /* Primary container selector for Assamese text */
-.assamese,
-[lang='as'] {
+.assamese {
   font-family: var(--assamese-font-family);
   font-size: var(--assamese-font-size);
 }
@@ -120,25 +119,17 @@
 .assamese h3,
 .assamese h4,
 .assamese h5,
-.assamese h6,
-[lang='as'] h1,
-[lang='as'] h2,
-[lang='as'] h3,
-[lang='as'] h4,
-[lang='as'] h5,
-[lang='as'] h6 {
+.assamese h6 {
   font-family: var(--assamese-font-family);
 }
 
 /* Inline links inherit typography from the parent container */
-.assamese a,
-[lang='as'] a {
+.assamese a {
   text-decoration: none;
 }
 
 /* Paragraph spacing tuned for Assamese line-height requirements */
-.assamese p,
-[lang='as'] p {
+.assamese p {
   margin-top: 0;
   margin-bottom: 0;
   line-height: 1.5;
@@ -147,17 +138,13 @@
 /* Tables nested within Assamese blocks: scaled down for data density */
 .assamese .table,
 .assamese .table th,
-.assamese .table td,
-[lang='as'] .table,
-[lang='as'] .table th,
-[lang='as'] .table td {
+.assamese .table td {
   font-size: var(--assamese-font-size-small);
   color: var(--text-dark);
 }
 
 /* Inline code sizing relative to surrounding text */
-.assamese code,
-[lang='as'] code {
+.assamese code {
   font-size: 0.9em;
 }
 
@@ -1057,7 +1044,7 @@ section form textarea {
 }
 
 /* Action Buttons */
-button.btn-primary {
+.btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
   color: #fff;
@@ -1066,30 +1053,30 @@ button.btn-primary {
   font-weight: 600;
 }
 
-button.btn-primary:hover,
-button.btn-primary:focus {
+.btn-primary:hover,
+.btn-primary:focus {
   background-color: var(--primary-light);
   border-color: var(--primary-light);
 }
 
-button.btn-secondary {
+.btn-secondary {
   background-color: var(--text-muted);
   border-color: var(--text-muted);
   color: #fff;
 }
 
-button.btn-secondary:hover,
-button.btn-secondary:focus {
+.btn-secondary:hover,
+.btn-secondary:focus {
   background-color: #777;
   border-color: #777;
 }
 
-button.btn-sm {
+.btn-sm {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
 }
 
-button.btn-lg {
+.btn-lg {
   padding: 0.5rem 1rem;
   font-size: 1.1rem;
 }
@@ -1341,13 +1328,13 @@ button.btn-lg {
   h5 a,
   h6 a,
   i a,
-  em a {
+  em a,
+  .assamese a {
     font-size: inherit;
   }
 
   /* Scale down Assamese text on mobile */
-  .assamese,
-  [lang='as'] {
+  .assamese {
     font-size: var(--assamese-font-size-small);
   }
 
