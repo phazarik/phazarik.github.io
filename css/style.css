@@ -879,7 +879,7 @@ section .card .card-text {
 pre {
   display: block;
   margin: 0;
-  margin-bottom: 0.25rem;
+  /*margin-bottom: 0.25rem;*/
   padding: 0.25rem;
 }
 

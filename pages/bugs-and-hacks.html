@@ -55,9 +55,15 @@
 
               <button class="nav-btn">NanoAOD analysis framework</button>
               <div class="sub-btns">
-                <a href="#nano-overflow" class="nav-sub-btn">Handling overflow/underflow</a>
                 <a href="#nano-segmentation" class="nav-sub-btn">Avoiding segmentation fault</a>
-                <a href="#nano-sortpt" class="nav-sub-btn">Missing &amp; bug</a>
+                <a href="#nano-sortpt" class="nav-sub-btn">Missing '&amp;' bug</a>
+              </div>
+              <button class="nav-btn">Plotting aesthetics</button>
+              <div class="sub-btns">
+                <a href="#plotting-customization" class="nav-sub-btn">Customizing axes and labels</a>
+                <a href="#plotting-overflow" class="nav-sub-btn">Handling overflow / underflow bins</a>
+                <a href="#plotting-data" class="nav-sub-btn">Plotting data with Poisson errors</a>
+                <a href="#plotting-ratio" class="nav-sub-btn">Making the ratio plot</a>
               </div>
             </div>
           </section>
@@ -124,62 +130,6 @@ for(int i = 0; i &lt; (int)h.hist.size(); i++) h.hist[i]-&gt;Sumw2();
             </p>
 
             <hr />
-            <h3 id="nano-overflow">Handling overflow and underflow bins</h3>
-            <p>
-              The standard
-              <code>TH1::Integral()</code>
-              function does not include the underflow and overflow bins by default. Therefore, before plotting, the
-              underflow and overflow should be added to the first and last visible bins, respectively. This keeps the
-              histogram integral consistent with the total number of selected events across the full variable range.
-            </p>
-            <p>
-              There is, however, one small thing to be careful about. Once the events are moved into the visible bins,
-              the underflow and overflow bins should be
-              <strong>reset to zero</strong>
-              . Otherwise, if the function is called again, the same events will be moved again and counted twice. I
-              learned this the hard way after accidentally calling the function twice and getting unexpectedly large
-              integrals in my plots.
-            </p>
-            <p>
-              The following function performs the migration and resets the two bins afterwards. Pay attention to the
-              last part.
-            </p>
-            <pre><code class="language-cpp">
-void fix_underflow_overflow(TH1* h)
-{
-  const int lastBin = h->GetNbinsX();
-
-  // --- overflow ---
-  const double content      = h->GetBinContent(lastBin);
-  const double error        = h->GetBinError(lastBin);
-  const double overflow     = h->GetBinContent(lastBin + 1);
-  const double overflow_err = h->GetBinError(lastBin + 1);
-  const double updated_content = content + overflow;
-  const double updated_error   = std::sqrt(error * error +
-  overflow_err * overflow_err);	
-  h->SetBinContent(lastBin, updated_content);
-  h->SetBinError(lastBin, updated_error);
-		
-  // --- underflow ---
-  const double content_first = h->GetBinContent(1);
-  const double error_first   = h->GetBinError(1);
-  const double underflow     = h->GetBinContent(0);
-  const double underflow_err = h->GetBinError(0);
-  const double updated_content_first = content_first + underflow;
-  const double updated_error_first   = std::sqrt(error_first * error_first +
-  underflow_err * underflow_err);
-  h->SetBinContent(1, updated_content_first);
-  h->SetBinError(1, updated_error_first);
-
-  // --- reset underflow/overflow bins ---
-  h->SetBinContent(lastBin + 1, 0.0);
-  h->SetBinError(lastBin + 1, 0.0);	
-  h->SetBinContent(0, 0.0);
-  h->SetBinError(0, 0.0);
-}
-            </code></pre>
-
-            <hr />
             <h3 id="nano-sortpt">The missing pointer reference bug</h3>
             <p>
               This was one of those bugs where everything looked fine, but the code was quietly doing something
@@ -220,6 +170,264 @@ void nanoAna::SortPt(vector&lt;Particle&gt; &objarr){
               <code>void</code>
               functions. Use a reference or pointer if the original needs to be modified.
             </p>
+
+            <!-- //////////////////////////////////////////////////////// -->
+            <h2 class="section-title" id="plotting">Plotting aesthetics</h2>
+            <p>
+              For aesthetics, I use the
+              <a href="https://github.com/cms-cat/cmsstyle" target="_blank"><code>cmsstyle</code></a>
+              package and Python scripts to generate standardized plots. The official
+              <a href="https://cms-analysis.docs.cern.ch/guidelines/plotting/general/" target="_blank">
+                CMS plotting guidelines
+              </a>
+              page contains some basic examples of
+              <code>cmsCanvas()</code>
+              and
+              <code>cmsDiCanvas()</code>
+              , along with some standard color palettes used in CMS plots. However, customizing the plots to suit
+              specific needs is a bit complicated. Some of the useful tricks are described below.
+            </p>
+
+            <h3 id="plotting-customization">Customizing the axes and labels</h3>
+            <p>
+              While using the
+              <code>cmsstyle</code>
+              package, the
+              <code>getCMSStyle()</code>
+              function is called to modify the objects in the figure instead of directly modifying the object. This is
+              because the canvas decorations are applied globally using
+              <code>setCMSStyle()</code>
+              . Manually overriding the style of the objects before drawing on the canvas does not work.
+            </p>
+            <p>For example, the axes parameters are customized after calling the style function as follows:</p>
+            <pre><code class="language-python">
+cmsstyle.setCMSStyle()
+# Set lumi, energy etc labels here ...
+cmsstyle.getCMSStyle().SetNdivisions(505, "XY") # applies to both X and Y
+cmsstyle.getCMSStyle().SetNdivisions(505, "X")  # applies to only X
+cmsstyle.getCMSStyle().SetLabelSize(0.04, "XY") # Sets the label size for both X and Y axes
+# Similarly, the title size, offset, etc. can be customized for both axes or individually for X and Y axes.
+            </code></pre>
+            <p>
+              The extra text on the top carrying luminosity and COM energy are designed to display some predefined
+              texts. These can be customized as follows:
+            </p>
+            <pre><code class="language-python">
+# SetLumi options:
+cmsstyle.SetLumi(value)                  # Sets the luminosity value in fb^-1. 
+cmsstyle.SetLumi(-1)                     # Prevents the luminosity value and the fb^-1 text, but still displays the "Run2" text.
+cmsstyle.SetLumi(-1, run="Custom label") # Displays the custom label instead of "Run2" text. (Example: 2018_UL)
+
+# SetEnergy options:
+cmsstyle.SetEnergy(13)         # Sets the COM energy value in TeV.
+cmsstyle.SetEnergy(0)          # Prevents the COM energy value, but still displays the "TeV" unit.
+cmsstyle.SetEnergy(0, unit="") # Prevents the COM energy value and the "TeV" unit.
+
+# SetExtraText options:
+cmsstyle.SetExtraText("s")            # "s" = Simulation, "p" = Preliminary; use "" for unblinded plots.
+cmsstyle.SetExtraText("Custom text")  # Allows a custom text to be displayed. 
+            </code></pre>
+
+            <h3 id="plotting-overflow">Handling overflow and underflow bins</h3>
+            <p>
+              The standard
+              <code>TH1::Integral()</code>
+              function does not include the underflow and overflow bins by default. Therefore, before plotting, the
+              underflow and overflow should be added to the first and last visible bins, respectively. This keeps the
+              histogram integral consistent with the total number of selected events across the full variable range.
+            </p>
+            <p>
+              There is, however, one small thing to be careful about. Once the events are moved into the visible bins,
+              the underflow and overflow bins should be
+              <strong>reset to zero</strong>
+              . Otherwise, if the function is called again, the same events will be moved again and counted twice. I
+              learned this the hard way after accidentally calling the function twice and getting unexpectedly large
+              integrals in my plots.
+            </p>
+            <p>
+              The following function performs the migration and resets the two bins afterwards. Pay attention to the
+              last part.
+            </p>
+            <pre><code class="language-python">
+def fixUnderflowOverflow(h):
+    lastBin = h.GetNbinsX()
+
+    # Handle overflow
+    content  = h.GetBinContent(lastBin)
+    error    = h.GetBinError(lastBin)
+    overflow = h.GetBinContent(lastBin + 1)
+    overflow_err = h.GetBinError(lastBin + 1)
+    updated_content = content + overflow
+    updated_error   = (error*error + overflow_err*overflow_err) ** 0.5
+    h.SetBinContent(lastBin, updated_content)
+    h.SetBinError(lastBin, updated_error)
+
+    # Handle underflow
+    content_first = h.GetBinContent(1)
+    error_first   = h.GetBinError(1)
+    underflow     = h.GetBinContent(0)
+    underflow_err = h.GetBinError(0)
+    updated_content_first = content_first + underflow
+    updated_error_first   = (error_first*error_first + underflow_err*underflow_err) ** 0.5
+    h.SetBinContent(1, updated_content_first)
+    h.SetBinError(1, updated_error_first)
+
+    # Reset underflow / overflow bins
+    h.SetBinContent(lastBin + 1, 0.0)
+    h.SetBinError(lastBin + 1, 0.0)
+    h.SetBinContent(0, 0.0)
+    h.SetBinError(0, 0.0)
+            </code></pre>
+
+            <h3 id="plotting-data">Plotting data with Poisson errors</h3>
+            <p>
+              Data are drawn as points with asymmetric Poisson uncertainties rather than as a histogram because the
+              observed event count is discrete and the corresponding statistical uncertainty is asymmetric, particularly
+              for bins with a small number of events. A
+              <code>TGraphAsymmErrors</code>
+              object allows these lower and upper uncertainties to be displayed explicitly, while empty bins can simply
+              be omitted from the graph. The CMS
+              <a href="https://twiki.cern.ch/twiki/bin/view/CMS/PoissonErrorBars" target="_blank">Poisson error bars</a>
+              prescription is used for the data uncertainties.
+            </p>
+            <p>
+              The Poisson uncertainties are assigned using ROOT's built-in
+              <code>kPoisson</code>
+              option.
+            </p>
+            <pre><code class="language-python">
+h.Sumw2(False)
+h.SetBinErrorOption(ROOT.TH1.kPoisson)
+</code></pre>
+            <p>
+              The data histogram is then converted to a
+              <code>TGraphAsymmErrors</code>
+              (empty bins can be omitted) as follows, so that the asymmetric lower and upper uncertainties can be
+              displayed.
+            </p>
+            <pre><code class="language-python">
+def makeDataGraph(h_data):
+    g_data = ROOT.TGraphAsymmErrors()
+    pt_idx = 0
+    for i in range(1, h_data.GetNbinsX()+1):
+        y = h_data.GetBinContent(i)
+        if y == 0: continue # Safe to skip empty bins
+
+        # Extract information from the histogram 
+        x = h_data.GetBinCenter(i)
+        ey_low = h_data.GetBinErrorLow(i)
+        ey_high = h_data.GetBinErrorUp(i)
+        ex = h_data.GetBinWidth(i) / 2.0
+
+        # Set the point in the graph
+        g_data.SetPoint(pt_idx, x, y)
+        g_data.SetPointError(pt_idx, ex, ex, ey_low, ey_high)
+        pt_idx += 1
+
+    # Decoration
+    g_data.SetMarkerStyle(ROOT.kFullCircle)
+    g_data.SetMarkerSize(1.1)
+    g_data.SetLineColor(ROOT.kBlack)
+    g_data.SetMarkerColor(ROOT.kBlack)
+    return g_data
+            </code></pre>
+            <p>
+              The points are drawn as filled black circles with horizontal uncertainties corresponding to half the bin
+              width. The graph is drawn with
+              <code>PZ0</code>
+              , which displays the points and their error bars without connecting them.
+            </p>
+            <pre><code class="language-python">
+cmsstyle.cmsObjectDraw(g_data, "PZ0")
+            </code></pre>
+
+            <h3 id="plotting-ratio">Making the ratio plot</h3>
+            <p>
+              The ratio panel shows the observed data divided by the total expected background. A horizontal reference
+              line at
+              <code>y = 1</code>
+              is drawn to make it easy to identify agreement between data and prediction. I use a dummy histogram to
+              define the ratio-panel axis and extract its x-range before drawing the reference line.
+            </p>
+            <pre><code class="language-python">
+# Inherit the binning and x-range from the total background histogram
+h_ratio_dummy = h_tot.Clone("ratio_dummy")
+h_ratio_dummy.Reset()
+h_ratio_dummy.SetYTitle(yratiotitle)
+cmsstyle.cmsObjectDraw(h_ratio_dummy, "AXIS") # Draw only the axes, no data
+
+# Draw a horizontal reference line at y=1, using the x-range of the dummy histogram
+x_min = h_ratio_dummy.GetXaxis().GetXmin()
+x_max = h_ratio_dummy.GetXaxis().GetXmax()
+line = ROOT.TLine(x_min, 1.0, x_max, 1.0)
+line.SetLineStyle(2)
+line.Draw()
+            </code></pre>
+            <p>
+              The uncertainty on the total background is shown as a band around unity. For each bin, the absolute
+              background uncertainty is divided by the total background yield, giving the corresponding relative
+              uncertainty in the ratio panel. The band is therefore centred at
+              <code>y = 1</code>
+              .
+            </p>
+            <pre><code class="language-python">
+def makeUncertaintyBand(h_tot):
+    # inherit the binning and x-range
+    h_band = h_tot.Clone("ratio_band")
+    h_band.SetDirectory(0)
+    h_band.Reset()
+
+    # Fill the band with relative uncertainties
+    for i in range(1, h_tot.GetNbinsX()+1):
+        B   = h_tot.GetBinContent(i)
+        err = h_tot.GetBinError(i)
+        h_band.SetBinContent(i, 1.0)             # Center the band at 1.0
+        if B > 0: h_band.SetBinError(i, err / B) # Relative uncertainty = bin error / bin content
+        else:     h_band.SetBinError(i, 0.0)
+    
+    # Decoration
+    h_band.SetFillStyle(3345) # dashed fill pattern
+    h_band.SetFillColor(12)   # light gray fill color
+    h_band.SetMarkerSize(0)   # No markers for the band
+    return h_band
+            </code></pre>
+            <p>
+              The data-to-background ratio is constructed as a
+              <code>TGraphAsymmErrors</code>
+              object so that the asymmetric Poisson uncertainties of the data are retained. The data yield and its lower
+              and upper uncertainties are divided by the expected background yield in each bin. Empty data bins and bins
+              with zero expected background are omitted.
+            </p>
+            <pre><code class="language-python">
+def makeRatioGraph(h_data, h_tot):
+    g_ratio = ROOT.TGraphAsymmErrors()
+    pt_idx = 0
+    for i in range(1, h_data.GetNbinsX()+1):
+        y = h_data.GetBinContent(i)
+        if y == 0: continue # Safe to skip empty bins
+
+        # Extract information from the histogram
+        x = h_data.GetBinCenter(i)
+        ey_low = h_data.GetBinErrorLow(i)
+        ey_high = h_data.GetBinErrorUp(i)
+        ex = h_data.GetBinWidth(i) / 2.0
+        bkg_val = h_tot.GetBinContent(i)
+        if bkg_val > 0: # Only include bins with non-zero expected background
+            g_ratio.SetPoint(pt_idx, x, y / bkg_val)
+            g_ratio.SetPointError(pt_idx, ex, ex, ey_low / bkg_val, ey_high / bkg_val)
+            pt_idx += 1
+
+    # Decoration
+    g_ratio.SetMarkerStyle(20)
+    g_ratio.SetMarkerSize(0.9)
+    g_ratio.SetLineColor(ROOT.kBlack)
+    g_ratio.SetMarkerColor(ROOT.kBlack)
+    return g_ratio
+            </code></pre>
+            <p>Finally, the ratio points are drawn without connecting them.</p>
+            <pre><code class="language-python">
+cmsstyle.cmsObjectDraw(g_ratio, "PZ0")
+            </code></pre>
 
             <button id="goTopBtn" class="btn btn-primary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
               Go to Top
