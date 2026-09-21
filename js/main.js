@@ -14,7 +14,9 @@ window.MathJax = {
 // Mermaid Initialization
 // ==============================
 document.addEventListener("DOMContentLoaded", () => {
-  mermaid.initialize({
+  if (!window.mermaid) return;
+
+  window.mermaid.initialize({
     startOnLoad: true,
     theme: "default", // options: "dark", "neutral", etc.
     securityLevel: "loose", // allows <br/> and <strong> in labels
@@ -32,6 +34,8 @@ const metaData = {
 };
 
 for (const [name, content] of Object.entries(metaData)) {
+  if (document.head.querySelector(`meta[name="${name}"]`)) continue;
+
   const meta = document.createElement("meta");
   meta.name = name;
   meta.content = content;
@@ -75,8 +79,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // --- Highlight.js initialization ---
-  hljs.highlightAll();
-  hljs.initLineNumbersOnLoad();
+  if (window.hljs) {
+    window.hljs.highlightAll();
+    if (window.hljs.initLineNumbersOnLoad) window.hljs.initLineNumbersOnLoad();
+  }
+
+  // Prevent newly opened tabs from getting access to this page.
+  document.querySelectorAll('a[target="_blank"]').forEach((link) => {
+    link.rel = "noopener noreferrer";
+  });
 
   // --- Add global favicon ---
   const link = document.createElement("link");
@@ -89,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("h2[id], h3[id]").forEach((header) => {
     const anchor = document.createElement("a");
     anchor.href = "#" + header.id;
+    anchor.setAttribute("aria-label", `Link to ${header.textContent.trim()}`);
     anchor.innerHTML = ' <i class="bi bi-link-45deg"></i>'; // space keeps it inline
     anchor.style.textDecoration = "none";
     anchor.style.fontSize = "0.9em";

@@ -1082,7 +1082,7 @@ section form textarea {
 }
 
 /* Floating / Action Return-to-Top Button */
-#goTopBtn {
+[data-go-top] {
   float: right;
   margin: 20px 0;
   padding: 8px 16px;
@@ -1095,7 +1095,7 @@ section form textarea {
   transition: background 0.2s;
 }
 
-#goTopBtn:hover {
+[data-go-top]:hover {
   background-color: var(--primary-light);
 }
 
@@ -1170,6 +1170,12 @@ section form textarea {
   }
   50% {
     opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot {
+    animation: none;
   }
 }
 

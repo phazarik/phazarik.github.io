@@ -1,0 +1,52 @@
+\documentclass[tikz,border=3mm]{standalone}
+\usepackage{tikz-feynman}
+\tikzset{every picture/.style={line width=1.1pt}}
+
+\begin{document}
+  \begin{tikzpicture}[baseline={(current bounding box.center)}]
+    \begin{feynman}
+      \vertex (v1);
+      \vertex [right =1.5cm of v1] (v2);
+
+      % Incoming vertices
+      \vertex [above left =1.5cm of v1] (i1) {\(q\)};
+      \vertex [below left =1.5cm of v1] (i2) {\(\bar{q}\)};
+
+      % Internal vertices connected to v2
+      \vertex at($(v2)+(1.2, +0.7)$) (b1);
+      \vertex at($(v2)+(1.2, -0.7)$) (b2);
+
+      % Internal vertices connected to b1 and b2
+      \vertex at($(b1)+(1.2, +0.1)$) (c1);
+      \vertex at($(b2)+(1.2, -0.1)$) (c2);
+
+      % Outgoing vertices
+      \vertex at($(b1) + (1.0, +1.2)$) (o1) {\( l \)};
+      \vertex [above right =0.7cm of c1] (o2);
+      \vertex [below right =0.7cm of c1] (o3);
+      \vertex [above right =0.7cm of c2] (o4);
+      \vertex [below right =0.7cm of c2] (o5);
+      \vertex at($(b2) + (1.0, -1.2)$) (o6) {\( \nu \)};
+
+      \diagram*{
+        (i1) -- (v1) -- (i2);
+        (v1) --[boson, color=black, edge label = \({\color{black} Z/\gamma^*}\)] (v2);
+        (b1) -- (v2) -- (b2);
+        (b1) --[boson, edge label' = \(Z\)] (c1);
+        (b2) --[boson, edge label = \(W\)] (c2);
+        (o1) -- (b1);
+        (o2) -- (c1) -- (o3);
+        (o4) -- (c2) -- (o5);
+        (b2) -- (o6);
+      };
+
+      % Labels are positioned manually because the diagram is crowded.
+      \vertex at($(o2) + (+0.3, +0.0)$) (l2) {\(q^{\prime}\)};
+      \vertex at($(o3) + (+0.3, +0.0)$) (l3) {\(\bar{q}^\prime\)};
+      \vertex at($(o4) + (+0.3, +0.0)$) (l4) {\( q^{\prime\prime}\)};
+      \vertex at($(o5) + (+0.3, -0.0)$) (l5) {\( \bar{q}^{\prime\prime}\)};
+      \vertex at($(b1) + (-0.6, +0.0)$) (tau1) {\( E \)};
+      \vertex at($(b2) + (-0.6, -0.0)$) (tau2) {\( E \)};
+    \end{feynman}
+  \end{tikzpicture}
+\end{document}
