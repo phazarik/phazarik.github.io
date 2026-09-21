@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://phazarik.github.io/sitemap.xml
