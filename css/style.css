@@ -4,7 +4,7 @@
    These rules pull the standard Nunito font files but scale them down natively 
    using size-adjust. This ensures that inline English text matches the visual 
    size of Kalpurush (Assamese) without requiring explicit HTML wrappers.
-   ========================================================================== */
+   ==========================================================================
 
 /* Nunito Scaled - Light (300) */
 @font-face {
@@ -1269,12 +1269,74 @@ section form textarea {
 }
 
 /* ==========================================================================
-   8. Responsive Design & Mobile Breakpoints (<= 768px)
+   8. Responsive Design
    ==========================================================================
    ORDER MATTERS:
    Declared at the end of the stylesheet to ensure media query rules cleanly
    override desktop layout metrics without needing high-specificity selectors.
    ========================================================================== */
+
+/* Compact layout for tablets and phone browsers using "Desktop site". */
+@media (width <= 991.98px) {
+  main.container,
+  .navbar > .container {
+    max-width: 100%;
+  }
+
+  /* Keep the header collapsed until there is enough room for every nav item. */
+  .navbar-expand-md {
+    flex-wrap: wrap;
+  }
+
+  .navbar-expand-md .navbar-toggler {
+    display: block;
+  }
+
+  .navbar-expand-md .navbar-collapse {
+    display: none !important;
+    flex-basis: 100%;
+    flex-grow: 1;
+  }
+
+  .navbar-expand-md .navbar-collapse.show,
+  .navbar-expand-md .navbar-collapse.collapsing {
+    display: block !important;
+  }
+
+  .navbar-expand-md .navbar-nav {
+    flex-direction: column;
+  }
+
+  .navbar .nav-link {
+    margin-left: 0;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Avoid narrow 25/75 columns on compact screens. */
+  main > .row > aside.col-md-3,
+  main > .row > .col-md-9,
+  main > section.card > .row > .col-md-3,
+  main > section.card > .row > .col-md-9 {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  aside.col-md-3 {
+    position: static;
+  }
+
+  .project-heading {
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+
+  .project-heading a {
+    flex: 0 0 auto;
+  }
+}
+
+/* Phone-specific type and spacing adjustments. */
 @media (width <= 768px) {
   /* Scale down display headings for narrower screens */
   h1 {
@@ -1355,7 +1417,7 @@ section form textarea {
 
   /* Compact grid spacing */
   .container {
-    padding: 10px;
+    padding: 12px;
   }
 
   .col-md-4,
