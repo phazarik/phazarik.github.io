@@ -53,19 +53,19 @@
                 <a href="#">Bugs and hacks</a>
               </div>
 
-              <button class="nav-btn">NanoAOD analysis framework</button>
+              <a href="#nanoaod" class="nav-btn">NanoAOD analysis framework</a>
               <div class="sub-btns">
                 <a href="#nano-segmentation" class="nav-sub-btn">Avoiding segmentation fault</a>
                 <a href="#nano-sortpt" class="nav-sub-btn">Missing '&amp;' bug</a>
               </div>
-              <button class="nav-btn">Plotting aesthetics</button>
+              <a href="#plotting" class="nav-btn">Plotting aesthetics</a>
               <div class="sub-btns">
                 <a href="#plotting-customization" class="nav-sub-btn">Customizing axes and labels</a>
                 <a href="#plotting-overflow" class="nav-sub-btn">Handling overflow / underflow bins</a>
                 <a href="#plotting-data" class="nav-sub-btn">Plotting data with Poisson errors</a>
                 <a href="#plotting-ratio" class="nav-sub-btn">Making the ratio plot</a>
               </div>
-              <button class="nav-btn">Vibe-coding helpers</button>
+              <a href="#vibe-coding" class="nav-btn">Vibe-coding helpers</a>
               <div class="sub-btns">
                 <a href="#vibe-repomix" class="nav-sub-btn">Provide full context to LLMs</a>
                 <a href="#vibe-ponytail" class="nav-sub-btn">Reduce token usage</a>
@@ -88,7 +88,7 @@
           </p>
 
           <section class="section">
-            <h2 class="section-title">Regarding the NanoAOD analysis framework</h2>
+            <h2 class="section-title" id="nanoaod">Regarding the NanoAOD analysis framework</h2>
             <p>
               Here are some issues I faced/fixed while working with the
               <code>TSelector</code>
@@ -175,6 +175,11 @@ void nanoAna::SortPt(vector&lt;Particle&gt; &objarr){
               <code>void</code>
               functions. Use a reference or pointer if the original needs to be modified.
             </p>
+
+            <button data-go-top class="btn btn-primary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+              Go to Top
+            </button>
+            <br />
 
             <!-- //////////////////////////////////////////////////////// -->
             <h2 class="section-title" id="plotting">Plotting aesthetics</h2>
@@ -509,6 +514,10 @@ repomix --style markdown --ignore "**/*.md" -o codebase.md
               tool for reducing token usage. Additionally, it also reduces the unnecessarily long output that LLMs tend
               to generate.
             </p>
+
+            <button data-go-top class="btn btn-primary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+              Go to Top
+            </button>
           </section>
         </div>
       </div>
