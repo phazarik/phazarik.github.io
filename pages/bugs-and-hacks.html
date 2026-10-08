@@ -65,6 +65,11 @@
                 <a href="#plotting-data" class="nav-sub-btn">Plotting data with Poisson errors</a>
                 <a href="#plotting-ratio" class="nav-sub-btn">Making the ratio plot</a>
               </div>
+              <button class="nav-btn">Vibe-coding helpers</button>
+              <div class="sub-btns">
+                <a href="#vibe-repomix" class="nav-sub-btn">Provide full context to LLMs</a>
+                <a href="#vibe-ponytail" class="nav-sub-btn">Reduce token usage</a>
+              </div>
             </div>
           </section>
         </aside>
@@ -433,6 +438,77 @@ cmsstyle.cmsObjectDraw(g_ratio, "PZ0")
               Go to Top
             </button>
             <br />
+
+            <!-- //////////////////////////////////////////////////////// -->
+            <h2 class="section-title" id="vibe-coding">Vibe-coding helpers</h2>
+            <p>
+              I never liked the term vibe-coding because it undermines the effort and thought that goes into using LLMs.
+              LLMs can be a very useful tool in the hands of a skilled user. On the other side, artificial intelligence
+              and natural stupidity are a very bad combination.
+            </p>
+            <p>
+              Anyways, the following are some nice techniques for effectively using LLMs while conserving token usage
+              and reducing unnecessary and frustrating efforts.
+            </p>
+
+            <h3 id="vibe-repomix">Provide full context to LLMs using repomix</h3>
+            <p>
+              While optimizing a project, it is more convenient to provide the LLM with the entire project context
+              rather than some individual files or snippets. It may sound like a waste of tokens for simpler tasks, but
+              for complex problems, it's more effective. Modern LLMs can keep the setup in cache.
+              <a href="https://github.com/yamadashy/repomix" target="_blank">Repomix</a>
+              is a powerful tool that packs your entire repository into a single markdown file.
+            </p>
+            <p>For installing this tool, first install nvm (Node Version Manager) as follows.</p>
+            <pre><code class="language-bash">
+cd $HOME
+curl  -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+source ~/.bashrc
+            </code></pre>
+            <p>Then, use nvm to install Node 22. This is a working version of Node that is compatible with repomix.</p>
+            <pre><code class="language-bash">
+nvm install 22
+nvm alias default 22
+nvm use 22
+            </code></pre>
+            <p>Finally, install Repomix globally.</p>
+            <pre><code class="language-bash">
+npm install -g repomix
+            </code></pre>
+            <p>
+              To pack the entire repository into a single markdown file, run the following command in the root directory
+              of the repository.
+            </p>
+            <pre><code class="language-bash">
+repomix --style markdown --ignore "**/*.md" -o codebase.md
+            </code></pre>
+            <p>
+              The output markdown file can be directly provided to the LLM for context. This is particularly useful when
+              optimizing a project, and finding some niche bug that is not easily reproducible. The current webpage is
+              also optimized and the code writing style is made consistent by providing the code repository to GPT-5.6
+              Sol. It helped me discover minor bugs (like page metadata) which were otherwise invisible to me.
+            </p>
+
+            <h3 id="vibe-ponytail">Reduce token usage using skills</h3>
+            <p>
+              LLMs are very good at learning and remembering skills. Once a skill is learned, it can be reused in
+              different contexts without having to explain it again. This is particularly useful for reducing token
+              usage.
+            </p>
+            <p>
+              For example, I want my python scripts to have a certain style and structure. For this, I write down the
+              instructions in a markdown file (example:
+              <a href="/files/codes/misc/mySkill.md">mySkill.md</a>
+              ). These skills can be integrated to apps like ChatGPT and Claude.
+            </p>
+            <p>
+              One popular collection of skills can be found in the
+              <a href="https://github.com/dietrichgebert/ponytail" target="_blank">Ponytail</a>
+              repository. It also contains the usage instructions. Ponytail claims to reduce token usage by 50% and
+              increase the quality of responses by 30%. I have not verified these numbers, but it is definitely a useful
+              tool for reducing token usage. Additionally, it also reduces the unnecessarily long output that LLMs tend
+              to generate.
+            </p>
           </section>
         </div>
       </div>
